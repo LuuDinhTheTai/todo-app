@@ -20,8 +20,44 @@ public class TodoRepository : Repository
         }
     }
 
+    public ICollection<Todo> FindAll()
+    {
+        var todos = new List<Todo>();
+
+        using (SqlConnection connection = Database.GetConnection())
+        {
+            string sql = "SELECT Id, Content, IsDone FROM Todos";
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var todo = new Todo
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Content = reader.GetString(reader.GetOrdinal("Content")),
+                            IsDone = reader.GetBoolean(reader.GetOrdinal("IsDone"))
+                        };
+                        todos.Add(todo);
+                    }
+                }
+            }
+        }
+
+        return todos;
+    }
+
     public void Delete(int id)
     {
-        
+        using (SqlConnection connection = Database.GetConnection())
+        {
+            string sql = "DELETE FROM Todos WHERE Id = @Id";
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                command.Parameters.AddWithValue("@Id", id);
+                command.ExecuteNonQuery();
+            }
+        }
     }
 }

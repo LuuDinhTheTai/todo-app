@@ -33,6 +33,10 @@ partial class Form1
         lBSidebar = new System.Windows.Forms.ListBox();
         Logout = new System.Windows.Forms.Label();
         lblUsername = new System.Windows.Forms.Label();
+        dataGridView1 = new System.Windows.Forms.DataGridView();
+        colStatus = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+        colContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
+        colDelete = new System.Windows.Forms.DataGridViewButtonColumn();
         gBCreateForm = new System.Windows.Forms.GroupBox();
         btnCreate = new System.Windows.Forms.Button();
         tBContent = new System.Windows.Forms.TextBox();
@@ -42,6 +46,7 @@ partial class Form1
         splitContainer1.Panel1.SuspendLayout();
         splitContainer1.Panel2.SuspendLayout();
         splitContainer1.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
         gBCreateForm.SuspendLayout();
         SuspendLayout();
         // 
@@ -59,6 +64,7 @@ partial class Form1
         // 
         // splitContainer1.Panel2
         // 
+        splitContainer1.Panel2.Controls.Add(dataGridView1);
         splitContainer1.Panel2.Controls.Add(gBCreateForm);
         splitContainer1.Panel2.Controls.Add(lblTagName);
         splitContainer1.Size = new System.Drawing.Size(800, 450);
@@ -95,6 +101,33 @@ partial class Form1
         lblUsername.TabIndex = 1;
         lblUsername.Text = "Hi, ";
         lblUsername.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+        // 
+        // dataGridView1
+        // 
+        dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+        dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { colStatus, colContent, colDelete });
+        dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+        dataGridView1.Location = new System.Drawing.Point(0, 23);
+        dataGridView1.Name = "dataGridView1";
+        dataGridView1.Size = new System.Drawing.Size(530, 327);
+        dataGridView1.TabIndex = 2;
+        dataGridView1.Text = "dataGridView1";
+        dataGridView1.CellContentClick += dataGridView1_CellContentClick;
+        // 
+        // colStatus
+        // 
+        colStatus.HeaderText = "Trạng thái";
+        colStatus.Name = "colStatus";
+        // 
+        // colContent
+        // 
+        colContent.HeaderText = "Nội dung";
+        colContent.Name = "colContent";
+        // 
+        // colDelete
+        // 
+        colDelete.HeaderText = "Xóa";
+        colDelete.Name = "colDelete";
         // 
         // gBCreateForm
         // 
@@ -152,14 +185,22 @@ partial class Form1
         ClientSize = new System.Drawing.Size(800, 450);
         Controls.Add(splitContainer1);
         Text = "Form1";
+        Load += Form1_Load;
         splitContainer1.Panel1.ResumeLayout(false);
         splitContainer1.Panel2.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
         splitContainer1.ResumeLayout(false);
+        ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
         gBCreateForm.ResumeLayout(false);
         gBCreateForm.PerformLayout();
         ResumeLayout(false);
     }
+
+    private System.Windows.Forms.DataGridViewCheckBoxColumn colStatus;
+    private System.Windows.Forms.DataGridViewTextBoxColumn colContent;
+    private System.Windows.Forms.DataGridViewButtonColumn colDelete;
+
+    private System.Windows.Forms.DataGridView dataGridView1;
 
     private System.Windows.Forms.Button btnCreate;
 

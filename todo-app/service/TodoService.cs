@@ -19,4 +19,14 @@ public class TodoService
         todo.Content = content;
         _todoRepository.Create(todo);
     }
+    
+    public ICollection<Todo> FindAll()
+    {
+        return _todoRepository.FindAll();
+    }
+
+    public void Delete(int id)
+    {
+        _todoRepository.Delete(id);
+    }
 }   
