@@ -1,4 +1,4 @@
-﻿using todo_app.controller;
+﻿﻿using todo_app.controller;
 using todo_app.entity;
 using todo_app.repository;
 
@@ -23,6 +23,11 @@ public class TodoService
     public ICollection<Todo> FindAll()
     {
         return _todoRepository.FindAll();
+    }
+
+    public void Update(Todo newTodo)
+    {
+        _todoRepository.Update(newTodo);
     }
 
     public void Delete(int id)

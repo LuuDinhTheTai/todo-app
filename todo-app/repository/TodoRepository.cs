@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+﻿﻿using Microsoft.Data.SqlClient;
 using todo_app.entity;
 
 namespace todo_app.repository;
@@ -46,6 +46,21 @@ public class TodoRepository : Repository
         }
 
         return todos;
+    }
+
+    public void Update(Todo todo)
+    {
+        using (SqlConnection connection = Database.GetConnection())
+        {
+            string sql = "UPDATE Todos SET Content = @Content, IsDone = @IsDone WHERE Id = @Id";
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                command.Parameters.AddWithValue("@Content", todo.Content);
+                command.Parameters.AddWithValue("@IsDone", todo.IsDone);
+                command.Parameters.AddWithValue("@Id", todo.Id);
+                command.ExecuteNonQuery();
+            }
+        }
     }
 
     public void Delete(int id)
