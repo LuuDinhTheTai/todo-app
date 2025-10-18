@@ -89,6 +89,7 @@ partial class Form1
         tagDataGridView.Size = new System.Drawing.Size(266, 304);
         tagDataGridView.TabIndex = 4;
         tagDataGridView.Text = "dataGridView2";
+        tagDataGridView.CellClick += tagDataGridView_CellClick;
         // 
         // colTag
         // 

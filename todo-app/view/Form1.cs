@@ -12,8 +12,8 @@ public partial class Form1 : Form
 
     private LoggedInAccount _loggedInAccount;
     
-    private Tag _currentTag;
-    private List<Todo> _currentTodos;
+    private Tag? _currentTag = null;
+    private List<Todo>? _currentTodos = null;
     
     public Form1(Controller controller)
     {
@@ -30,18 +30,15 @@ public partial class Form1 : Form
         if (!_loggedInAccount.IsLoggedIn())
         {
             var loginForm = new LoginForm(_controller);
-            loginForm.ShowDialog(); // Chặn thực thi cho đến khi LoginForm đóng lại
+            loginForm.ShowDialog();
         }
         
-        // Sau khi LoginForm đóng, kiểm tra lại. Nếu vẫn chưa đăng nhập, đóng Form1.
         if (!_loggedInAccount.IsLoggedIn())
         {
-            // Dùng BeginInvoke để đóng form một cách an toàn sau khi sự kiện Load hoàn tất
             this.BeginInvoke(new Action(() => this.Close()));
-            return; // Ngừng thực thi các lệnh phía dưới
+            return;
         }
         
-        // Chỉ cấu hình và tải dữ liệu nếu người dùng đã đăng nhập thành công
         ConfigTagDataGridView();
         ConfigTodoDataGridView();
         LoadTags();
@@ -81,7 +78,17 @@ public partial class Form1 : Form
     private void btnCreateTodo_Click(object sender, EventArgs e)
     {
         string content = tBContent.Text;
-        _todoService.Create(content);
+        if (string.IsNullOrEmpty(content))
+        {
+            return;
+        }
+
+        if (_currentTag == null)
+        {
+            return;
+        }
+        
+        _todoService.Create(content, _currentTag);
         
         tBContent.Clear();
         LoadTodos();
@@ -143,14 +150,39 @@ public partial class Form1 : Form
     private void LoadTags()
     {
         var tags = _tagService.FindAll();
-        tagDataGridView.DataSource = null;
         tagDataGridView.DataSource = tags.OrderBy(t => t.Name).ToList();
+        _currentTag = tags.FirstOrDefault();
     }
     
     private void LoadTodos()
     {
-        var todos = _todoService.FindAll();
-        todoDataGridView.DataSource = null;
-        todoDataGridView.DataSource = todos.OrderBy(t => t.IsDone).ToList();
+        if (_currentTag == null)
+        {
+            return;
+        }
+        
+        _currentTodos = _todoService.FindByTagId(_currentTag.Id);
+        todoDataGridView.DataSource = _currentTodos.OrderBy(t => t.IsDone).ToList();
+    }
+
+    private void tagDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+    {
+        int rowIndex = e.RowIndex;
+        int colIndex = e.ColumnIndex;
+
+        if (rowIndex < 0 || colIndex < 0)
+        {
+            return;
+        }
+
+        var cell = tagDataGridView.Rows[rowIndex].Cells[colIndex];
+        var value = cell.Value;
+        
+        if (value is string)
+        {
+            _currentTag = _tagService.FindByName((string) value);
+        }
+        
+        LoadTodos();
     }
 }

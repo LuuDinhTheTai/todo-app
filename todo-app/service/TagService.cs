@@ -29,4 +29,9 @@ public class TagService
         var tags = _tagRepository.FindByAccountId(_loggedInAccount.GetId());
         return tags.ToList();
     }
+
+    public Tag? FindByName(string name)
+    {
+        return _tagRepository.FindByName(name);
+    }
 }

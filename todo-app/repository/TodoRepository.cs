@@ -1,24 +1,45 @@
-﻿﻿using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using todo_app.entity;
 
 namespace todo_app.repository;
 
 public class TodoRepository : Repository
 {
-
     public void Create(Todo todo)
     {
         using (SqlConnection connection = Database.GetConnection())
         {
-            string sql = "INSERT INTO Todos (Content, IsDone) VALUES (@Content, @IsDone)";
+            string sql = "INSERT INTO Todos (Content, IsDone) VALUES (@Content, @IsDone); SELECT CAST(SCOPE_IDENTITY() AS int);";
             using (SqlCommand command = new SqlCommand(sql, connection))
             {
                 command.Parameters.AddWithValue("@Content", todo.Content);
                 command.Parameters.AddWithValue("@IsDone", todo.IsDone);
-                command.ExecuteNonQuery();
+                var result = command.ExecuteScalar();
+                if (result != null && int.TryParse(result.ToString(), out int newId))
+                {
+                    todo.Id = newId;
+                }
+            }
+        }
+
+        if (todo.Tags.Count == 0)
+            return;
+
+        foreach (var tag in todo.Tags)
+        {
+            using (SqlConnection connection = Database.GetConnection())
+            {
+                string sql = "INSERT INTO TodoTags (TodoId, TagId) VALUES (@TodoId, @TagId)";
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@TodoId", todo.Id);
+                    command.Parameters.AddWithValue("@TagId", tag.Id);
+                    command.ExecuteNonQuery();
+                }
             }
         }
     }
+
 
     public ICollection<Todo> FindAll()
     {
@@ -29,6 +50,39 @@ public class TodoRepository : Repository
             string sql = "SELECT Id, Content, IsDone FROM Todos";
             using (SqlCommand command = new SqlCommand(sql, connection))
             {
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var todo = new Todo
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Content = reader.GetString(reader.GetOrdinal("Content")),
+                            IsDone = reader.GetBoolean(reader.GetOrdinal("IsDone"))
+                        };
+                        todos.Add(todo);
+                    }
+                }
+            }
+        }
+
+        return todos;
+    }
+
+    public ICollection<Todo> FindByTagId(int tagId)
+    {
+        var todos = new List<Todo>();
+
+        using (SqlConnection connection = Database.GetConnection())
+        {
+            string sql = @"
+                SELECT T.Id, T.Content, T.IsDone
+                FROM Todos T
+                JOIN TodoTags TT ON T.Id = TT.TodoId
+                WHERE TT.TagId = @TagId";
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                command.Parameters.AddWithValue("@TagId", tagId);
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())

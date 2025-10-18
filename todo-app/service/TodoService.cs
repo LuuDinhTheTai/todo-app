@@ -1,4 +1,4 @@
-﻿﻿using todo_app.controller;
+﻿using todo_app.controller;
 using todo_app.entity;
 using todo_app.repository;
 
@@ -13,18 +13,19 @@ public class TodoService
         _todoRepository = controller.TodoRepository;
     }
     
-    public void Create(string content)
+    public void Create(string content, Tag tag)
     {
         Todo todo = new Todo();
         todo.Content = content;
+        todo.Tags.Add(tag);
         _todoRepository.Create(todo);
     }
     
-    public ICollection<Todo> FindAll()
+    public List<Todo> FindByTagId(int tagId)
     {
-        return _todoRepository.FindAll();
+        return _todoRepository.FindByTagId(tagId).ToList();
     }
-
+    
     public void Update(Todo newTodo)
     {
         _todoRepository.Update(newTodo);

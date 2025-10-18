@@ -45,4 +45,29 @@ public class TagRepository : Repository
         }
         return tags;
     }
+
+    public Tag? FindByName(string name)
+    {
+        using (SqlConnection connection = Database.GetConnection())
+        {
+            string sql = "SELECT Id, AccountId, Name FROM Tags WHERE Name = @Name";
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                command.Parameters.AddWithValue("@Name", name);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        Tag tag = new Tag                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            AccountId = reader.GetInt32(reader.GetOrdinal("AccountId")),
+                            Name = reader.GetString(reader.GetOrdinal("Name"))
+                        };
+                        return tag;
+                    }
+                }
+            }
+        }
+        return null;
+    }
 }
