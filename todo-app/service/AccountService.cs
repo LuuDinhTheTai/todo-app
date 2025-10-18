@@ -54,8 +54,18 @@ public class AccountService
         _accountRepository.Create(account);
     }
 
-    public void Login(string username, string password)
+    public void Login(string? username, string? password)
     {
+        if (string.IsNullOrEmpty(username))
+        {
+            throw new AppException("Tài khoản không hợp lệ");
+        }
+
+        if (string.IsNullOrEmpty(password))
+        {
+            throw new AppException("Mật khẩu không hợp lệ");
+        }
+        
         Account? account = _accountRepository.FindByUsername(username);
         
         bool isExisted = account != null;

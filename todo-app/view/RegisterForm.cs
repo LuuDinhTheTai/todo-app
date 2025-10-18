@@ -22,8 +22,8 @@ public partial class RegisterForm : Form
         string confirmPassword = tBCofirmPassword.Text;
         _accountService.Register(username, password, confirmPassword);
 
-        var loginForm = new LoginForm(_controller);
-        loginForm.Show();
+        // Sau khi đăng ký thành công, chỉ cần đóng form này lại.
+        // Luồng thực thi sẽ tự động quay về LoginForm đang chờ.
         this.Close();
     }
 }

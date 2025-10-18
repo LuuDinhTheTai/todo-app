@@ -1,0 +1,156 @@
+using todo_app.controller;
+using todo_app.entity;
+using todo_app.service;
+
+namespace todo_app;
+
+public partial class Form1 : Form
+{
+    private Controller _controller; 
+    private TagService _tagService;
+    private TodoService _todoService;
+
+    private LoggedInAccount _loggedInAccount;
+    
+    private Tag _currentTag;
+    private List<Todo> _currentTodos;
+    
+    public Form1(Controller controller)
+    {
+        InitializeComponent();
+        _controller = controller;
+        _tagService = controller.TagService;
+        _todoService = controller.TodoService;
+
+        _loggedInAccount = controller.LoggedInAccount;
+    }
+    
+    private void Form1_Load(object sender, EventArgs e)
+    {
+        if (!_loggedInAccount.IsLoggedIn())
+        {
+            var loginForm = new LoginForm(_controller);
+            loginForm.ShowDialog(); // Chặn thực thi cho đến khi LoginForm đóng lại
+        }
+        
+        // Sau khi LoginForm đóng, kiểm tra lại. Nếu vẫn chưa đăng nhập, đóng Form1.
+        if (!_loggedInAccount.IsLoggedIn())
+        {
+            // Dùng BeginInvoke để đóng form một cách an toàn sau khi sự kiện Load hoàn tất
+            this.BeginInvoke(new Action(() => this.Close()));
+            return; // Ngừng thực thi các lệnh phía dưới
+        }
+        
+        // Chỉ cấu hình và tải dữ liệu nếu người dùng đã đăng nhập thành công
+        ConfigTagDataGridView();
+        ConfigTodoDataGridView();
+        LoadTags();
+        LoadTodos();
+    }
+
+    // CONFIGURATION
+    private void ConfigTodoDataGridView()
+    {
+        todoDataGridView.AutoGenerateColumns = false;
+        if (todoDataGridView.Columns["colStatus"] != null)
+        {
+            todoDataGridView.Columns["colStatus"].DataPropertyName = "IsDone";
+        }        
+        
+        if (todoDataGridView.Columns["colContent"] != null)
+        {
+            todoDataGridView.Columns["colContent"].DataPropertyName = "Content";
+        }
+        
+        if (todoDataGridView.Columns["colDelete"] != null)
+        {
+        
+        }
+    }
+
+    private void ConfigTagDataGridView()
+    {
+        tagDataGridView.AutoGenerateColumns = false;
+        if (tagDataGridView.Columns["colTag"] != null)
+        {
+            tagDataGridView.Columns["colTag"].DataPropertyName = "Name";
+        }
+    }
+
+    // HANDLE EVENT
+    private void btnCreateTodo_Click(object sender, EventArgs e)
+    {
+        string content = tBContent.Text;
+        _todoService.Create(content);
+        
+        tBContent.Clear();
+        LoadTodos();
+    }
+
+    private void btnCreateTag_Click(object sender, EventArgs e)
+    {
+        string tagName = tBTagName.Text;
+        _tagService.Create(tagName);
+        
+        tBTagName.Clear();
+        LoadTags();
+    }
+
+    private void todoDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+    {
+        if (e.RowIndex < 0)
+            return;
+
+        var column = todoDataGridView.Columns[e.ColumnIndex];
+
+        if (column is DataGridViewButtonColumn && column.Name == "colDelete")
+        {
+            var todo = todoDataGridView.Rows[e.RowIndex].DataBoundItem as Todo;
+            if (todo == null)
+                return;
+
+            var result = MessageBox.Show("Xóa tác vụ này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result != DialogResult.Yes)
+                return;
+
+            _todoService.Delete(todo.Id);
+            LoadTodos();
+        }
+        else if (column is DataGridViewCheckBoxColumn && column.Name == "colStatus")
+        {
+            todoDataGridView.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            todoDataGridView_CellValueChanged(sender, e);
+        }
+    }
+
+    private void todoDataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+    {
+        if (e.RowIndex < 0)
+            return;
+
+        if (todoDataGridView.Columns[e.ColumnIndex].Name == "colStatus")
+        {
+            var todo = todoDataGridView.Rows[e.RowIndex].DataBoundItem as Todo;
+            if (todo == null)
+                return;
+
+            _todoService.Update(todo);
+
+            LoadTodos();
+        }
+    }
+
+    private void LoadTags()
+    {
+        var tags = _tagService.FindAll();
+        tagDataGridView.DataSource = null;
+        tagDataGridView.DataSource = tags.OrderBy(t => t.Name).ToList();
+    }
+    
+    private void LoadTodos()
+    {
+        var todos = _todoService.FindAll();
+        todoDataGridView.DataSource = null;
+        todoDataGridView.DataSource = todos.OrderBy(t => t.IsDone).ToList();
+    }
+}

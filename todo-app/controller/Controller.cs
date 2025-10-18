@@ -19,6 +19,8 @@ public class Controller
     
     public void Init()
     {
+        LoggedInAccount = new LoggedInAccount();
+        
         AccountRepository = new AccountRepository();
         TagRepository = new TagRepository();
         TodoRepository = new TodoRepository();
@@ -26,9 +28,7 @@ public class Controller
         AccountService = new AccountService(this);
         TagService = new TagService(this);
         TodoService = new TodoService(this);
-
-        LoggedInAccount = new LoggedInAccount();
-
+        
         Form1 = new Form1(this);
     }
 }

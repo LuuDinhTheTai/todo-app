@@ -30,10 +30,14 @@ partial class Form1
     private void InitializeComponent()
     {
         splitContainer1 = new System.Windows.Forms.SplitContainer();
-        lBSidebar = new System.Windows.Forms.ListBox();
+        tagDataGridView = new System.Windows.Forms.DataGridView();
+        colTag = new System.Windows.Forms.DataGridViewTextBoxColumn();
+        groupBox1 = new System.Windows.Forms.GroupBox();
+        btnCreateTag = new System.Windows.Forms.Button();
+        tBTagName = new System.Windows.Forms.TextBox();
         Logout = new System.Windows.Forms.Label();
         lblUsername = new System.Windows.Forms.Label();
-        dataGridView1 = new System.Windows.Forms.DataGridView();
+        todoDataGridView = new System.Windows.Forms.DataGridView();
         colStatus = new System.Windows.Forms.DataGridViewCheckBoxColumn();
         colContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
         colDelete = new System.Windows.Forms.DataGridViewButtonColumn();
@@ -46,7 +50,9 @@ partial class Form1
         splitContainer1.Panel1.SuspendLayout();
         splitContainer1.Panel2.SuspendLayout();
         splitContainer1.SuspendLayout();
-        ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)tagDataGridView).BeginInit();
+        groupBox1.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)todoDataGridView).BeginInit();
         gBCreateForm.SuspendLayout();
         SuspendLayout();
         // 
@@ -58,13 +64,14 @@ partial class Form1
         // 
         // splitContainer1.Panel1
         // 
-        splitContainer1.Panel1.Controls.Add(lBSidebar);
+        splitContainer1.Panel1.Controls.Add(tagDataGridView);
+        splitContainer1.Panel1.Controls.Add(groupBox1);
         splitContainer1.Panel1.Controls.Add(Logout);
         splitContainer1.Panel1.Controls.Add(lblUsername);
         // 
         // splitContainer1.Panel2
         // 
-        splitContainer1.Panel2.Controls.Add(dataGridView1);
+        splitContainer1.Panel2.Controls.Add(todoDataGridView);
         splitContainer1.Panel2.Controls.Add(gBCreateForm);
         splitContainer1.Panel2.Controls.Add(lblTagName);
         splitContainer1.Size = new System.Drawing.Size(800, 450);
@@ -72,15 +79,52 @@ partial class Form1
         splitContainer1.TabIndex = 0;
         splitContainer1.Text = "splitContainer1";
         // 
-        // lBSidebar
+        // tagDataGridView
         // 
-        lBSidebar.Dock = System.Windows.Forms.DockStyle.Fill;
-        lBSidebar.FormattingEnabled = true;
-        lBSidebar.Items.AddRange(new object[] { "Tác vụ" });
-        lBSidebar.Location = new System.Drawing.Point(0, 23);
-        lBSidebar.Name = "lBSidebar";
-        lBSidebar.Size = new System.Drawing.Size(266, 404);
-        lBSidebar.TabIndex = 3;
+        tagDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+        tagDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { colTag });
+        tagDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+        tagDataGridView.Location = new System.Drawing.Point(0, 23);
+        tagDataGridView.Name = "tagDataGridView";
+        tagDataGridView.Size = new System.Drawing.Size(266, 304);
+        tagDataGridView.TabIndex = 4;
+        tagDataGridView.Text = "dataGridView2";
+        // 
+        // colTag
+        // 
+        colTag.HeaderText = "Danh sách";
+        colTag.Name = "colTag";
+        // 
+        // groupBox1
+        // 
+        groupBox1.Controls.Add(btnCreateTag);
+        groupBox1.Controls.Add(tBTagName);
+        groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
+        groupBox1.Location = new System.Drawing.Point(0, 327);
+        groupBox1.Name = "groupBox1";
+        groupBox1.Size = new System.Drawing.Size(266, 100);
+        groupBox1.TabIndex = 3;
+        groupBox1.TabStop = false;
+        groupBox1.Text = "Thêm danh sách mới";
+        // 
+        // btnCreateTag
+        // 
+        btnCreateTag.Dock = System.Windows.Forms.DockStyle.Top;
+        btnCreateTag.Location = new System.Drawing.Point(3, 42);
+        btnCreateTag.Name = "btnCreateTag";
+        btnCreateTag.Size = new System.Drawing.Size(260, 23);
+        btnCreateTag.TabIndex = 1;
+        btnCreateTag.Text = "Thêm";
+        btnCreateTag.UseVisualStyleBackColor = true;
+        btnCreateTag.Click += btnCreateTag_Click;
+        // 
+        // tBTagName
+        // 
+        tBTagName.Dock = System.Windows.Forms.DockStyle.Top;
+        tBTagName.Location = new System.Drawing.Point(3, 19);
+        tBTagName.Name = "tBTagName";
+        tBTagName.Size = new System.Drawing.Size(260, 23);
+        tBTagName.TabIndex = 0;
         // 
         // Logout
         // 
@@ -102,17 +146,17 @@ partial class Form1
         lblUsername.Text = "Hi, ";
         lblUsername.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
         // 
-        // dataGridView1
+        // todoDataGridView
         // 
-        dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-        dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { colStatus, colContent, colDelete });
-        dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-        dataGridView1.Location = new System.Drawing.Point(0, 23);
-        dataGridView1.Name = "dataGridView1";
-        dataGridView1.Size = new System.Drawing.Size(530, 327);
-        dataGridView1.TabIndex = 2;
-        dataGridView1.Text = "dataGridView1";
-        dataGridView1.CellContentClick += dataGridView1_CellContentClick;
+        todoDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+        todoDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { colStatus, colContent, colDelete });
+        todoDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+        todoDataGridView.Location = new System.Drawing.Point(0, 23);
+        todoDataGridView.Name = "todoDataGridView";
+        todoDataGridView.Size = new System.Drawing.Size(530, 327);
+        todoDataGridView.TabIndex = 2;
+        todoDataGridView.Text = "dataGridView1";
+        todoDataGridView.CellContentClick += todoDataGridView_CellContentClick;
         // 
         // colStatus
         // 
@@ -150,7 +194,7 @@ partial class Form1
         btnCreate.TabIndex = 2;
         btnCreate.Text = "Thêm";
         btnCreate.UseVisualStyleBackColor = true;
-        btnCreate.Click += btnCreate_Click;
+        btnCreate.Click += btnCreateTodo_Click;
         // 
         // tBContent
         // 
@@ -190,17 +234,30 @@ partial class Form1
         splitContainer1.Panel2.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
         splitContainer1.ResumeLayout(false);
-        ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+        ((System.ComponentModel.ISupportInitialize)tagDataGridView).EndInit();
+        groupBox1.ResumeLayout(false);
+        groupBox1.PerformLayout();
+        ((System.ComponentModel.ISupportInitialize)todoDataGridView).EndInit();
         gBCreateForm.ResumeLayout(false);
         gBCreateForm.PerformLayout();
         ResumeLayout(false);
     }
 
+    private System.Windows.Forms.DataGridViewTextBoxColumn colTag;
+
+    private System.Windows.Forms.DataGridView tagDataGridView;
+
+    private System.Windows.Forms.Button btnCreateTag;
+
+    private System.Windows.Forms.TextBox tBTagName;
+
+    private System.Windows.Forms.GroupBox groupBox1;
+
     private System.Windows.Forms.DataGridViewCheckBoxColumn colStatus;
     private System.Windows.Forms.DataGridViewTextBoxColumn colContent;
     private System.Windows.Forms.DataGridViewButtonColumn colDelete;
 
-    private System.Windows.Forms.DataGridView dataGridView1;
+    private System.Windows.Forms.DataGridView todoDataGridView;
 
     private System.Windows.Forms.Button btnCreate;
 
@@ -216,7 +273,6 @@ partial class Form1
     private System.Windows.Forms.Label lblUsername;
 
     private System.Windows.Forms.SplitContainer splitContainer1;
-    private System.Windows.Forms.ListBox lBSidebar;
 
     #endregion
 }
