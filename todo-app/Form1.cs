@@ -6,16 +6,28 @@ namespace todo_app;
 
 public partial class Form1 : Form
 {
+    private Controller _controller; 
     private TodoService _todoService;
 
+    private LoggedInAccount _loggedInAccount;
+    
     private Tag _currentTag;
     private List<Todo> _currentTodos;
     
     public Form1(Controller controller)
     {
         InitializeComponent();
+        _controller = controller;
         _todoService = controller.TodoService;
 
+        _loggedInAccount = controller.LoggedInAccount;
+
+        if (!_loggedInAccount.IsLoggedIn())
+        {
+            var loginForm = new LoginForm(_controller);
+            loginForm.Show();
+        }
+        
         ConfigDataGridView1();
     }
 

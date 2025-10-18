@@ -1,4 +1,4 @@
-﻿using todo_app.repository;
+﻿﻿using todo_app.repository;
 using todo_app.service;
 
 namespace todo_app.controller;
@@ -15,6 +15,8 @@ public class Controller
 
     public Form1 Form1;
 
+    public LoggedInAccount LoggedInAccount;
+    
     public void Init()
     {
         AccountRepository = new AccountRepository();
@@ -24,7 +26,9 @@ public class Controller
         AccountService = new AccountService(this);
         TagService = new TagService(this);
         TodoService = new TodoService(this);
-        
+
+        LoggedInAccount = new LoggedInAccount();
+
         Form1 = new Form1(this);
     }
 }

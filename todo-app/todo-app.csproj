@@ -13,4 +13,13 @@
       <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.2" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="view\LoginForm.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="view\RegisterForm.cs">
+        <SubType>Form</SubType>
+      </Compile>
+    </ItemGroup>
+
 </Project>
