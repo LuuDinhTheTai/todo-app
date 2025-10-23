@@ -6,25 +6,27 @@ namespace todo_app;
 
 public partial class Form1 : Form
 {
-    private Controller _controller; 
+    private Controller _controller;
     private TagService _tagService;
     private TodoService _todoService;
+    private FileService _fileService;
 
     private LoggedInAccount _loggedInAccount;
-    
+
     private Tag? _currentTag = null;
     private List<Todo>? _currentTodos = null;
-    
+
     public Form1(Controller controller)
     {
         InitializeComponent();
         _controller = controller;
         _tagService = controller.TagService;
         _todoService = controller.TodoService;
+        _fileService = controller.FileService;
 
         _loggedInAccount = controller.LoggedInAccount;
     }
-    
+
     private void Form1_Load(object sender, EventArgs e)
     {
         if (!_loggedInAccount.IsLoggedIn())
@@ -32,13 +34,13 @@ public partial class Form1 : Form
             var loginForm = new LoginForm(_controller);
             loginForm.ShowDialog();
         }
-        
+
         if (!_loggedInAccount.IsLoggedIn())
         {
             this.BeginInvoke(new Action(() => this.Close()));
             return;
         }
-        
+
         ConfigTagDataGridView();
         ConfigTodoDataGridView();
         LoadTags();
@@ -52,16 +54,16 @@ public partial class Form1 : Form
         if (todoDataGridView.Columns["colStatus"] != null)
         {
             todoDataGridView.Columns["colStatus"].DataPropertyName = "IsDone";
-        }        
-        
+        }
+
         if (todoDataGridView.Columns["colContent"] != null)
         {
             todoDataGridView.Columns["colContent"].DataPropertyName = "Content";
         }
-        
+
         if (todoDataGridView.Columns["colDelete"] != null)
         {
-        
+
         }
     }
 
@@ -87,9 +89,9 @@ public partial class Form1 : Form
         {
             return;
         }
-        
+
         _todoService.Create(content, _currentTag);
-        
+
         tBContent.Clear();
         LoadTodos();
     }
@@ -98,7 +100,7 @@ public partial class Form1 : Form
     {
         string tagName = tBTagName.Text;
         _tagService.Create(tagName);
-        
+
         tBTagName.Clear();
         LoadTags();
     }
@@ -153,14 +155,14 @@ public partial class Form1 : Form
         tagDataGridView.DataSource = tags.OrderBy(t => t.Name).ToList();
         _currentTag = tags.FirstOrDefault();
     }
-    
+
     private void LoadTodos()
     {
         if (_currentTag == null)
         {
             return;
         }
-        
+
         _currentTodos = _todoService.FindByTagId(_currentTag.Id);
         todoDataGridView.DataSource = _currentTodos.OrderBy(t => t.IsDone).ToList();
     }
@@ -177,12 +179,18 @@ public partial class Form1 : Form
 
         var cell = tagDataGridView.Rows[rowIndex].Cells[colIndex];
         var value = cell.Value;
-        
+
         if (value is string)
         {
-            _currentTag = _tagService.FindByName((string) value);
+            _currentTag = _tagService.FindByName((string)value);
         }
-        
+
         LoadTodos();
     }
+
+    private void btnExportFileExcel_Click(object sender, EventArgs e)
+    {
+        _fileService.ExportFileExcel();
+    }
+
 }
