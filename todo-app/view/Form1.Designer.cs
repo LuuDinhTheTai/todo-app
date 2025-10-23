@@ -6,6 +6,7 @@ partial class Form1
     ///  Required designer variable.
     /// </summary>
     private System.ComponentModel.IContainer components = null;
+    private System.Windows.Forms.DataGridViewTextBoxColumn colDueDate;
 
     /// <summary>
     ///  Clean up any resources being used.
@@ -41,6 +42,7 @@ partial class Form1
         colStatus = new System.Windows.Forms.DataGridViewCheckBoxColumn();
         colContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
         colDelete = new System.Windows.Forms.DataGridViewButtonColumn();
+        colDueDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
         gBCreateForm = new System.Windows.Forms.GroupBox();
         btnCreate = new System.Windows.Forms.Button();
         tBContent = new System.Windows.Forms.TextBox();
@@ -150,7 +152,7 @@ partial class Form1
         // todoDataGridView
         // 
         todoDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-        todoDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { colStatus, colContent, colDelete });
+        todoDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { colStatus, colContent, colDelete, colDueDate });
         todoDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
         todoDataGridView.Location = new System.Drawing.Point(0, 23);
         todoDataGridView.Name = "todoDataGridView";
@@ -158,6 +160,8 @@ partial class Form1
         todoDataGridView.TabIndex = 2;
         todoDataGridView.Text = "dataGridView1";
         todoDataGridView.CellContentClick += todoDataGridView_CellContentClick;
+        todoDataGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.todoDataGridView_CellFormatting);
+        todoDataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.todoDataGridView_CellValueChanged);
         // 
         // colStatus
         // 
@@ -173,6 +177,17 @@ partial class Form1
         // 
         colDelete.HeaderText = "Xóa";
         colDelete.Name = "colDelete";
+        // 
+        // colDueDate
+        // 
+        colDueDate.HeaderText = "Hạn chót";
+        colDueDate.Name = "colDueDate";
+        colDueDate.DataPropertyName = "DueDate";
+        colDueDate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+        var dueDateCellStyle = new System.Windows.Forms.DataGridViewCellStyle();
+        dueDateCellStyle.Format = "g"; // short date + short time
+        dueDateCellStyle.NullValue = null;
+        colDueDate.DefaultCellStyle = dueDateCellStyle;
         // 
         // gBCreateForm
         // 

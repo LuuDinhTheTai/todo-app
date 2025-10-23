@@ -6,15 +6,15 @@ namespace todo_app;
 
 public partial class Form1 : Form
 {
-    private Controller _controller; 
+    private Controller _controller;
     private TagService _tagService;
     private TodoService _todoService;
 
     private LoggedInAccount _loggedInAccount;
-    
+
     private Tag? _currentTag = null;
     private List<Todo>? _currentTodos = null;
-    
+
     public Form1(Controller controller)
     {
         InitializeComponent();
@@ -24,7 +24,7 @@ public partial class Form1 : Form
 
         _loggedInAccount = controller.LoggedInAccount;
     }
-    
+
     private void Form1_Load(object sender, EventArgs e)
     {
         if (!_loggedInAccount.IsLoggedIn())
@@ -32,13 +32,13 @@ public partial class Form1 : Form
             var loginForm = new LoginForm(_controller);
             loginForm.ShowDialog();
         }
-        
+
         if (!_loggedInAccount.IsLoggedIn())
         {
             this.BeginInvoke(new Action(() => this.Close()));
             return;
         }
-        
+
         ConfigTagDataGridView();
         ConfigTodoDataGridView();
         LoadTags();
@@ -52,16 +52,16 @@ public partial class Form1 : Form
         if (todoDataGridView.Columns["colStatus"] != null)
         {
             todoDataGridView.Columns["colStatus"].DataPropertyName = "IsDone";
-        }        
-        
+        }
+
         if (todoDataGridView.Columns["colContent"] != null)
         {
             todoDataGridView.Columns["colContent"].DataPropertyName = "Content";
         }
-        
+
         if (todoDataGridView.Columns["colDelete"] != null)
         {
-        
+
         }
     }
 
@@ -87,9 +87,9 @@ public partial class Form1 : Form
         {
             return;
         }
-        
+
         _todoService.Create(content, _currentTag);
-        
+
         tBContent.Clear();
         LoadTodos();
     }
@@ -98,7 +98,7 @@ public partial class Form1 : Form
     {
         string tagName = tBTagName.Text;
         _tagService.Create(tagName);
-        
+
         tBTagName.Clear();
         LoadTags();
     }
@@ -135,7 +135,8 @@ public partial class Form1 : Form
         if (e.RowIndex < 0)
             return;
 
-        if (todoDataGridView.Columns[e.ColumnIndex].Name == "colStatus")
+        var colName = todoDataGridView.Columns[e.ColumnIndex].Name;
+        if (colName == "colStatus" || colName == "colDueDate")
         {
             var todo = todoDataGridView.Rows[e.RowIndex].DataBoundItem as Todo;
             if (todo == null)
@@ -153,16 +154,19 @@ public partial class Form1 : Form
         tagDataGridView.DataSource = tags.OrderBy(t => t.Name).ToList();
         _currentTag = tags.FirstOrDefault();
     }
-    
+
     private void LoadTodos()
     {
         if (_currentTag == null)
         {
             return;
         }
-        
+
         _currentTodos = _todoService.FindByTagId(_currentTag.Id);
-        todoDataGridView.DataSource = _currentTodos.OrderBy(t => t.IsDone).ToList();
+        todoDataGridView.DataSource = _currentTodos
+            .OrderBy(t => t.IsDone)
+            .ThenBy(t => t.DueDate ?? DateTime.MaxValue)
+            .ToList();
     }
 
     private void tagDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -177,12 +181,43 @@ public partial class Form1 : Form
 
         var cell = tagDataGridView.Rows[rowIndex].Cells[colIndex];
         var value = cell.Value;
-        
+
         if (value is string)
         {
-            _currentTag = _tagService.FindByName((string) value);
+            _currentTag = _tagService.FindByName((string)value);
         }
-        
+
         LoadTodos();
+    }
+
+    // Tô đỏ ô Hạn chót nếu còn ≤ 1 ngày (bao gồm quá hạn)
+    private void todoDataGridView_CellFormatting(object sender, System.Windows.Forms.DataGridViewCellFormattingEventArgs e)
+    {
+        if (e.RowIndex < 0) return;
+
+        var grid = this.todoDataGridView;
+        var column = grid.Columns[e.ColumnIndex];
+        if (column == null || column.Name != "colDueDate") return;
+
+        var row = grid.Rows[e.RowIndex];
+        var data = row.DataBoundItem as Todo;
+        if (data == null) return;
+
+        // Reset default color
+        e.CellStyle.ForeColor = grid.DefaultCellStyle.ForeColor;
+        e.CellStyle.SelectionForeColor = grid.DefaultCellStyle.SelectionForeColor;
+
+        // red color if due date is within 1 day and not done
+        if (!data.IsDone && data.DueDate.HasValue)
+        {
+            var now = DateTime.Now;
+            var due = data.DueDate.Value;
+
+            if (due <= now.AddDays(1))
+            {
+                e.CellStyle.ForeColor = System.Drawing.Color.Red;
+                e.CellStyle.SelectionForeColor = System.Drawing.Color.Red;
+            }
+        }
     }
 }

@@ -33,8 +33,16 @@ BEGIN
     CREATE TABLE dbo.Todos (
         Id INT IDENTITY(1,1) PRIMARY KEY,
         Content NVARCHAR(200) NOT NULL,
-        IsDone BIT NOT NULL DEFAULT 0
+        IsDone BIT NOT NULL DEFAULT 0,
+        DueDate DATETIME NULL
     );
+END
+ELSE
+BEGIN
+    IF COL_LENGTH('dbo.Todos', 'DueDate') IS NULL
+    BEGIN
+        ALTER TABLE dbo.Todos ADD DueDate DATETIME NULL;
+    END
 END
 GO
 
