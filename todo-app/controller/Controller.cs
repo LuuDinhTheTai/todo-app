@@ -1,6 +1,5 @@
 ﻿﻿using todo_app.repository;
 using todo_app.service;
-using todo_app.view;
 
 namespace todo_app.controller;
 
@@ -16,7 +15,6 @@ public class Controller
     public FileService FileService;
 
     public Form1 Form1;
-    public ExportFileForm ExportFileForm;
 
     public LoggedInAccount LoggedInAccount;
     
@@ -34,6 +32,5 @@ public class Controller
         FileService = new FileService(this);
 
         Form1 = new Form1(this);
-        ExportFileForm = new ExportFileForm(this);
     }
 }

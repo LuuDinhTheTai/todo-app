@@ -58,7 +58,6 @@ C:\Users\Admin\OneDrive\Máy tính\KY1_N3\LTTQ\BTL\todo-app\todo-app\obj\Debug\n
 C:\Users\Admin\OneDrive\Máy tính\KY1_N3\LTTQ\BTL\todo-app\todo-app\obj\Debug\net9.0-windows\todo-app.pdb
 C:\Users\Admin\OneDrive\Máy tính\KY1_N3\LTTQ\BTL\todo-app\todo-app\obj\Debug\net9.0-windows\todo-app.genruntimeconfig.cache
 C:\Users\Admin\OneDrive\Máy tính\KY1_N3\LTTQ\BTL\todo-app\todo-app\obj\Debug\net9.0-windows\ref\todo-app.dll
-C:\Users\Admin\OneDrive\Máy tính\KY1_N3\LTTQ\BTL\todo-app\todo-app\obj\Debug\net9.0-windows\todo_app.view.ExportFileForm.resources
 C:\Users\Admin\OneDrive\Máy tính\KY1_N3\LTTQ\BTL\todo-app\todo-app\bin\Debug\net9.0-windows\ClosedXML.dll
 C:\Users\Admin\OneDrive\Máy tính\KY1_N3\LTTQ\BTL\todo-app\todo-app\bin\Debug\net9.0-windows\ClosedXML.Parser.dll
 C:\Users\Admin\OneDrive\Máy tính\KY1_N3\LTTQ\BTL\todo-app\todo-app\bin\Debug\net9.0-windows\DocumentFormat.OpenXml.dll
