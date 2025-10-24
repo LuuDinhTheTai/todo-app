@@ -1,4 +1,4 @@
-﻿IF NOT EXISTS(SELECT name FROM sys.databases WHERE name = N'TodoAppDb')
+IF NOT EXISTS(SELECT name FROM sys.databases WHERE name = N'TodoAppDb')
 BEGIN
     CREATE DATABASE TodoAppDb;
 END
@@ -33,9 +33,16 @@ BEGIN
     CREATE TABLE dbo.Todos (
         Id INT IDENTITY(1,1) PRIMARY KEY,
         Content NVARCHAR(200) NOT NULL,
-        Note NVARCHAR(500) NULL,
-        IsDone BIT NOT NULL DEFAULT 0
+        IsDone BIT NOT NULL DEFAULT 0,
+        DueDate DATETIME NULL
     );
+END
+ELSE
+BEGIN
+    IF COL_LENGTH('dbo.Todos', 'DueDate') IS NULL
+    BEGIN
+        ALTER TABLE dbo.Todos ADD DueDate DATETIME NULL;
+    END
 END
 GO
 
