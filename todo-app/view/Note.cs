@@ -34,12 +34,17 @@ namespace todo_app.view
 
         private void LoadNoteContent()
         {
-
+            NoteContent.Text = _currentTodo?.Note?.ToString();
         }
 
         private void Save_Click(object sender, EventArgs e)
         {
+            _todoService.Update(_currentTodo);
+        }
 
+        private void NoteContent_TextChanged(object sender, EventArgs e)
+        {
+            _currentTodo.Note = NoteContent.Text.ToString();
         }
     }
 }

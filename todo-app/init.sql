@@ -33,6 +33,7 @@ BEGIN
     CREATE TABLE dbo.Todos (
         Id INT IDENTITY(1,1) PRIMARY KEY,
         Content NVARCHAR(200) NOT NULL,
+        Note NVARCHAR(500) NULL,
         IsDone BIT NOT NULL DEFAULT 0
     );
 END

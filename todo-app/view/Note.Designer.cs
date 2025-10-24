@@ -30,14 +30,14 @@
         {
             groupNote = new GroupBox();
             Save = new Button();
-            NodeContent = new TextBox();
+            NoteContent = new TextBox();
             groupNote.SuspendLayout();
             SuspendLayout();
             // 
             // groupNote
             // 
             groupNote.Controls.Add(Save);
-            groupNote.Controls.Add(NodeContent);
+            groupNote.Controls.Add(NoteContent);
             groupNote.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             groupNote.Location = new Point(12, 12);
             groupNote.Name = "groupNote";
@@ -57,15 +57,16 @@
             Save.UseVisualStyleBackColor = true;
             Save.Click += Save_Click;
             // 
-            // NodeContent
+            // NoteContent
             // 
-            NodeContent.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            NodeContent.Location = new Point(27, 46);
-            NodeContent.Multiline = true;
-            NodeContent.Name = "NodeContent";
-            NodeContent.ScrollBars = ScrollBars.Vertical;
-            NodeContent.Size = new Size(581, 222);
-            NodeContent.TabIndex = 0;
+            NoteContent.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            NoteContent.Location = new Point(27, 46);
+            NoteContent.Multiline = true;
+            NoteContent.Name = "NoteContent";
+            NoteContent.ScrollBars = ScrollBars.Vertical;
+            NoteContent.Size = new Size(581, 222);
+            NoteContent.TabIndex = 0;
+            NoteContent.TextChanged += NoteContent_TextChanged;
             // 
             // Note
             // 
@@ -84,7 +85,7 @@
         #endregion
 
         private GroupBox groupNote;
-        private TextBox NodeContent;
+        private TextBox NoteContent;
         private Button Save;
     }
 }

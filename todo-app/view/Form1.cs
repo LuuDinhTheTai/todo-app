@@ -131,11 +131,11 @@ public partial class Form1 : Form
         }
         else if(column is DataGridViewTextBoxColumn && column.Name == "colContent")
         {
-            Todo curentTodo = todoDataGridView.Rows[e.RowIndex].DataBoundItem as Todo;
-            if (curentTodo == null)
+            Todo currentTodo = todoDataGridView.Rows[e.RowIndex].DataBoundItem as Todo;
+            if (currentTodo == null)
                 return;
 
-            var formNote = new Note(curentTodo, _controller);
+            var formNote = new Note(currentTodo, _controller);
             formNote.ShowDialog();
         }
     }
