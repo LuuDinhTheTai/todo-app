@@ -65,3 +65,6 @@ C:\Users\Admin\OneDrive\Máy tính\KY1_N3\LTTQ\BTL\todo-app\todo-app\bin\Debug\n
 C:\Users\Admin\OneDrive\Máy tính\KY1_N3\LTTQ\BTL\todo-app\todo-app\bin\Debug\net9.0-windows\ExcelNumberFormat.dll
 C:\Users\Admin\OneDrive\Máy tính\KY1_N3\LTTQ\BTL\todo-app\todo-app\bin\Debug\net9.0-windows\RBush.dll
 C:\Users\Admin\OneDrive\Máy tính\KY1_N3\LTTQ\BTL\todo-app\todo-app\bin\Debug\net9.0-windows\SixLabors.Fonts.dll
+C:\Users\Admin\OneDrive\Máy tính\KY1_N3\LTTQ\BTL\todo-app\todo-app\obj\Debug\net9.0-windows\Interop.Microsoft.Office.Interop.Excel.dll
+C:\Users\Admin\OneDrive\Máy tính\KY1_N3\LTTQ\BTL\todo-app\todo-app\obj\Debug\net9.0-windows\Interop.Microsoft.Office.Core.dll
+C:\Users\Admin\OneDrive\Máy tính\KY1_N3\LTTQ\BTL\todo-app\todo-app\obj\Debug\net9.0-windows\todo-app.csproj.ResolveComReference.cache
