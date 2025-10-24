@@ -1,6 +1,7 @@
 using todo_app.controller;
 using todo_app.entity;
 using todo_app.service;
+using todo_app.view;
 
 namespace todo_app;
 
@@ -129,6 +130,15 @@ public partial class Form1 : Form
         {
             todoDataGridView.CommitEdit(DataGridViewDataErrorContexts.Commit);
             todoDataGridView_CellValueChanged(sender, e);
+        }
+        else if(column is DataGridViewTextBoxColumn && column.Name == "colContent")
+        {
+            Todo currentTodo = todoDataGridView.Rows[e.RowIndex].DataBoundItem as Todo;
+            if (currentTodo == null)
+                return;
+
+            var formNote = new Note(currentTodo, _controller);
+            formNote.ShowDialog();
         }
     }
 
