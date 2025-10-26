@@ -60,7 +60,7 @@ public class TodoRepository : Repository
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             Content = reader.GetString(reader.GetOrdinal("Content")),
-                            IsDone = reader.GetBoolean(reader.GetOrdinal("IsDone"))
+                            IsDone = reader.GetBoolean(reader.GetOrdinal("IsDone")),
                             DueDate = reader.IsDBNull(reader.GetOrdinal("DueDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("DueDate"))
 
                         };
@@ -96,7 +96,7 @@ public class TodoRepository : Repository
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             Content = reader.GetString(reader.GetOrdinal("Content")),
                             IsDone = reader.GetBoolean(reader.GetOrdinal("IsDone")),
-                            Note = reader.IsDBNull(reader.GetOrdinal("Note"))? "" : reader.GetString(reader.GetOrdinal("Note"))
+                            Note = reader.IsDBNull(reader.GetOrdinal("Note"))? "" : reader.GetString(reader.GetOrdinal("Note")),
                             DueDate = reader.IsDBNull(reader.GetOrdinal("DueDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("DueDate"))
                         };
                         todos.Add(todo);
