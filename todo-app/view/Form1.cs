@@ -17,6 +17,11 @@ public partial class Form1 : Form
     private Tag? _currentTag = null;
     private List<Todo>? _currentTodos = null;
 
+    private DateTimePicker? _dueDatePicker;
+    private int _dueDateRowIndex = -1;
+    private int _dueDateColIndex = -1;
+    private bool _isDuePickerDroppedDown = false;
+
     public Form1(Controller controller)
     {
         InitializeComponent();
@@ -46,6 +51,13 @@ public partial class Form1 : Form
         ConfigTodoDataGridView();
         LoadTags();
         LoadTodos();
+        
+        InitDueDatePicker();
+
+        todoDataGridView.CellClick += todoDataGridView_CellClick;
+        todoDataGridView.Scroll += (_, __) => HideDueDatePicker();
+        todoDataGridView.ColumnWidthChanged += (_, __) => HideDueDatePicker();
+        todoDataGridView.CellFormatting += todoDataGridView_CellFormatting;
     }
 
     // CONFIGURATION
@@ -65,6 +77,12 @@ public partial class Form1 : Form
         if (todoDataGridView.Columns["colDelete"] != null)
         {
 
+        }
+
+        if (todoDataGridView.Columns["colDueDate"] is DataGridViewTextBoxColumn dueCol)
+        {
+            dueCol.ReadOnly = true;
+            if (string.IsNullOrEmpty(dueCol.DataPropertyName)) dueCol.DataPropertyName = "DueDate";
         }
     }
 
@@ -209,6 +227,121 @@ public partial class Form1 : Form
             {
                 MessageBox.Show("Xuất file Excel thành công!\nĐã lưu tại: " + sfdExcel.FileName,
                         "Hoàn tất", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+    }
+
+    private void InitDueDatePicker()
+    {
+       _dueDatePicker = new DateTimePicker
+       {
+           Format = DateTimePickerFormat.Custom,
+           CustomFormat = "dd/MM/yyyy HH:mm",
+           ShowCheckBox = true,
+           Visible = false
+       };
+
+       _dueDatePicker.DropDown += (_, __) => _isDuePickerDroppedDown = true;
+       _dueDatePicker.CloseUp += (_, __) =>
+       {
+           _isDuePickerDroppedDown = false;
+           CommitDueDateFromPicker();
+       };
+
+       _dueDatePicker.ValueChanged += (_, __) =>
+       {
+           if (_dueDatePicker.Visible && !_isDuePickerDroppedDown)
+           {
+               CommitDueDateFromPicker();
+           }
+       };
+
+       todoDataGridView.Controls.Add(_dueDatePicker);
+   }
+
+    private void ShowDueDatePicker(int rowIndex, int colIndex)
+    {
+        if (_dueDatePicker == null) return;
+
+        var rect = todoDataGridView.GetCellDisplayRectangle(colIndex, rowIndex, true);
+        _dueDatePicker.Bounds = new System.Drawing.Rectangle(rect.X, rect.Y, rect.Width, rect.Height);
+
+        var todo = todoDataGridView.Rows[rowIndex].DataBoundItem as Todo;
+        if (todo != null && todo.DueDate.HasValue)
+        {
+            _dueDatePicker.Value = todo.DueDate.Value;
+            _dueDatePicker.Checked = true;
+        }
+        else
+        {
+            _dueDatePicker.Value = DateTime.Now;
+            _dueDatePicker.Checked = false;
+        }
+
+        _dueDateRowIndex = rowIndex;
+        _dueDateColIndex = colIndex;
+        _isDuePickerDroppedDown = false;
+        _dueDatePicker.Visible = true;
+        _dueDatePicker.BringToFront();
+        _dueDatePicker.Focus();
+    }
+
+    private void HideDueDatePicker()
+    {
+        if (_dueDatePicker == null) return;
+        _dueDatePicker.Visible = false;
+        _isDuePickerDroppedDown = false;
+        _dueDateRowIndex = _dueDateColIndex = -1;
+    }
+
+    private void CommitDueDateFromPicker()
+    {
+        if (_dueDatePicker == null || _dueDateRowIndex < 0) return;
+
+        var row = todoDataGridView.Rows[_dueDateRowIndex];
+        var todo = row.DataBoundItem as Todo;
+        if (todo == null) { HideDueDatePicker(); return; }
+
+        todo.DueDate = _dueDatePicker.Checked ? _dueDatePicker.Value : null;
+
+        _todoService.Update(todo);
+        LoadTodos();
+
+        HideDueDatePicker();
+    }
+
+    private void todoDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+    {
+        if (e.RowIndex < 0) return;
+        var col = todoDataGridView.Columns[e.ColumnIndex];
+        if (col != null && col.Name == "colDueDate")
+        {
+            ShowDueDatePicker(e.RowIndex, e.ColumnIndex);
+        }
+    }
+
+    private void todoDataGridView_CellFormatting(object sender, System.Windows.Forms.DataGridViewCellFormattingEventArgs e)
+    {
+        if (e.RowIndex < 0) return;
+        var grid = this.todoDataGridView;
+        var column = grid.Columns[e.ColumnIndex];
+        if (column == null || column.Name != "colDueDate") return;
+
+        var row = grid.Rows[e.RowIndex];
+        var data = row.DataBoundItem as Todo;
+        if (data == null) return;
+
+        e.CellStyle.ForeColor = grid.DefaultCellStyle.ForeColor;
+        e.CellStyle.SelectionForeColor = grid.DefaultCellStyle.SelectionForeColor;
+
+        if (!data.IsDone && data.DueDate.HasValue)
+        {
+            var now = DateTime.Now;
+            var due = data.DueDate.Value;
+            if (due <= now.AddDays(1))
+            {
+                e.CellStyle.ForeColor = System.Drawing.Color.Red;
+                e.CellStyle.SelectionForeColor = System.Drawing.Color.Red;
             }
         }
     }
