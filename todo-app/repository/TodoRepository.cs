@@ -9,11 +9,13 @@ public class TodoRepository : Repository
     {
         using (SqlConnection connection = Database.GetConnection())
         {
-            string sql = "INSERT INTO Todos (Content, IsDone) VALUES (@Content, @IsDone); SELECT CAST(SCOPE_IDENTITY() AS int);";
+            string sql = "INSERT INTO Todos (Content, IsDone, DueDate) VALUES (@Content, @IsDone, @DueDate); SELECT CAST(SCOPE_IDENTITY() AS int);";
             using (SqlCommand command = new SqlCommand(sql, connection))
             {
                 command.Parameters.AddWithValue("@Content", todo.Content);
                 command.Parameters.AddWithValue("@IsDone", todo.IsDone);
+                command.Parameters.AddWithValue("@DueDate", (object?)todo.DueDate ?? DBNull.Value);
+
                 var result = command.ExecuteScalar();
                 if (result != null && int.TryParse(result.ToString(), out int newId))
                 {
@@ -47,7 +49,7 @@ public class TodoRepository : Repository
 
         using (SqlConnection connection = Database.GetConnection())
         {
-            string sql = "SELECT Id, Content, IsDone FROM Todos";
+            string sql = "SELECT Id, Content, IsDone, DueDate FROM Todos";
             using (SqlCommand command = new SqlCommand(sql, connection))
             {
                 using (SqlDataReader reader = command.ExecuteReader())
@@ -59,6 +61,8 @@ public class TodoRepository : Repository
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             Content = reader.GetString(reader.GetOrdinal("Content")),
                             IsDone = reader.GetBoolean(reader.GetOrdinal("IsDone"))
+                            DueDate = reader.IsDBNull(reader.GetOrdinal("DueDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("DueDate"))
+
                         };
                         todos.Add(todo);
                     }
@@ -76,7 +80,7 @@ public class TodoRepository : Repository
         using (SqlConnection connection = Database.GetConnection())
         {
             string sql = @"
-                SELECT T.Id, T.Content, T.IsDone , T.Note
+                SELECT T.Id, T.Content, T.IsDone, T.Note, T.DueDate
                 FROM Todos T
                 JOIN TodoTags TT ON T.Id = TT.TodoId
                 WHERE TT.TagId = @TagId";
@@ -93,6 +97,7 @@ public class TodoRepository : Repository
                             Content = reader.GetString(reader.GetOrdinal("Content")),
                             IsDone = reader.GetBoolean(reader.GetOrdinal("IsDone")),
                             Note = reader.IsDBNull(reader.GetOrdinal("Note"))? "" : reader.GetString(reader.GetOrdinal("Note"))
+                            DueDate = reader.IsDBNull(reader.GetOrdinal("DueDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("DueDate"))
                         };
                         todos.Add(todo);
                     }
@@ -107,13 +112,14 @@ public class TodoRepository : Repository
     {
         using (SqlConnection connection = Database.GetConnection())
         {
-            string sql = "UPDATE Todos SET Content = @Content, IsDone = @IsDone , Note =@Note  WHERE Id = @Id";
+            string sql = "UPDATE Todos SET Content = @Content, IsDone = @IsDone, Note = @Note, DueDate = @DueDate WHERE Id = @Id";
             using (SqlCommand command = new SqlCommand(sql, connection))
             {
                 command.Parameters.AddWithValue("@Content", todo.Content);
                 command.Parameters.AddWithValue("@IsDone", todo.IsDone);
                 command.Parameters.AddWithValue("@Id", todo.Id);
                 command.Parameters.AddWithValue("@Note", todo.Note);
+                command.Parameters.AddWithValue("@DueDate", (object?)todo.DueDate ?? DBNull.Value);
                 command.ExecuteNonQuery();
             }
         }
