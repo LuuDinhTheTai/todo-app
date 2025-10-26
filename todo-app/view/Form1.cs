@@ -213,4 +213,10 @@ public partial class Form1 : Form
         }
     }
 
+    private void btnShowChart_Click(object sender, EventArgs e)
+    {    
+        var chartForm = new view.ChartForm(_controller, _currentTag!);
+        chartForm.ShowDialog();
+    }
+
 }
