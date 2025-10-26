@@ -7,7 +7,7 @@ public static class Database
 {
     // Default connection string points to LocalDB. Change this value to point to your SQL Server instance.
     // Example for a SQL Server instance: "Server=.;Database=TodoAppDb;User Id=sa;Password=YourPassword;"
-    public static string ConnectionString { get; set; } = "Data Source=.;Initial Catalog=TodoAppDb;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
+    public static string ConnectionString { get; set; } = "Server=(localdb)\\MSSQLLocalDB;Database=TodoAppDb;Trusted_Connection=True;";
 
     public static SqlConnection GetConnection()
     {
