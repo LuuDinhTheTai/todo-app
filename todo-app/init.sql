@@ -39,6 +39,12 @@ BEGIN
 END
 GO
 
+IF COL_LENGTH('dbo.Todos', 'DueDate') IS NULL
+BEGIN
+    ALTER TABLE dbo.Todos ADD DueDate DATETIME NULL;
+END
+GO
+
 IF OBJECT_ID('dbo.TodoTags', 'U') IS NULL
 BEGIN
     CREATE TABLE dbo.TodoTags (
