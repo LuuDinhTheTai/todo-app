@@ -1,8 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Admin\\OneDrive\\M\u00E1y t\u00EDnh\\KY1_N3\\LTTQ\\BTL\\todo-app\\",
+  "WorkspaceRootPath": "C:\\Users\\ADMIN\\Documents\\GitHub\\todo-app\\",
   "Documents": [
     {
+<<<<<<< Updated upstream
       "AbsoluteMoniker": "D:0:0:{123277B7-A8F0-4E92-917C-6427001BF9B0}|todo-app\\todo-app.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\ky1_n3\\lttq\\btl\\todo-app\\todo-app\\view\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{123277B7-A8F0-4E92-917C-6427001BF9B0}|todo-app\\todo-app.csproj|solutionrelative:todo-app\\view\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -21,6 +22,18 @@
     {
       "AbsoluteMoniker": "D:0:0:{123277B7-A8F0-4E92-917C-6427001BF9B0}|todo-app\\todo-app.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\ky1_n3\\lttq\\btl\\todo-app\\todo-app\\view\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{123277B7-A8F0-4E92-917C-6427001BF9B0}|todo-app\\todo-app.csproj|solutionrelative:todo-app\\view\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+=======
+      "AbsoluteMoniker": "D:0:0:{123277B7-A8F0-4E92-917C-6427001BF9B0}|todo-app\\todo-app.csproj|c:\\users\\admin\\documents\\github\\todo-app\\todo-app\\view\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{123277B7-A8F0-4E92-917C-6427001BF9B0}|todo-app\\todo-app.csproj|solutionrelative:todo-app\\view\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{123277B7-A8F0-4E92-917C-6427001BF9B0}|todo-app\\todo-app.csproj|c:\\users\\admin\\documents\\github\\todo-app\\todo-app\\view\\chartform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{123277B7-A8F0-4E92-917C-6427001BF9B0}|todo-app\\todo-app.csproj|solutionrelative:todo-app\\view\\chartform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{123277B7-A8F0-4E92-917C-6427001BF9B0}|todo-app\\todo-app.csproj|c:\\users\\admin\\documents\\github\\todo-app\\todo-app\\service\\chartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{123277B7-A8F0-4E92-917C-6427001BF9B0}|todo-app\\todo-app.csproj|solutionrelative:todo-app\\service\\chartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+>>>>>>> Stashed changes
     }
   ],
   "DocumentGroupContainers": [
@@ -30,18 +43,29 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
+<<<<<<< Updated upstream
           "SelectedChildIndex": 7,
+=======
+          "SelectedChildIndex": 3,
+>>>>>>> Stashed changes
           "Children": [
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ChartForm.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Documents\\GitHub\\todo-app\\todo-app\\view\\ChartForm.cs",
+              "RelativeDocumentMoniker": "todo-app\\view\\ChartForm.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Documents\\GitHub\\todo-app\\todo-app\\view\\ChartForm.cs",
+              "RelativeToolTip": "todo-app\\view\\ChartForm.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAAwBwAAABUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-24T15:44:49.841Z",
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Bookmark",
-              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
-            },
-            {
-              "$type": "Bookmark",
+<<<<<<< Updated upstream
               "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
             },
             {
@@ -97,10 +121,30 @@
             },
             {
               "$type": "Document",
+=======
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ChartService.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Documents\\GitHub\\todo-app\\todo-app\\service\\ChartService.cs",
+              "RelativeDocumentMoniker": "todo-app\\service\\ChartService.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\Documents\\GitHub\\todo-app\\todo-app\\service\\ChartService.cs",
+              "RelativeToolTip": "todo-app\\service\\ChartService.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAAwAAAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T16:47:16.539Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+>>>>>>> Stashed changes
               "DocumentIndex": 0,
               "Title": "Form1.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\M\u00E1y t\u00EDnh\\KY1_N3\\LTTQ\\BTL\\todo-app\\todo-app\\view\\Form1.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\Documents\\GitHub\\todo-app\\todo-app\\view\\Form1.cs",
               "RelativeDocumentMoniker": "todo-app\\view\\Form1.cs",
+<<<<<<< Updated upstream
               "ToolTip": "C:\\Users\\Admin\\OneDrive\\M\u00E1y t\u00EDnh\\KY1_N3\\LTTQ\\BTL\\todo-app\\todo-app\\view\\Form1.cs*",
               "RelativeToolTip": "todo-app\\view\\Form1.cs*",
               "ViewState": "AgIAAK4AAAAAAAAAAAAhwMcAAABfAAAAAAAAAA==",
@@ -125,6 +169,14 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+=======
+              "ToolTip": "C:\\Users\\ADMIN\\Documents\\GitHub\\todo-app\\todo-app\\view\\Form1.cs",
+              "RelativeToolTip": "todo-app\\view\\Form1.cs",
+              "ViewState": "AgIAALgAAAAAAAAAAAAqwBoAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-26T13:19:22.308Z",
+              "EditorCaption": ""
+>>>>>>> Stashed changes
             }
           ]
         }

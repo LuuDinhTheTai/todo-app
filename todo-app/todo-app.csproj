@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net9.0-windows</TargetFramework>
+        <TargetFramework>net9.0-windows7.0</TargetFramework>
         <RootNamespace>todo_app</RootNamespace>
         <Nullable>enable</Nullable>
         <UseWindowsForms>true</UseWindowsForms>
@@ -33,6 +33,7 @@
     <ItemGroup>
       <PackageReference Include="ClosedXML" Version="0.105.0" />
       <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.2" />
+      <PackageReference Include="WinForms.DataVisualization" Version="1.10.0" />
     </ItemGroup>
 
     <ItemGroup>

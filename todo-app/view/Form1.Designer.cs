@@ -29,6 +29,7 @@ partial class Form1
     /// </summary>
     private void InitializeComponent()
     {
+<<<<<<< Updated upstream
         splitContainer1 = new System.Windows.Forms.SplitContainer();
         tagDataGridView = new System.Windows.Forms.DataGridView();
         colTag = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -49,6 +50,28 @@ partial class Form1
         sfdExcel = new System.Windows.Forms.SaveFileDialog();
         colDeleteTag = new System.Windows.Forms.DataGridViewButtonColumn();
         btnLogout = new System.Windows.Forms.Button();
+=======
+        splitContainer1 = new SplitContainer();
+        tagDataGridView = new DataGridView();
+        colTag = new DataGridViewTextBoxColumn();
+        groupBox1 = new GroupBox();
+        btnExportFileExcel = new Button();
+        btnCreateTag = new Button();
+        tBTagName = new TextBox();
+        Logout = new Label();
+        lblUsername = new Label();
+        todoDataGridView = new DataGridView();
+        colStatus = new DataGridViewCheckBoxColumn();
+        colContent = new DataGridViewTextBoxColumn();
+        colDelete = new DataGridViewButtonColumn();
+        gBCreateForm = new GroupBox();
+        btnCreate = new Button();
+        tBContent = new TextBox();
+        lblContent = new Label();
+        lblTagName = new Label();
+        sfdExcel = new SaveFileDialog();
+        btnShowChart = new Button();
+>>>>>>> Stashed changes
         ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
         splitContainer1.Panel1.SuspendLayout();
         splitContainer1.Panel2.SuspendLayout();
@@ -93,7 +116,11 @@ partial class Form1
         tagDataGridView.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
         tagDataGridView.Name = "tagDataGridView";
         tagDataGridView.RowHeadersWidth = 51;
+<<<<<<< Updated upstream
         tagDataGridView.Size = new System.Drawing.Size(303, 405);
+=======
+        tagDataGridView.Size = new Size(303, 388);
+>>>>>>> Stashed changes
         tagDataGridView.TabIndex = 4;
         tagDataGridView.Text = "dataGridView2";
         tagDataGridView.CellClick += tagDataGridView_CellClick;
@@ -106,6 +133,7 @@ partial class Form1
         // 
         // groupBox1
         // 
+<<<<<<< Updated upstream
         groupBox1.Controls.Add(btnLogout);
         groupBox1.Controls.Add(btnExportFileExcel);
         groupBox1.Controls.Add(btnCreateTag);
@@ -116,6 +144,18 @@ partial class Form1
         groupBox1.Name = "groupBox1";
         groupBox1.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
         groupBox1.Size = new System.Drawing.Size(303, 133);
+=======
+        groupBox1.Controls.Add(btnShowChart);
+        groupBox1.Controls.Add(btnExportFileExcel);
+        groupBox1.Controls.Add(btnCreateTag);
+        groupBox1.Controls.Add(tBTagName);
+        groupBox1.Dock = DockStyle.Bottom;
+        groupBox1.Location = new Point(0, 419);
+        groupBox1.Margin = new Padding(3, 4, 3, 4);
+        groupBox1.Name = "groupBox1";
+        groupBox1.Padding = new Padding(3, 4, 3, 4);
+        groupBox1.Size = new Size(303, 150);
+>>>>>>> Stashed changes
         groupBox1.TabIndex = 3;
         groupBox1.TabStop = false;
         groupBox1.Text = "Thêm danh sách mới";
@@ -266,6 +306,16 @@ partial class Form1
         btnLogout.Text = "Đăng xuất";
         btnLogout.UseVisualStyleBackColor = true;
         // 
+        // btnShowChart
+        // 
+        btnShowChart.Location = new Point(3, 114);
+        btnShowChart.Name = "btnShowChart";
+        btnShowChart.Size = new Size(297, 29);
+        btnShowChart.TabIndex = 3;
+        btnShowChart.Text = "Thống kê";
+        btnShowChart.UseVisualStyleBackColor = true;
+        btnShowChart.Click += btnShowChart_Click;
+        // 
         // Form1
         // 
         AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -325,4 +375,5 @@ partial class Form1
 
     private System.Windows.Forms.Button btnExportFileExcel;
     private SaveFileDialog sfdExcel;
+    private Button btnShowChart;
 }
