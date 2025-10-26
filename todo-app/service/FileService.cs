@@ -1,9 +1,10 @@
-﻿using ClosedXML.Excel;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using todo_app.controller;
+using todo_app.exception;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace todo_app.service
 {
@@ -18,86 +19,87 @@ namespace todo_app.service
             _todoService = controller.TodoService;
         }
 
-        public void ExportFileExcel()
+        public bool ExportFileExcel(string filePath)
         {
             var tags = _tagService.FindAll();
 
             if (tags == null || !tags.Any())
             {
-                MessageBox.Show("Không có tag nào để xuất!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                throw new AppException("Không có tag nào để xuất!");
+            }
+            Excel.Application excelApp = null;
+            Excel.Workbook workbook = null;
+            Excel.Worksheet worksheet = null;
+
+            excelApp = new Excel.Application();
+            workbook = excelApp.Workbooks.Add();
+            worksheet = (Excel.Worksheet)workbook.Sheets[1];
+            worksheet.Name = "Todos by Tag";
+
+            int currentRow = 1;
+
+            foreach (var tag in tags)
+            {
+                //Tiêu đề Tag
+                worksheet.Cells[currentRow, 1] = $"Tag: {tag.Name}";
+                Excel.Range tagTitle = worksheet.Range[worksheet.Cells[currentRow, 1], worksheet.Cells[currentRow, 1]];
+                tagTitle.Font.Bold = true;
+                tagTitle.Font.Size = 14;
+                currentRow++;
+
+                //Header
+                worksheet.Cells[currentRow, 1] = "Nội dung công việc";
+                worksheet.Cells[currentRow, 2] = "Trạng thái";
+
+                Excel.Range headerRange = worksheet.Range[worksheet.Cells[currentRow, 1], worksheet.Cells[currentRow, 2]];
+                headerRange.Font.Bold = true;
+                headerRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.LightGray);
+                headerRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                currentRow++;
+
+                //Dữ liệu Todo
+                var todos = _todoService.FindByTagId(tag.Id);
+
+                if (todos == null || !todos.Any())
+                {
+                    worksheet.Cells[currentRow, 1] = "(Không có công việc nào)";
+                    Excel.Range emptyRange = worksheet.Range[worksheet.Cells[currentRow, 1], worksheet.Cells[currentRow, 2]];
+                    emptyRange.Merge();
+                    emptyRange.Font.Italic = true;
+                    currentRow += 2;
+                    continue;
+                }
+
+                foreach (var todo in todos)
+                {
+                    worksheet.Cells[currentRow, 1] = todo.Content;
+                    worksheet.Cells[currentRow, 2] = todo.IsDone ? "Hoàn thành" : "Chưa làm";
+                    currentRow++;
+                }
+
+                currentRow += 2;
             }
 
-            using (SaveFileDialog sfd = new SaveFileDialog()
-            {
-                Filter = "Excel Workbook|*.xlsx",
-                Title = "Chọn vị trí lưu file Excel",
-                FileName = $"Todo_By_Tags_{DateTime.Now:yyyyMMdd}.xlsx"
-            })
-            {
-                if (sfd.ShowDialog() != DialogResult.OK)
-                    return;
+            //Căn chỉnh cột
+            worksheet.Columns.AutoFit();
 
-                try
-                {
-                    using (var workbook = new XLWorkbook())
-                    {
-                        var worksheet = workbook.Worksheets.Add("Todos by Tag");
-                        int currentRow = 1;
+            //Lưu file
+            workbook.SaveAs(filePath);
+            workbook.Close();
+            excelApp.Quit();
 
-                        foreach (var tag in tags)
-                        {
-                            // --- Tiêu đề Tag ---
-                            worksheet.Cell(currentRow, 1).Value = $"Tag: {tag.Name}";
-                            worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
-                            worksheet.Cell(currentRow, 1).Style.Font.FontSize = 14;
-                            currentRow++;
+            if (worksheet != null) System.Runtime.InteropServices.Marshal.ReleaseComObject(worksheet);
+            if (workbook != null) System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
+            if (excelApp != null) System.Runtime.InteropServices.Marshal.ReleaseComObject(excelApp);
 
-                            // --- Header cột ---
-                            worksheet.Cell(currentRow, 1).Value = "Nội dung công việc";
-                            worksheet.Cell(currentRow, 2).Value = "Trạng thái";
+            worksheet = null;
+            workbook = null;
+            excelApp = null;
 
-                            var headerRange = worksheet.Range(currentRow, 1, currentRow, 2);
-                            headerRange.Style.Font.Bold = true;
-                            headerRange.Style.Fill.BackgroundColor = XLColor.LightGray;
-                            headerRange.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                            currentRow++;
-
-                            // --- Dữ liệu Todo ---
-                            var todos = _todoService.FindByTagId(tag.Id);
-
-                            if (todos == null || !todos.Any())
-                            {
-                                worksheet.Cell(currentRow, 1).Value = "(Không có công việc nào)";
-                                worksheet.Range(currentRow, 1, currentRow, 2).Merge();
-                                worksheet.Cell(currentRow, 1).Style.Font.Italic = true;
-                                currentRow += 2;
-                                continue;
-                            }
-
-                            foreach (var todo in todos)
-                            {
-                                worksheet.Cell(currentRow, 1).Value = todo.Content;
-                                worksheet.Cell(currentRow, 2).Value = todo.IsDone ? "✅ Hoàn thành" : "❌ Chưa làm";
-                                currentRow++;
-                            }
-
-                            currentRow += 2; // cách 1 dòng giữa các Tag
-                        }
-
-                        worksheet.Columns().AdjustToContents();
-
-                        workbook.SaveAs(sfd.FileName);
-
-                        MessageBox.Show("Xuất file Excel thành công!\nĐã lưu tại: " + sfd.FileName,
-                                        "Hoàn tất", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Lỗi khi xuất file: " + ex.Message);
-                }
-            }
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            return true;
         }
     }
 }
+

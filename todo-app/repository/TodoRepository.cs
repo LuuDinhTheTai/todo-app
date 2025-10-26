@@ -76,7 +76,7 @@ public class TodoRepository : Repository
         using (SqlConnection connection = Database.GetConnection())
         {
             string sql = @"
-                SELECT T.Id, T.Content, T.IsDone
+                SELECT T.Id, T.Content, T.IsDone , T.Note
                 FROM Todos T
                 JOIN TodoTags TT ON T.Id = TT.TodoId
                 WHERE TT.TagId = @TagId";
@@ -91,7 +91,8 @@ public class TodoRepository : Repository
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             Content = reader.GetString(reader.GetOrdinal("Content")),
-                            IsDone = reader.GetBoolean(reader.GetOrdinal("IsDone"))
+                            IsDone = reader.GetBoolean(reader.GetOrdinal("IsDone")),
+                            Note = reader.IsDBNull(reader.GetOrdinal("Note"))? "" : reader.GetString(reader.GetOrdinal("Note"))
                         };
                         todos.Add(todo);
                     }
@@ -101,17 +102,18 @@ public class TodoRepository : Repository
 
         return todos;
     }
-
+         
     public void Update(Todo todo)
     {
         using (SqlConnection connection = Database.GetConnection())
         {
-            string sql = "UPDATE Todos SET Content = @Content, IsDone = @IsDone WHERE Id = @Id";
+            string sql = "UPDATE Todos SET Content = @Content, IsDone = @IsDone , Note =@Note  WHERE Id = @Id";
             using (SqlCommand command = new SqlCommand(sql, connection))
             {
                 command.Parameters.AddWithValue("@Content", todo.Content);
                 command.Parameters.AddWithValue("@IsDone", todo.IsDone);
                 command.Parameters.AddWithValue("@Id", todo.Id);
+                command.Parameters.AddWithValue("@Note", todo.Note);
                 command.ExecuteNonQuery();
             }
         }

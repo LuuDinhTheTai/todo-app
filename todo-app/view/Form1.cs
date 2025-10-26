@@ -1,6 +1,7 @@
 using todo_app.controller;
 using todo_app.entity;
 using todo_app.service;
+using todo_app.view;
 
 namespace todo_app;
 
@@ -130,6 +131,15 @@ public partial class Form1 : Form
             todoDataGridView.CommitEdit(DataGridViewDataErrorContexts.Commit);
             todoDataGridView_CellValueChanged(sender, e);
         }
+        else if(column is DataGridViewTextBoxColumn && column.Name == "colContent")
+        {
+            Todo currentTodo = todoDataGridView.Rows[e.RowIndex].DataBoundItem as Todo;
+            if (currentTodo == null)
+                return;
+
+            var formNote = new Note(currentTodo, _controller);
+            formNote.ShowDialog();
+        }
     }
 
     private void todoDataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -190,7 +200,17 @@ public partial class Form1 : Form
 
     private void btnExportFileExcel_Click(object sender, EventArgs e)
     {
-        _fileService.ExportFileExcel();
+        sfdExcel.Filter = "Excel Workbook|*.xlsx";
+        sfdExcel.Title = "Chọn vị trí lưu file Excel";
+        sfdExcel.FileName = $"Todo_By_Tags_{DateTime.Now:yyyyMMdd}.xlsx";
+        if (sfdExcel.ShowDialog() == DialogResult.OK)
+        {
+            if (_fileService.ExportFileExcel(sfdExcel.FileName))
+            {
+                MessageBox.Show("Xuất file Excel thành công!\nĐã lưu tại: " + sfdExcel.FileName,
+                        "Hoàn tất", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
     }
 
 }
