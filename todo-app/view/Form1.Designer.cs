@@ -166,7 +166,17 @@ partial class Form1
         // 
         todoDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
         todoDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-        todoDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { colStatus, colContent, colDelete });
+        colPriority = new System.Windows.Forms.DataGridViewComboBoxColumn();
+        colPriority.HeaderText = "Ưu tiên";
+        colPriority.MinimumWidth = 6;
+        colPriority.Name = "colPriority";
+        colPriority.Items.AddRange(new object[] {
+            "1 - Thấp",
+            "2 - Trung bình",
+            "3 - Cao"
+        });
+        colPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+        todoDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { colStatus, colContent, colPriority, colDelete });
         todoDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
         todoDataGridView.Location = new System.Drawing.Point(0, 31);
         todoDataGridView.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -304,6 +314,7 @@ partial class Form1
 
     private System.Windows.Forms.DataGridViewCheckBoxColumn colStatus;
     private System.Windows.Forms.DataGridViewTextBoxColumn colContent;
+    private System.Windows.Forms.DataGridViewComboBoxColumn colPriority;
     private System.Windows.Forms.DataGridViewButtonColumn colDelete;
 
     private System.Windows.Forms.DataGridView todoDataGridView;
