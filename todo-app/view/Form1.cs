@@ -17,11 +17,6 @@ public partial class Form1 : Form
     private Tag? _currentTag = null;
     private List<Todo>? _currentTodos = null;
 
-    private DateTimePicker? _dueDatePicker;
-    private int _dueDateRowIndex = -1;
-    private int _dueDateColIndex = -1;
-    private bool _isDuePickerDroppedDown = false;
-
     public Form1(Controller controller)
     {
         InitializeComponent();
@@ -49,21 +44,25 @@ public partial class Form1 : Form
 
         ConfigTagDataGridView();
         ConfigTodoDataGridView();
+
+        // đăng ký thêm event để xử lý thay đổi combobox / checkbox trong grid
+        todoDataGridView.CellValueChanged += todoDataGridView_CellValueChanged;
+        todoDataGridView.CurrentCellDirtyStateChanged += todoDataGridView_CurrentCellDirtyStateChanged;
+
         LoadTags();
         LoadTodos();
-
-        InitDueDatePicker();
-
-        todoDataGridView.CellClick += todoDataGridView_CellClick;
-        todoDataGridView.Scroll += (_, __) => HideDueDatePicker();
-        todoDataGridView.ColumnWidthChanged += (_, __) => HideDueDatePicker();
-        todoDataGridView.CellFormatting += todoDataGridView_CellFormatting;
     }
 
+    // ======================
     // CONFIGURATION
+    // ======================
     private void ConfigTodoDataGridView()
     {
+        // chúng ta không còn bind DataSource trực tiếp nữa,
+        // nên DataPropertyName không còn quá quan trọng.
+        // Nhưng giữ lại cũng không sao.
         todoDataGridView.AutoGenerateColumns = false;
+
         if (todoDataGridView.Columns["colStatus"] != null)
         {
             todoDataGridView.Columns["colStatus"].DataPropertyName = "IsDone";
@@ -74,9 +73,15 @@ public partial class Form1 : Form
             todoDataGridView.Columns["colContent"].DataPropertyName = "Content";
         }
 
+        if (todoDataGridView.Columns["colPriority"] != null)
+        {
+            // không bind trực tiếp priority vì ta hiển thị text "1 - Thấp"...,
+            // nên để trống DataPropertyName cho colPriority là ok.
+        }
+
         if (todoDataGridView.Columns["colDelete"] != null)
         {
-
+            // button delete không cần DataPropertyName
         }
     }
 
@@ -89,11 +94,13 @@ public partial class Form1 : Form
         }
     }
 
-    // HANDLE EVENT
+    // ======================
+    // HANDLE EVENT (BUTTONS)
+    // ======================
     private void btnCreateTodo_Click(object sender, EventArgs e)
     {
         string content = tBContent.Text;
-        if (string.IsNullOrEmpty(content))
+        if (string.IsNullOrWhiteSpace(content))
         {
             return;
         }
@@ -103,7 +110,8 @@ public partial class Form1 : Form
             return;
         }
 
-        _todoService.Create(content, _currentTag);
+        // tạo todo mới với priority mặc định 1 (Thấp)
+        _todoService.Create(content, _currentTag, 1);
 
         tBContent.Clear();
         LoadTodos();
@@ -112,83 +120,144 @@ public partial class Form1 : Form
     private void btnCreateTag_Click(object sender, EventArgs e)
     {
         string tagName = tBTagName.Text;
+        if (string.IsNullOrWhiteSpace(tagName))
+        {
+            return;
+        }
+
         _tagService.Create(tagName);
 
         tBTagName.Clear();
         LoadTags();
+        LoadTodos();
     }
 
+    private void btnExportFileExcel_Click(object sender, EventArgs e)
+    {
+        sfdExcel.Filter = "Excel Workbook|*.xlsx";
+        sfdExcel.Title = "Chọn vị trí lưu file Excel";
+        sfdExcel.FileName = $"Todo_By_Tags_{DateTime.Now:yyyyMMdd}.xlsx";
+
+        if (sfdExcel.ShowDialog() == DialogResult.OK)
+        {
+            if (_fileService.ExportFileExcel(sfdExcel.FileName))
+            {
+                MessageBox.Show(
+                    "Xuất file Excel thành công!\nĐã lưu tại: " + sfdExcel.FileName,
+                    "Hoàn tất", MessageBoxButtons.OK, MessageBoxIcon.Information
+                );
+            }
+        }
+    }
+
+    // ======================
+    // HANDLE EVENT (GRID)
+    // ======================
+
+    // click vào ô (xóa / mở Note)
     private void todoDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
     {
         if (e.RowIndex < 0)
             return;
 
         var column = todoDataGridView.Columns[e.ColumnIndex];
+        var row = todoDataGridView.Rows[e.RowIndex];
+
+        // lấy todoId đã lưu ở LoadTodos()
+        if (row.Tag is not int todoId)
+            return;
 
         if (column is DataGridViewButtonColumn && column.Name == "colDelete")
         {
-            var todo = todoDataGridView.Rows[e.RowIndex].DataBoundItem as Todo;
-            if (todo == null)
-                return;
-
-            var result = MessageBox.Show("Xóa tác vụ này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var result = MessageBox.Show(
+                "Xóa tác vụ này?",
+                "Xác nhận",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
             if (result != DialogResult.Yes)
                 return;
 
-            _todoService.Delete(todo.Id);
+            _todoService.Delete(todoId);
             LoadTodos();
         }
-        else if (column is DataGridViewCheckBoxColumn && column.Name == "colStatus")
+        else if (column is DataGridViewTextBoxColumn && column.Name == "colContent")
         {
-            todoDataGridView.CommitEdit(DataGridViewDataErrorContexts.Commit);
-            todoDataGridView_CellValueChanged(sender, e);
-        }
-        else if(column is DataGridViewTextBoxColumn && column.Name == "colContent")
-        {
-            Todo currentTodo = todoDataGridView.Rows[e.RowIndex].DataBoundItem as Todo;
+            // mở form Note với todo tương ứng
+            var currentTodo = _todoService.FindById(todoId);
             if (currentTodo == null)
                 return;
 
             var formNote = new Note(currentTodo, _controller);
             formNote.ShowDialog();
+
+            // nếu Note thay đổi, reload lại
+            LoadTodos();
+        }
+        else if (column is DataGridViewCheckBoxColumn && column.Name == "colStatus")
+        {
+            // Checkbox là trường hợp đặc biệt:
+            // DataGridView chỉ commit khi ta yêu cầu, nên ta chủ động commit và xử lý tại CellValueChanged
+            todoDataGridView.CommitEdit(DataGridViewDataErrorContexts.Commit);
         }
     }
 
+    // ép commit thay đổi ngay khi chọn trong combobox / checkbox
+    private void todoDataGridView_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+    {
+        if (todoDataGridView.IsCurrentCellDirty)
+        {
+            todoDataGridView.CommitEdit(DataGridViewDataErrorContexts.Commit);
+        }
+    }
+
+    // bất cứ khi nào giá trị ô thay đổi (checkbox IsDone, combobox Priority)
     private void todoDataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
     {
         if (e.RowIndex < 0)
             return;
 
-        if (todoDataGridView.Columns[e.ColumnIndex].Name == "colStatus")
+        var changedCol = todoDataGridView.Columns[e.ColumnIndex].Name;
+        var row = todoDataGridView.Rows[e.RowIndex];
+
+        if (row.Tag is not int todoId)
+            return;
+
+        // 1. Người đổi trạng thái hoàn thành (colStatus)
+        if (changedCol == "colStatus")
         {
-            var todo = todoDataGridView.Rows[e.RowIndex].DataBoundItem as Todo;
+            bool newDone = Convert.ToBoolean(row.Cells["colStatus"].Value);
+
+            // lấy todo hiện tại từ service
+            var todo = _todoService.FindById(todoId);
             if (todo == null)
                 return;
+
+            todo.IsDone = newDone;
 
             _todoService.Update(todo);
 
             LoadTodos();
-        }
-    }
-
-    private void LoadTags()
-    {
-        var tags = _tagService.FindAll();
-        tagDataGridView.DataSource = tags.OrderBy(t => t.Name).ToList();
-        _currentTag = tags.FirstOrDefault();
-    }
-
-    private void LoadTodos()
-    {
-        if (_currentTag == null)
-        {
             return;
         }
 
-        _currentTodos = _todoService.FindByTagId(_currentTag.Id);
-        todoDataGridView.DataSource = _currentTodos.OrderBy(t => t.IsDone).ToList();
+        // 2. Người đổi mức ưu tiên (colPriority)
+        if (changedCol == "colPriority")
+        {
+            string picked = row.Cells["colPriority"].Value?.ToString() ?? "1 - Thấp";
+            int newPriority =
+                picked.StartsWith("3") ? 3 :
+                picked.StartsWith("2") ? 2 :
+                1;
+
+            _todoService.UpdateTodoPriority(todoId, newPriority);
+
+            LoadTodos();
+            return;
+        }
     }
 
+    // click chọn tag bên trái -> đổi _currentTag -> load todo tương ứng
     private void tagDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
     {
         int rowIndex = e.RowIndex;
@@ -202,148 +271,83 @@ public partial class Form1 : Form
         var cell = tagDataGridView.Rows[rowIndex].Cells[colIndex];
         var value = cell.Value;
 
-        if (value is string)
+        if (value is string tagName)
         {
-            _currentTag = _tagService.FindByName((string)value);
+            _currentTag = _tagService.FindByName(tagName);
         }
 
         LoadTodos();
     }
 
-    private void btnExportFileExcel_Click(object sender, EventArgs e)
+    // ======================
+    // RENDER DATA
+    // ======================
+    private void LoadTags()
     {
-        sfdExcel.Filter = "Excel Workbook|*.xlsx";
-        sfdExcel.Title = "Chọn vị trí lưu file Excel";
-        sfdExcel.FileName = $"Todo_By_Tags_{DateTime.Now:yyyyMMdd}.xlsx";
-        if (sfdExcel.ShowDialog() == DialogResult.OK)
+        var tags = _tagService.FindAll();
+        tagDataGridView.DataSource = tags
+            .OrderBy(t => t.Name)
+            .ToList();
+
+        if (_currentTag == null)
         {
-            if (_fileService.ExportFileExcel(sfdExcel.FileName))
+            _currentTag = tags.FirstOrDefault();
+        }
+
+        // cập nhật label hiển thị tên user
+        lblUsername.Text = "Hi, " + _loggedInAccount.GetUsername();
+    }
+
+    private void LoadTodos()
+    {
+        if (_currentTag == null)
+        {
+            // nếu chưa chọn tag thì clear bảng bên phải
+            todoDataGridView.DataSource = null;
+            todoDataGridView.Rows.Clear();
+            lblTagName.Text = "Tác vụ";
+            return;
+        }
+
+        _currentTodos = _todoService.FindByTagId(_currentTag.Id);
+
+        // sắp xếp: ưu tiên cao trước, rồi chưa hoàn thành trước
+        var displayList = _currentTodos
+            .OrderByDescending(t => t.Priority)
+            .ThenBy(t => t.IsDone)
+            .ToList();
+
+        // cập nhật label tên tag đang xem
+        lblTagName.Text = _currentTag.Name;
+
+        // clear grid cũ
+        todoDataGridView.DataSource = null;
+        todoDataGridView.Rows.Clear();
+
+        foreach (var todo in displayList)
+        {
+            int rowIndex = todoDataGridView.Rows.Add();
+            var row = todoDataGridView.Rows[rowIndex];
+
+            // trạng thái
+            row.Cells["colStatus"].Value = todo.IsDone;
+
+            // nội dung
+            row.Cells["colContent"].Value = todo.Content;
+
+            // priority -> text hiển thị
+            row.Cells["colPriority"].Value = todo.Priority switch
             {
-                MessageBox.Show("Xuất file Excel thành công!\nĐã lưu tại: " + sfdExcel.FileName,
-                        "Hoàn tất", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+                3 => "3 - Cao",
+                2 => "2 - Trung bình",
+                _ => "1 - Thấp"
+            };
+
+            // nút xóa
+            row.Cells["colDelete"].Value = "Xóa";
+
+            // ghi nhớ id todo để thao tác sau này
+            row.Tag = todo.Id;
         }
     }
-
-    private void btnShowChart_Click(object sender, EventArgs e)
-    {    
-        var chartForm = new view.ChartForm(_controller, _currentTag!);
-        chartForm.ShowDialog();
-    }
-
-    private void InitDueDatePicker()
-    {
-      _dueDatePicker = new DateTimePicker
-      {
-          Format = DateTimePickerFormat.Custom,
-          CustomFormat = "dd/MM/yyyy HH:mm",
-          ShowCheckBox = true,
-          Visible = false
-      };
-
-      _dueDatePicker.DropDown += (_, __) => _isDuePickerDroppedDown = true;
-      _dueDatePicker.CloseUp += (_, __) =>
-      {
-          _isDuePickerDroppedDown = false;
-          CommitDueDateFromPicker();
-      };
-
-      _dueDatePicker.ValueChanged += (_, __) =>
-      {
-          if (_dueDatePicker.Visible && !_isDuePickerDroppedDown)
-          {
-              CommitDueDateFromPicker();
-          }
-      };
-
-      todoDataGridView.Controls.Add(_dueDatePicker);
-  }
-
-   private void ShowDueDatePicker(int rowIndex, int colIndex)
-   {
-       if (_dueDatePicker == null) return;
-
-       var rect = todoDataGridView.GetCellDisplayRectangle(colIndex, rowIndex, true);
-       _dueDatePicker.Bounds = new System.Drawing.Rectangle(rect.X, rect.Y, rect.Width, rect.Height);
-
-       var todo = todoDataGridView.Rows[rowIndex].DataBoundItem as Todo;
-       if (todo != null && todo.DueDate.HasValue)
-       {
-           _dueDatePicker.Value = todo.DueDate.Value;
-           _dueDatePicker.Checked = true;
-       }
-       else
-       {
-           _dueDatePicker.Value = DateTime.Now;
-           _dueDatePicker.Checked = false;
-       }
-
-       _dueDateRowIndex = rowIndex;
-       _dueDateColIndex = colIndex;
-       _isDuePickerDroppedDown = false;
-       _dueDatePicker.Visible = true;
-       _dueDatePicker.BringToFront();
-       _dueDatePicker.Focus();
-   }
-
-   private void HideDueDatePicker()
-   {
-       if (_dueDatePicker == null) return;
-       _dueDatePicker.Visible = false;
-       _isDuePickerDroppedDown = false;
-       _dueDateRowIndex = _dueDateColIndex = -1;
-   }
-
-   private void CommitDueDateFromPicker()
-   {
-       if (_dueDatePicker == null || _dueDateRowIndex < 0) return;
-
-       var row = todoDataGridView.Rows[_dueDateRowIndex];
-       var todo = row.DataBoundItem as Todo;
-       if (todo == null) { HideDueDatePicker(); return; }
-
-       todo.DueDate = _dueDatePicker.Checked ? _dueDatePicker.Value : null;
-
-       _todoService.Update(todo);
-       LoadTodos();
-
-       HideDueDatePicker();
-   }
-
-   private void todoDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
-   {
-       if (e.RowIndex < 0) return;
-       var col = todoDataGridView.Columns[e.ColumnIndex];
-       if (col != null && col.Name == "colDueDate")
-       {
-           ShowDueDatePicker(e.RowIndex, e.ColumnIndex);
-       }
-   }
-
-   private void todoDataGridView_CellFormatting(object sender, System.Windows.Forms.DataGridViewCellFormattingEventArgs e)
-   {
-       if (e.RowIndex < 0) return;
-       var grid = this.todoDataGridView;
-       var column = grid.Columns[e.ColumnIndex];
-       if (column == null || column.Name != "colDueDate") return;
-
-       var row = grid.Rows[e.RowIndex];
-       var data = row.DataBoundItem as Todo;
-       if (data == null) return;
-
-       e.CellStyle.ForeColor = grid.DefaultCellStyle.ForeColor;
-       e.CellStyle.SelectionForeColor = grid.DefaultCellStyle.SelectionForeColor;
-
-       if (!data.IsDone && data.DueDate.HasValue)
-       {
-           var now = DateTime.Now;
-           var due = data.DueDate.Value;
-           if (due <= now.AddDays(1))
-           {
-               e.CellStyle.ForeColor = System.Drawing.Color.Red;
-               e.CellStyle.SelectionForeColor = System.Drawing.Color.Red;
-           }
-       }
-   }
-
 }

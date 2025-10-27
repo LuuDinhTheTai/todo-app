@@ -13,7 +13,6 @@ public class Controller
     public TagService TagService;
     public TodoService TodoService;
     public FileService FileService;
-    public ChartService ChartService;
 
     public Form1 Form1;
 
@@ -31,7 +30,6 @@ public class Controller
         TagService = new TagService(this);
         TodoService = new TodoService(this);
         FileService = new FileService(this);
-        ChartService = new ChartService(this);
 
         Form1 = new Form1(this);
     }
