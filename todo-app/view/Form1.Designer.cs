@@ -32,10 +32,7 @@ partial class Form1
         splitContainer1 = new System.Windows.Forms.SplitContainer();
         tagDataGridView = new System.Windows.Forms.DataGridView();
         colTag = new System.Windows.Forms.DataGridViewTextBoxColumn();
-        colDeleteTag = new System.Windows.Forms.DataGridViewButtonColumn();
         groupBox1 = new System.Windows.Forms.GroupBox();
-        btnLogout = new System.Windows.Forms.Button();
-        btnShowChart = new System.Windows.Forms.Button();
         btnExportFileExcel = new System.Windows.Forms.Button();
         btnCreateTag = new System.Windows.Forms.Button();
         tBTagName = new System.Windows.Forms.TextBox();
@@ -43,7 +40,6 @@ partial class Form1
         todoDataGridView = new System.Windows.Forms.DataGridView();
         colStatus = new System.Windows.Forms.DataGridViewCheckBoxColumn();
         colContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
-        colDueDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
         colDelete = new System.Windows.Forms.DataGridViewButtonColumn();
         gBCreateForm = new System.Windows.Forms.GroupBox();
         btnCreate = new System.Windows.Forms.Button();
@@ -51,6 +47,8 @@ partial class Form1
         lblContent = new System.Windows.Forms.Label();
         lblTagName = new System.Windows.Forms.Label();
         sfdExcel = new System.Windows.Forms.SaveFileDialog();
+        colDeleteTag = new System.Windows.Forms.DataGridViewButtonColumn();
+        btnLogout = new System.Windows.Forms.Button();
         ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
         splitContainer1.Panel1.SuspendLayout();
         splitContainer1.Panel2.SuspendLayout();
@@ -95,7 +93,7 @@ partial class Form1
         tagDataGridView.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
         tagDataGridView.Name = "tagDataGridView";
         tagDataGridView.RowHeadersWidth = 51;
-        tagDataGridView.Size = new System.Drawing.Size(303, 388);
+        tagDataGridView.Size = new System.Drawing.Size(303, 405);
         tagDataGridView.TabIndex = 4;
         tagDataGridView.Text = "dataGridView2";
         tagDataGridView.CellClick += tagDataGridView_CellClick;
@@ -106,48 +104,21 @@ partial class Form1
         colTag.MinimumWidth = 6;
         colTag.Name = "colTag";
         // 
-        // colDeleteTag
-        // 
-        colDeleteTag.HeaderText = "Xóa";
-        colDeleteTag.Name = "colDeleteTag";
-        // 
         // groupBox1
         // 
         groupBox1.Controls.Add(btnLogout);
-        groupBox1.Controls.Add(btnShowChart);
         groupBox1.Controls.Add(btnExportFileExcel);
         groupBox1.Controls.Add(btnCreateTag);
         groupBox1.Controls.Add(tBTagName);
         groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-        groupBox1.Location = new System.Drawing.Point(0, 419);
+        groupBox1.Location = new System.Drawing.Point(0, 467);
         groupBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
         groupBox1.Name = "groupBox1";
         groupBox1.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-        groupBox1.Size = new System.Drawing.Size(303, 181);
+        groupBox1.Size = new System.Drawing.Size(303, 133);
         groupBox1.TabIndex = 3;
         groupBox1.TabStop = false;
         groupBox1.Text = "Thêm danh sách mới";
-        // 
-        // btnLogout
-        // 
-        btnLogout.Dock = System.Windows.Forms.DockStyle.Top;
-        btnLogout.Location = new System.Drawing.Point(3, 103);
-        btnLogout.Name = "btnLogout";
-        btnLogout.Size = new System.Drawing.Size(297, 29);
-        btnLogout.TabIndex = 3;
-        btnLogout.Text = "Đăng xuất";
-        btnLogout.UseVisualStyleBackColor = true;
-        // 
-        // btnShowChart
-        // 
-        btnShowChart.Dock = System.Windows.Forms.DockStyle.Top;
-        btnShowChart.Location = new System.Drawing.Point(3, 132);
-        btnShowChart.Name = "btnShowChart";
-        btnShowChart.Size = new System.Drawing.Size(297, 29);
-        btnShowChart.TabIndex = 3;
-        btnShowChart.Text = "Thống kê";
-        btnShowChart.UseVisualStyleBackColor = true;
-        btnShowChart.Click += btnShowChart_Click;
         // 
         // btnExportFileExcel
         // 
@@ -195,7 +166,17 @@ partial class Form1
         // 
         todoDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
         todoDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-        todoDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { colStatus, colContent, colDueDate, colDelete });
+        colPriority = new System.Windows.Forms.DataGridViewComboBoxColumn();
+        colPriority.HeaderText = "Ưu tiên";
+        colPriority.MinimumWidth = 6;
+        colPriority.Name = "colPriority";
+        colPriority.Items.AddRange(new object[] {
+            "1 - Thấp",
+            "2 - Trung bình",
+            "3 - Cao"
+        });
+        colPriority.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+        todoDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { colStatus, colContent, colPriority, colDelete });
         todoDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
         todoDataGridView.Location = new System.Drawing.Point(0, 31);
         todoDataGridView.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -205,8 +186,6 @@ partial class Form1
         todoDataGridView.TabIndex = 2;
         todoDataGridView.Text = "dataGridView1";
         todoDataGridView.CellContentClick += todoDataGridView_CellContentClick;
-        todoDataGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.todoDataGridView_CellFormatting);
-        todoDataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.todoDataGridView_CellValueChanged);
         // 
         // colStatus
         // 
@@ -219,17 +198,6 @@ partial class Form1
         colContent.HeaderText = "Nội dung";
         colContent.MinimumWidth = 6;
         colContent.Name = "colContent";
-        // 
-        // colDueDate //new
-        // 
-        colDueDate.HeaderText = "Hạn chót";
-        colDueDate.MinimumWidth = 6;
-        colDueDate.Name = "colDueDate";
-        colDueDate.DataPropertyName = "DueDate";
-        var dueDateCellStyle = new System.Windows.Forms.DataGridViewCellStyle();
-        dueDateCellStyle.Format = "g";
-        dueDateCellStyle.NullValue = null;
-        colDueDate.DefaultCellStyle = dueDateCellStyle;
         // 
         // colDelete
         // 
@@ -293,6 +261,21 @@ partial class Form1
         lblTagName.Text = "Tác vụ";
         lblTagName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
         // 
+        // colDeleteTag
+        // 
+        colDeleteTag.HeaderText = "Xóa";
+        colDeleteTag.Name = "colDeleteTag";
+        // 
+        // btnLogout
+        // 
+        btnLogout.Dock = System.Windows.Forms.DockStyle.Bottom;
+        btnLogout.Location = new System.Drawing.Point(3, 106);
+        btnLogout.Name = "btnLogout";
+        btnLogout.Size = new System.Drawing.Size(297, 23);
+        btnLogout.TabIndex = 3;
+        btnLogout.Text = "Đăng xuất";
+        btnLogout.UseVisualStyleBackColor = true;
+        // 
         // Form1
         // 
         AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -331,7 +314,7 @@ partial class Form1
 
     private System.Windows.Forms.DataGridViewCheckBoxColumn colStatus;
     private System.Windows.Forms.DataGridViewTextBoxColumn colContent;
-    private System.Windows.Forms.DataGridViewTextBoxColumn colDueDate;
+    private System.Windows.Forms.DataGridViewComboBoxColumn colPriority;
     private System.Windows.Forms.DataGridViewButtonColumn colDelete;
 
     private System.Windows.Forms.DataGridView todoDataGridView;
@@ -352,6 +335,5 @@ partial class Form1
     #endregion
 
     private System.Windows.Forms.Button btnExportFileExcel;
-    private System.Windows.Forms.SaveFileDialog sfdExcel;
-    private System.Windows.Forms.Button btnShowChart;
+    private SaveFileDialog sfdExcel;
 }
