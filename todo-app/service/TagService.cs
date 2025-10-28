@@ -24,10 +24,10 @@ public class TagService
             throw new AppException("Tên danh sách không hợp lệ.");
         }
 
-        bool isExisted = FindByName(tagName) != null;
+        bool isExisted = _tagRepository.FindByName(tagName) != null;
         if (isExisted)
         {
-            throw new AppException("Tag đã tồn tại.");
+            throw new AppException("Danh sách đã tồn tại.");
         }
 
         Tag tag = new Tag();
@@ -56,5 +56,10 @@ public class TagService
         }
         
         return tag;
+    }
+
+    public void Delete(int id)
+    {
+        _tagRepository.Delete(id);
     }
 }

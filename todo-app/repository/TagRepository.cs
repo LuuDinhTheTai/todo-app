@@ -70,4 +70,17 @@ public class TagRepository : Repository
         }
         return null;
     }
+
+    public void Delete(int id)
+    {
+        using (SqlConnection connection = Database.GetConnection())
+        {
+            string sql = "DELETE FROM Tags WHERE Id = @Id";
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                command.Parameters.AddWithValue("@Id", id);
+                command.ExecuteNonQuery();
+            }
+        }
+    }
 }

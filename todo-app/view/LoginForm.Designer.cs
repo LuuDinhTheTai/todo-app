@@ -109,6 +109,7 @@ partial class LoginForm
         // 
         // tBUsername
         // 
+        tBUsername.ForeColor = System.Drawing.SystemColors.WindowText;
         tBUsername.Location = new System.Drawing.Point(257, 146);
         tBUsername.Name = "tBUsername";
         tBUsername.Size = new System.Drawing.Size(263, 36);

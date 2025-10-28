@@ -76,7 +76,6 @@ public partial class Form1 : Form
 
         if (todoDataGridView.Columns["colDelete"] != null)
         {
-            
         }
     }
 
@@ -121,7 +120,8 @@ public partial class Form1 : Form
             if (todo == null)
                 return;
 
-            var result = MessageBox.Show("Xóa tác vụ này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var result = MessageBox.Show("Xóa tác vụ này?", "Xác nhận", MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
             if (result != DialogResult.Yes)
                 return;
 
@@ -133,7 +133,7 @@ public partial class Form1 : Form
             todoDataGridView.CommitEdit(DataGridViewDataErrorContexts.Commit);
             todoDataGridView_CellValueChanged(sender, e);
         }
-        else if(column is DataGridViewTextBoxColumn && column.Name == "colContent")
+        else if (column is DataGridViewTextBoxColumn && column.Name == "colContent")
         {
             Todo currentTodo = todoDataGridView.Rows[e.RowIndex].DataBoundItem as Todo;
             if (currentTodo == null)
@@ -172,6 +172,7 @@ public partial class Form1 : Form
     {
         if (_currentTag == null)
         {
+            todoDataGridView.DataSource = null;
             return;
         }
 
@@ -201,6 +202,29 @@ public partial class Form1 : Form
         LoadTodos();
     }
 
+    private void tagDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+    {
+        if (e.RowIndex < 0)
+            return;
+
+        var column = tagDataGridView.Columns[e.ColumnIndex];
+
+        if (column is DataGridViewButtonColumn && column.Name == "colDeleteTag")
+        {
+            var tag = tagDataGridView.Rows[e.RowIndex].DataBoundItem as Tag;
+            if (tag == null)
+                return;
+
+            var result = MessageBox.Show("Xóa danh sách này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result != DialogResult.Yes)
+                return;
+
+            _tagService.Delete(tag.Id);
+            LoadTags();
+            LoadTodos();
+        }
+    }
+
     private void btnExportFileExcel_Click(object sender, EventArgs e)
     {
         sfdExcel.Filter = "Excel Workbook|*.xlsx";
@@ -211,130 +235,134 @@ public partial class Form1 : Form
             if (_fileService.ExportFileExcel(sfdExcel.FileName))
             {
                 MessageBox.Show("Xuất file Excel thành công!\nĐã lưu tại: " + sfdExcel.FileName,
-                        "Hoàn tất", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    "Hoàn tất", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
     }
 
     private void btnShowChart_Click(object sender, EventArgs e)
-    {    
+    {
         var chartForm = new view.ChartForm(_controller, _currentTag!);
         chartForm.ShowDialog();
     }
 
     private void InitDueDatePicker()
     {
-      _dueDatePicker = new DateTimePicker
-      {
-          Format = DateTimePickerFormat.Custom,
-          CustomFormat = "dd/MM/yyyy HH:mm",
-          ShowCheckBox = true,
-          Visible = false
-      };
+        _dueDatePicker = new DateTimePicker
+        {
+            Format = DateTimePickerFormat.Custom,
+            CustomFormat = "dd/MM/yyyy HH:mm",
+            ShowCheckBox = true,
+            Visible = false
+        };
 
-      _dueDatePicker.DropDown += (_, __) => _isDuePickerDroppedDown = true;
-      _dueDatePicker.CloseUp += (_, __) =>
-      {
-          _isDuePickerDroppedDown = false;
-          CommitDueDateFromPicker();
-      };
+        _dueDatePicker.DropDown += (_, __) => _isDuePickerDroppedDown = true;
+        _dueDatePicker.CloseUp += (_, __) =>
+        {
+            _isDuePickerDroppedDown = false;
+            CommitDueDateFromPicker();
+        };
 
-      _dueDatePicker.ValueChanged += (_, __) =>
-      {
-          if (_dueDatePicker.Visible && !_isDuePickerDroppedDown)
-          {
-              CommitDueDateFromPicker();
-          }
-      };
+        _dueDatePicker.ValueChanged += (_, __) =>
+        {
+            if (_dueDatePicker.Visible && !_isDuePickerDroppedDown)
+            {
+                CommitDueDateFromPicker();
+            }
+        };
 
-      todoDataGridView.Controls.Add(_dueDatePicker);
-  }
+        todoDataGridView.Controls.Add(_dueDatePicker);
+    }
 
-   private void ShowDueDatePicker(int rowIndex, int colIndex)
-   {
-       if (_dueDatePicker == null) return;
+    private void ShowDueDatePicker(int rowIndex, int colIndex)
+    {
+        if (_dueDatePicker == null) return;
 
-       var rect = todoDataGridView.GetCellDisplayRectangle(colIndex, rowIndex, true);
-       _dueDatePicker.Bounds = new System.Drawing.Rectangle(rect.X, rect.Y, rect.Width, rect.Height);
+        var rect = todoDataGridView.GetCellDisplayRectangle(colIndex, rowIndex, true);
+        _dueDatePicker.Bounds = new System.Drawing.Rectangle(rect.X, rect.Y, rect.Width, rect.Height);
 
-       var todo = todoDataGridView.Rows[rowIndex].DataBoundItem as Todo;
-       if (todo != null && todo.DueDate.HasValue)
-       {
-           _dueDatePicker.Value = todo.DueDate.Value;
-           _dueDatePicker.Checked = true;
-       }
-       else
-       {
-           _dueDatePicker.Value = DateTime.Now;
-           _dueDatePicker.Checked = false;
-       }
+        var todo = todoDataGridView.Rows[rowIndex].DataBoundItem as Todo;
+        if (todo != null && todo.DueDate.HasValue)
+        {
+            _dueDatePicker.Value = todo.DueDate.Value;
+            _dueDatePicker.Checked = true;
+        }
+        else
+        {
+            _dueDatePicker.Value = DateTime.Now;
+            _dueDatePicker.Checked = false;
+        }
 
-       _dueDateRowIndex = rowIndex;
-       _dueDateColIndex = colIndex;
-       _isDuePickerDroppedDown = false;
-       _dueDatePicker.Visible = true;
-       _dueDatePicker.BringToFront();
-       _dueDatePicker.Focus();
-   }
+        _dueDateRowIndex = rowIndex;
+        _dueDateColIndex = colIndex;
+        _isDuePickerDroppedDown = false;
+        _dueDatePicker.Visible = true;
+        _dueDatePicker.BringToFront();
+        _dueDatePicker.Focus();
+    }
 
-   private void HideDueDatePicker()
-   {
-       if (_dueDatePicker == null) return;
-       _dueDatePicker.Visible = false;
-       _isDuePickerDroppedDown = false;
-       _dueDateRowIndex = _dueDateColIndex = -1;
-   }
+    private void HideDueDatePicker()
+    {
+        if (_dueDatePicker == null) return;
+        _dueDatePicker.Visible = false;
+        _isDuePickerDroppedDown = false;
+        _dueDateRowIndex = _dueDateColIndex = -1;
+    }
 
-   private void CommitDueDateFromPicker()
-   {
-       if (_dueDatePicker == null || _dueDateRowIndex < 0) return;
+    private void CommitDueDateFromPicker()
+    {
+        if (_dueDatePicker == null || _dueDateRowIndex < 0) return;
 
-       var row = todoDataGridView.Rows[_dueDateRowIndex];
-       var todo = row.DataBoundItem as Todo;
-       if (todo == null) { HideDueDatePicker(); return; }
+        var row = todoDataGridView.Rows[_dueDateRowIndex];
+        var todo = row.DataBoundItem as Todo;
+        if (todo == null)
+        {
+            HideDueDatePicker();
+            return;
+        }
 
-       todo.DueDate = _dueDatePicker.Checked ? _dueDatePicker.Value : null;
+        todo.DueDate = _dueDatePicker.Checked ? _dueDatePicker.Value : null;
 
-       _todoService.Update(todo);
-       LoadTodos();
+        _todoService.Update(todo);
+        LoadTodos();
 
-       HideDueDatePicker();
-   }
+        HideDueDatePicker();
+    }
 
-   private void todoDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
-   {
-       if (e.RowIndex < 0) return;
-       var col = todoDataGridView.Columns[e.ColumnIndex];
-       if (col != null && col.Name == "colDueDate")
-       {
-           ShowDueDatePicker(e.RowIndex, e.ColumnIndex);
-       }
-   }
+    private void todoDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+    {
+        if (e.RowIndex < 0) return;
+        var col = todoDataGridView.Columns[e.ColumnIndex];
+        if (col != null && col.Name == "colDueDate")
+        {
+            ShowDueDatePicker(e.RowIndex, e.ColumnIndex);
+        }
+    }
 
-   private void todoDataGridView_CellFormatting(object sender, System.Windows.Forms.DataGridViewCellFormattingEventArgs e)
-   {
-       if (e.RowIndex < 0) return;
-       var grid = this.todoDataGridView;
-       var column = grid.Columns[e.ColumnIndex];
-       if (column == null || column.Name != "colDueDate") return;
+    private void todoDataGridView_CellFormatting(object sender,
+        System.Windows.Forms.DataGridViewCellFormattingEventArgs e)
+    {
+        if (e.RowIndex < 0) return;
+        var grid = this.todoDataGridView;
+        var column = grid.Columns[e.ColumnIndex];
+        if (column == null || column.Name != "colDueDate") return;
 
-       var row = grid.Rows[e.RowIndex];
-       var data = row.DataBoundItem as Todo;
-       if (data == null) return;
+        var row = grid.Rows[e.RowIndex];
+        var data = row.DataBoundItem as Todo;
+        if (data == null) return;
 
-       e.CellStyle.ForeColor = grid.DefaultCellStyle.ForeColor;
-       e.CellStyle.SelectionForeColor = grid.DefaultCellStyle.SelectionForeColor;
+        e.CellStyle.ForeColor = grid.DefaultCellStyle.ForeColor;
+        e.CellStyle.SelectionForeColor = grid.DefaultCellStyle.SelectionForeColor;
 
-       if (!data.IsDone && data.DueDate.HasValue)
-       {
-           var now = DateTime.Now;
-           var due = data.DueDate.Value;
-           if (due <= now.AddDays(1))
-           {
-               e.CellStyle.ForeColor = System.Drawing.Color.Red;
-               e.CellStyle.SelectionForeColor = System.Drawing.Color.Red;
-           }
-       }
-   }
-
+        if (!data.IsDone && data.DueDate.HasValue)
+        {
+            var now = DateTime.Now;
+            var due = data.DueDate.Value;
+            if (due <= now.AddDays(1))
+            {
+                e.CellStyle.ForeColor = System.Drawing.Color.Red;
+                e.CellStyle.SelectionForeColor = System.Drawing.Color.Red;
+            }
+        }
+    }
 }

@@ -29,6 +29,7 @@ partial class Form1
     /// </summary>
     private void InitializeComponent()
     {
+        System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
         splitContainer1 = new System.Windows.Forms.SplitContainer();
         tagDataGridView = new System.Windows.Forms.DataGridView();
         colTag = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -99,6 +100,7 @@ partial class Form1
         tagDataGridView.TabIndex = 4;
         tagDataGridView.Text = "dataGridView2";
         tagDataGridView.CellClick += tagDataGridView_CellClick;
+        tagDataGridView.CellContentClick += tagDataGridView_CellContentClick;
         // 
         // colTag
         // 
@@ -130,8 +132,8 @@ partial class Form1
         // 
         // btnLogout
         // 
-        btnLogout.Dock = System.Windows.Forms.DockStyle.Top;
-        btnLogout.Location = new System.Drawing.Point(3, 103);
+        btnLogout.Dock = System.Windows.Forms.DockStyle.Bottom;
+        btnLogout.Location = new System.Drawing.Point(3, 148);
         btnLogout.Name = "btnLogout";
         btnLogout.Size = new System.Drawing.Size(297, 29);
         btnLogout.TabIndex = 3;
@@ -141,7 +143,7 @@ partial class Form1
         // btnShowChart
         // 
         btnShowChart.Dock = System.Windows.Forms.DockStyle.Top;
-        btnShowChart.Location = new System.Drawing.Point(3, 132);
+        btnShowChart.Location = new System.Drawing.Point(3, 103);
         btnShowChart.Name = "btnShowChart";
         btnShowChart.Size = new System.Drawing.Size(297, 29);
         btnShowChart.TabIndex = 3;
@@ -205,8 +207,8 @@ partial class Form1
         todoDataGridView.TabIndex = 2;
         todoDataGridView.Text = "dataGridView1";
         todoDataGridView.CellContentClick += todoDataGridView_CellContentClick;
-        todoDataGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.todoDataGridView_CellFormatting);
-        todoDataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.todoDataGridView_CellValueChanged);
+        todoDataGridView.CellFormatting += todoDataGridView_CellFormatting;
+        todoDataGridView.CellValueChanged += todoDataGridView_CellValueChanged;
         // 
         // colStatus
         // 
@@ -220,16 +222,15 @@ partial class Form1
         colContent.MinimumWidth = 6;
         colContent.Name = "colContent";
         // 
-        // colDueDate //new
+        // colDueDate
         // 
+        colDueDate.DataPropertyName = "DueDate";
+        dataGridViewCellStyle1.Format = "g";
+        dataGridViewCellStyle1.NullValue = null;
+        colDueDate.DefaultCellStyle = dataGridViewCellStyle1;
         colDueDate.HeaderText = "Hạn chót";
         colDueDate.MinimumWidth = 6;
         colDueDate.Name = "colDueDate";
-        colDueDate.DataPropertyName = "DueDate";
-        var dueDateCellStyle = new System.Windows.Forms.DataGridViewCellStyle();
-        dueDateCellStyle.Format = "g";
-        dueDateCellStyle.NullValue = null;
-        colDueDate.DefaultCellStyle = dueDateCellStyle;
         // 
         // colDelete
         // 
