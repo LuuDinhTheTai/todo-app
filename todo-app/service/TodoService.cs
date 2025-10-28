@@ -1,5 +1,6 @@
 ﻿using todo_app.controller;
 using todo_app.entity;
+using todo_app.exception;
 using todo_app.repository;
 
 namespace todo_app.service;
@@ -13,11 +14,20 @@ public class TodoService
         _todoRepository = controller.TodoRepository;
     }
     
-    public void Create(string content, Tag tag)
+    public void Create(string? content, Tag? tag)
     {
+        if (string.IsNullOrEmpty(content))
+        {
+            throw new AppException("Nội dung công việc không hợp lệ.");
+        }
+        if (tag == null)
+        {
+            throw new AppException("Tag không hợp lệ.");
+        }
+        
         Todo todo = new Todo();
         todo.Content = content;
-        todo.Tags.Add(tag);
+        todo.TagId = tag.Id;
         _todoRepository.Create(todo);
     }
     

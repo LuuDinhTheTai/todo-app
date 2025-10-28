@@ -35,7 +35,9 @@ BEGIN
         Content NVARCHAR(200) NOT NULL,
         Note NVARCHAR(500) NULL,
         DueDate DATETIME NULL,
-        IsDone BIT NOT NULL DEFAULT 0
+        IsDone BIT NOT NULL DEFAULT 0,
+        TagId INT NOT NULL,
+        CONSTRAINT FK_Todos_Tags FOREIGN KEY (TagId) REFERENCES dbo.Tags(Id)
     );
 END
 GO

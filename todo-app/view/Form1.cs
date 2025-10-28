@@ -76,7 +76,7 @@ public partial class Form1 : Form
 
         if (todoDataGridView.Columns["colDelete"] != null)
         {
-
+            
         }
     }
 
@@ -93,16 +93,6 @@ public partial class Form1 : Form
     private void btnCreateTodo_Click(object sender, EventArgs e)
     {
         string content = tBContent.Text;
-        if (string.IsNullOrEmpty(content))
-        {
-            return;
-        }
-
-        if (_currentTag == null)
-        {
-            return;
-        }
-
         _todoService.Create(content, _currentTag);
 
         tBContent.Clear();
@@ -186,6 +176,7 @@ public partial class Form1 : Form
         }
 
         _currentTodos = _todoService.FindByTagId(_currentTag.Id);
+        todoDataGridView.DataSource = null;
         todoDataGridView.DataSource = _currentTodos.OrderBy(t => t.IsDone).ToList();
     }
 
