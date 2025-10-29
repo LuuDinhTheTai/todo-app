@@ -47,10 +47,12 @@ public partial class Form1 : Form
             return;
         }
 
+        lblUsername.Text = "Xin chào, " + _loggedInAccount.GetUsername();
+
         ConfigTagDataGridView();
         ConfigTodoDataGridView();
+        
         LoadTags();
-        LoadTodos();
 
         InitDueDatePicker();
 
@@ -89,22 +91,29 @@ public partial class Form1 : Form
     }
 
     // HANDLE EVENT
-    private void btnCreateTodo_Click(object sender, EventArgs e)
-    {
-        string content = tBContent.Text;
-        _todoService.Create(content, _currentTag);
 
-        tBContent.Clear();
-        LoadTodos();
+    private void tbCreateTag_KeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.KeyCode == Keys.Enter)
+        {
+            string tagName = tbCreateTag.Text;
+            _tagService.Create(tagName);
+
+            tbCreateTag.Clear();
+            LoadTags();
+        }
     }
 
-    private void btnCreateTag_Click(object sender, EventArgs e)
+    private void tbCreateTodo_KeyDown(object sender, KeyEventArgs e)
     {
-        string tagName = tBTagName.Text;
-        _tagService.Create(tagName);
+        if (e.KeyCode == Keys.Enter)
+        {
+            string content = tbCreateTodo.Text;
+            _todoService.Create(content, _currentTag);
 
-        tBTagName.Clear();
-        LoadTags();
+            tbCreateTodo.Clear();
+            LoadTodos();
+        }
     }
 
     private void todoDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -165,7 +174,6 @@ public partial class Form1 : Form
     {
         var tags = _tagService.FindAll();
         tagDataGridView.DataSource = tags.OrderBy(t => t.Name).ToList();
-        _currentTag = tags.FirstOrDefault();
     }
 
     private void LoadTodos()
@@ -197,6 +205,7 @@ public partial class Form1 : Form
         if (value is string)
         {
             _currentTag = _tagService.FindByName((string)value);
+            lbTagName.Text = _currentTag.Name;
         }
 
         LoadTodos();
@@ -215,7 +224,8 @@ public partial class Form1 : Form
             if (tag == null)
                 return;
 
-            var result = MessageBox.Show("Xóa danh sách này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var result = MessageBox.Show("Xóa danh sách này?", "Xác nhận", MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
             if (result != DialogResult.Yes)
                 return;
 
