@@ -1,4 +1,4 @@
-﻿using todo_app.controller;
+using todo_app.controller;
 using todo_app.entity;
 using todo_app.exception;
 using todo_app.repository;
@@ -45,6 +45,44 @@ public class AccountService
         };
 
         _accountRepository.Create(account);
+    }
+
+    public void ChangePassword(string? oldPassword, string? newPassword, string? confirmNewPassword)
+    {
+        if (!_loggedInAccount.IsLoggedIn())
+        {
+            throw new AppException("Chưa đăng nhập.");
+        }
+
+        if (string.IsNullOrEmpty(oldPassword))
+        {
+            throw new AppException("Mật khẩu cũ không hợp lệ.");
+        }
+
+        ValidatePassword(newPassword);
+
+        if (string.IsNullOrEmpty(confirmNewPassword))
+        {
+            throw new AppException("Nhập lại mật khẩu mới không hợp lệ.");
+        }
+
+        if (newPassword != confirmNewPassword)
+        {
+            throw new AppException("Mật khẩu mới không khớp.");
+        }
+
+        var account = _accountRepository.FindByUsername(_loggedInAccount.GetUsername());
+        if (account == null)
+        {
+            throw new AppException("Tài khoản không tồn tại.");
+        }
+
+        if (account.Password != oldPassword)
+        {
+            throw new AppException("Mật khẩu cũ không đúng.");
+        }
+
+        _accountRepository.UpdatePassword(account.Id, newPassword!);
     }
 
     private void ValidateUsername(string? username)
