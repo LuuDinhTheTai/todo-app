@@ -63,7 +63,6 @@ namespace todo_app.view
             {
                 SizeF textSize = g.MeasureString(tbCalendarTodo.Text, tbCalendarTodo.Font, tbCalendarTodo.Width);
                 tbCalendarTodo.ScrollBars = textSize.Height > tbCalendarTodo.Height ? ScrollBars.Vertical : ScrollBars.None;
-                tbCalendarTodo.Enabled = true;
             }
         }
 

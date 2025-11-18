@@ -36,7 +36,7 @@ namespace todo_app.view
             if (_currentTag != null)
             {
                 lbTag.Text = _currentTag.Name;
-                _todos = _controller.TodoService.FindByTagId(_currentTag.Id);
+                _todos = _todoService.FindByTagId(_currentTag.Id);
             }
             ShowDays(DateTime.Now.Month, DateTime.Now.Year);
         }
