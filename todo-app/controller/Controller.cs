@@ -9,12 +9,14 @@ public class Controller
     public AccountRepository AccountRepository;
     public TagRepository TagRepository;
     public TodoRepository TodoRepository;
+    public SubTodoRepository SubTodoRepository;
 
     public AccountService AccountService;
     public TagService TagService;
     public TodoService TodoService;
     public FileService FileService;
     public ChartService ChartService;
+    public SubTodoService SubTodoService;
 
     public MainForm MainForm;
     public LoginForm LoginForm;
@@ -29,12 +31,14 @@ public class Controller
         AccountRepository = new AccountRepository();
         TagRepository = new TagRepository();
         TodoRepository = new TodoRepository();
+        SubTodoRepository = new SubTodoRepository();
 
         AccountService = new AccountService(this);
         TagService = new TagService(this);
         TodoService = new TodoService(this);
         FileService = new FileService(this);
         ChartService = new ChartService(this);
+        SubTodoService = new SubTodoService(this);
 
         MainForm = new MainForm(this);
         LoginForm = new LoginForm(this);

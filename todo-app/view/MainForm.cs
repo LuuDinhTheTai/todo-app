@@ -12,14 +12,15 @@ public partial class MainForm : Form
     private TagService _tagService;
     private TodoService _todoService;
     private FileService _fileService;
-    
+    private SubTodoService _subTodoService;
+
     private LoginForm _loginForm;
 
     private LoggedInAccount _loggedInAccount;
 
     private Tag? _currentTag = null;
     private Todo? _currentTodo = null;
-
+    private SubTodo? _currentSubTodo = null;
     public MainForm()
     {
         InitializeComponent();
@@ -32,7 +33,7 @@ public partial class MainForm : Form
         _tagService = controller.TagService;
         _todoService = controller.TodoService;
         _fileService = controller.FileService;
-
+        _subTodoService = controller.SubTodoService;
         _loggedInAccount = controller.LoggedInAccount;
     }
 
@@ -156,6 +157,7 @@ public partial class MainForm : Form
 
     private void ShowRightSideBar(Todo todo)
     {
+
         if (todo == null)
         {
             return;
@@ -168,6 +170,9 @@ public partial class MainForm : Form
         lbCurrentTodoTagName.Text = _tagService.FindByTodoId(todo.Id).Name;
 
         panelRightSideBar.Width = 300;
+
+        List<SubTodo> subTodos = _subTodoService.FindByTodoId(todo.Id);
+        LoadSubTodos(subTodos);
     }
 
     private void HideRightSideBar()
@@ -190,6 +195,7 @@ public partial class MainForm : Form
         }
 
         _currentTodo = selectedTodo;
+
         ShowRightSideBar(selectedTodo);
     }
 
@@ -419,5 +425,101 @@ public partial class MainForm : Form
     {
         var todos = _todoService.SortByContent(_currentTag!.Id, ascending);
         LoadTodos(todos);
+    }
+    private void LoadSubTodos(List<SubTodo> subTodos)
+    {
+        if (_currentTodo == null)
+        {
+            dgvSubTodos.DataSource = null;
+            return;
+        }
+        dgvSubTodos.DataSource = null;
+        dgvSubTodos.DataSource = subTodos.OrderBy(st => st.IsDone).ToList();
+
+        try
+        {
+            dgvSubTodos.Columns["TodoId"].Visible = false;
+            dgvSubTodos.Columns["Id"].Visible = false;
+            dgvSubTodos.Columns["IsDone"].Width = 50;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
+    }
+    private void button1_Click(object sender, EventArgs e)
+    {
+        string content = textBoxSubInput.Text;
+        _subTodoService.Create(content, _currentTodo);
+        textBoxSubInput.Clear();
+
+        List<SubTodo> subTodos = _subTodoService.FindByTodoId(_currentTodo!.Id);
+        LoadSubTodos(subTodos);
+    }
+
+    private void textBoxSubInput_TextChanged(object sender, EventArgs e)
+    {
+        if (textBoxSubInput.Text.Length > 0)
+        {
+            AddSubTodos.Enabled = true;
+        }
+        else
+        {
+            AddSubTodos.Enabled = false;
+        }
+    }
+
+    private void dgvSubTodos_CellContentClick(object sender, DataGridViewCellEventArgs e)
+    {
+        if (e.RowIndex < 0)
+        {
+            return;
+        }
+
+        if (dgvSubTodos.Columns[e.ColumnIndex].Name != "IsDone")
+        {
+            return;
+        }
+
+        var selectedSubTodo = dgvSubTodos.Rows[e.RowIndex].DataBoundItem as SubTodo;
+        if (selectedSubTodo == null)
+        {
+            return;
+        }
+
+        _currentSubTodo = selectedSubTodo;
+
+        _subTodoService.CheckSubTodo(selectedSubTodo.Id, !selectedSubTodo.IsDone);
+
+        List<SubTodo> subTodos = _subTodoService.FindByTodoId(_currentTodo!.Id);
+        LoadSubTodos(subTodos);
+    }
+
+    private void btnDeleteSub_Click(object sender, EventArgs e)
+    {
+        if(_currentSubTodo == null)
+        {
+            return;
+        }
+        _subTodoService.Delete(_currentSubTodo.Id);
+        List<SubTodo> subTodos = _subTodoService.FindByTodoId(_currentTodo!.Id);
+        LoadSubTodos(subTodos);
+
+    }
+
+    private void dgvSubTodos_CellClick(object sender, DataGridViewCellEventArgs e)
+    {
+        if(e.RowIndex < 0)
+        {
+            return;
+        }
+        var selectedSubTodo = dgvSubTodos.Rows[e.RowIndex].DataBoundItem as SubTodo;
+        if (selectedSubTodo == null)
+        {
+            return;
+        }
+        _currentSubTodo = selectedSubTodo;
     }
 }

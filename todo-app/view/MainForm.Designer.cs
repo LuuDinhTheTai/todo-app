@@ -33,6 +33,7 @@ partial class MainForm
         DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
         DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
         DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+        DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
         sfdExcel = new SaveFileDialog();
         panelHeader = new Panel();
@@ -45,6 +46,11 @@ partial class MainForm
         dgvTags = new DataGridView();
         tbCreateTag = new TextBox();
         panelRightSideBar = new Panel();
+        btnDeleteSub = new Button();
+        dgvSubTodos = new DataGridView();
+        label4 = new Label();
+        textBoxSubInput = new TextBox();
+        AddSubTodos = new Button();
         lbCurrentTodoTagName = new Label();
         label1 = new Label();
         cbStatusTodo = new CheckBox();
@@ -82,6 +88,7 @@ partial class MainForm
         panelLeftSideBar.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)dgvTags).BeginInit();
         panelRightSideBar.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)dgvSubTodos).BeginInit();
         panel1.SuspendLayout();
         panelMainContent.SuspendLayout();
         panel6.SuspendLayout();
@@ -221,6 +228,11 @@ partial class MainForm
         // panelRightSideBar
         // 
         panelRightSideBar.BackColor = SystemColors.Window;
+        panelRightSideBar.Controls.Add(btnDeleteSub);
+        panelRightSideBar.Controls.Add(dgvSubTodos);
+        panelRightSideBar.Controls.Add(label4);
+        panelRightSideBar.Controls.Add(textBoxSubInput);
+        panelRightSideBar.Controls.Add(AddSubTodos);
         panelRightSideBar.Controls.Add(lbCurrentTodoTagName);
         panelRightSideBar.Controls.Add(label1);
         panelRightSideBar.Controls.Add(cbStatusTodo);
@@ -234,6 +246,77 @@ partial class MainForm
         panelRightSideBar.Name = "panelRightSideBar";
         panelRightSideBar.Size = new Size(300, 671);
         panelRightSideBar.TabIndex = 2;
+        // 
+        // btnDeleteSub
+        // 
+        btnDeleteSub.BackColor = Color.FromArgb(255, 128, 128);
+        btnDeleteSub.FlatStyle = FlatStyle.Popup;
+        btnDeleteSub.ForeColor = Color.Black;
+        btnDeleteSub.Location = new Point(213, 486);
+        btnDeleteSub.Name = "btnDeleteSub";
+        btnDeleteSub.Size = new Size(75, 26);
+        btnDeleteSub.TabIndex = 15;
+        btnDeleteSub.Text = "Xoá mục";
+        btnDeleteSub.UseVisualStyleBackColor = false;
+        btnDeleteSub.Click += btnDeleteSub_Click;
+        // 
+        // dgvSubTodos
+        // 
+        dgvSubTodos.AllowUserToAddRows = false;
+        dgvSubTodos.AllowUserToDeleteRows = false;
+        dgvSubTodos.AllowUserToResizeColumns = false;
+        dgvSubTodos.AllowUserToResizeRows = false;
+        dgvSubTodos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        dgvSubTodos.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+        dgvSubTodos.BackgroundColor = SystemColors.Control;
+        dgvSubTodos.BorderStyle = BorderStyle.None;
+        dgvSubTodos.CellBorderStyle = DataGridViewCellBorderStyle.None;
+        dgvSubTodos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+        dgvSubTodos.ColumnHeadersVisible = false;
+        dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+        dataGridViewCellStyle2.BackColor = SystemColors.Window;
+        dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
+        dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+        dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+        dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+        dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+        dgvSubTodos.DefaultCellStyle = dataGridViewCellStyle2;
+        dgvSubTodos.Location = new Point(6, 298);
+        dgvSubTodos.Name = "dgvSubTodos";
+        dgvSubTodos.RowHeadersVisible = false;
+        dgvSubTodos.Size = new Size(282, 182);
+        dgvSubTodos.TabIndex = 14;
+        dgvSubTodos.CellClick += dgvSubTodos_CellClick;
+        dgvSubTodos.CellContentClick += dgvSubTodos_CellContentClick;
+        // 
+        // label4
+        // 
+        label4.AutoSize = true;
+        label4.Location = new Point(16, 223);
+        label4.Name = "label4";
+        label4.Size = new Size(74, 15);
+        label4.TabIndex = 13;
+        label4.Text = "Việc cần làm";
+        // 
+        // textBoxSubInput
+        // 
+        textBoxSubInput.Location = new Point(6, 253);
+        textBoxSubInput.Name = "textBoxSubInput";
+        textBoxSubInput.Size = new Size(192, 23);
+        textBoxSubInput.TabIndex = 12;
+        // 
+        // AddSubTodos
+        // 
+        AddSubTodos.BackColor = SystemColors.MenuHighlight;
+        AddSubTodos.FlatStyle = FlatStyle.Flat;
+        AddSubTodos.ForeColor = SystemColors.ControlLightLight;
+        AddSubTodos.Location = new Point(204, 251);
+        AddSubTodos.Name = "AddSubTodos";
+        AddSubTodos.Size = new Size(84, 25);
+        AddSubTodos.TabIndex = 11;
+        AddSubTodos.Text = "Thêm";
+        AddSubTodos.UseVisualStyleBackColor = false;
+        AddSubTodos.Click += button1_Click;
         // 
         // lbCurrentTodoTagName
         // 
@@ -372,14 +455,14 @@ partial class MainForm
         dgvTodos.BackgroundColor = SystemColors.Control;
         dgvTodos.BorderStyle = BorderStyle.None;
         dgvTodos.CellBorderStyle = DataGridViewCellBorderStyle.None;
-        dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-        dataGridViewCellStyle2.BackColor = SystemColors.Control;
-        dataGridViewCellStyle2.Font = new Font("Segoe UI", 11F);
-        dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
-        dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-        dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-        dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-        dgvTodos.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+        dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+        dataGridViewCellStyle3.BackColor = SystemColors.Control;
+        dataGridViewCellStyle3.Font = new Font("Segoe UI", 11F);
+        dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
+        dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+        dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+        dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+        dgvTodos.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
         dgvTodos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
         dgvTodos.ColumnHeadersVisible = false;
         dgvTodos.Dock = DockStyle.Fill;
@@ -387,8 +470,8 @@ partial class MainForm
         dgvTodos.Name = "dgvTodos";
         dgvTodos.ReadOnly = true;
         dgvTodos.RowHeadersVisible = false;
-        dataGridViewCellStyle3.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        dgvTodos.RowsDefaultCellStyle = dataGridViewCellStyle3;
+        dataGridViewCellStyle4.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        dgvTodos.RowsDefaultCellStyle = dataGridViewCellStyle4;
         dgvTodos.Size = new Size(714, 571);
         dgvTodos.TabIndex = 3;
         dgvTodos.CellClick += dgvTodos_CellClick;
@@ -515,38 +598,38 @@ partial class MainForm
         // 
         cmsUserMenu.Items.AddRange(new ToolStripItem[] { miExportFile, miLogin, miRegister, toolStripSeparator1, miLogout });
         cmsUserMenu.Name = "cmsUserMenu";
-        cmsUserMenu.Size = new Size(147, 98);
+        cmsUserMenu.Size = new Size(148, 98);
         // 
         // miExportFile
         // 
         miExportFile.Name = "miExportFile";
-        miExportFile.Size = new Size(146, 22);
+        miExportFile.Size = new Size(147, 22);
         miExportFile.Text = "Xuất file Excel";
         miExportFile.Click += miExportFile_Click;
         // 
         // miLogin
         // 
         miLogin.Name = "miLogin";
-        miLogin.Size = new Size(146, 22);
+        miLogin.Size = new Size(147, 22);
         miLogin.Text = "Đăng nhập";
         miLogin.Click += miLogin_Click;
         // 
         // miRegister
         // 
         miRegister.Name = "miRegister";
-        miRegister.Size = new Size(146, 22);
+        miRegister.Size = new Size(147, 22);
         miRegister.Text = "Đăng ký";
         miRegister.Click += miRegister_Click;
         // 
         // toolStripSeparator1
         // 
         toolStripSeparator1.Name = "toolStripSeparator1";
-        toolStripSeparator1.Size = new Size(143, 6);
+        toolStripSeparator1.Size = new Size(144, 6);
         // 
         // miLogout
         // 
         miLogout.Name = "miLogout";
-        miLogout.Size = new Size(146, 22);
+        miLogout.Size = new Size(147, 22);
         miLogout.Text = "Đăng xuất";
         // 
         // cmsTagMenu
@@ -596,6 +679,7 @@ partial class MainForm
         ((System.ComponentModel.ISupportInitialize)dgvTags).EndInit();
         panelRightSideBar.ResumeLayout(false);
         panelRightSideBar.PerformLayout();
+        ((System.ComponentModel.ISupportInitialize)dgvSubTodos).EndInit();
         panel1.ResumeLayout(false);
         panelMainContent.ResumeLayout(false);
         panel6.ResumeLayout(false);
@@ -658,4 +742,9 @@ partial class MainForm
     private Label lbCurrentTodoTagName;
     private Label label1;
     private ComboBox cbSort;
+    private Button AddSubTodos;
+    private Label label4;
+    private TextBox textBoxSubInput;
+    private DataGridView dgvSubTodos;
+    private Button btnDeleteSub;
 }

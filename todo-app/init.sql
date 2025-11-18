@@ -42,3 +42,15 @@ BEGIN
     );
 END
 GO
+
+IF OBJECT_ID('dbo.SubTodos', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.SubTodos (
+        Id INT IDENTITY(1,1) PRIMARY KEY,
+        Content NVARCHAR(100) NOT NULL,
+        IsDone BIT NOT NULL DEFAULT 0,
+        TodoId INT NULL,
+        CONSTRAINT FK_SubTodos_Todos FOREIGN KEY (TodoId) REFERENCES dbo.Todos(Id) ON DELETE CASCADE
+    );
+END
+GO

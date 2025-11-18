@@ -41,12 +41,12 @@ partial class LoginForm
         lblUsername = new Label();
         panel1 = new Panel();
         panel3 = new Panel();
+        label4 = new Label();
+        label3 = new Label();
+        label2 = new Label();
         pictureBox1 = new PictureBox();
         panel2 = new Panel();
         label1 = new Label();
-        label2 = new Label();
-        label3 = new Label();
-        label4 = new Label();
         panel1.SuspendLayout();
         panel3.SuspendLayout();
         ((ISupportInitialize)pictureBox1).BeginInit();
@@ -148,6 +148,38 @@ partial class LoginForm
         panel3.Size = new Size(513, 450);
         panel3.TabIndex = 9;
         // 
+        // label4
+        // 
+        label4.AutoSize = true;
+        label4.Font = new Font("Segoe UI", 13F);
+        label4.ForeColor = SystemColors.MenuHighlight;
+        label4.Location = new Point(212, 254);
+        label4.Name = "label4";
+        label4.Size = new Size(83, 25);
+        label4.TabIndex = 3;
+        label4.Text = "Hiệu quả";
+        // 
+        // label3
+        // 
+        label3.AutoSize = true;
+        label3.Font = new Font("Segoe UI", 13F);
+        label3.ForeColor = SystemColors.MenuHighlight;
+        label3.Location = new Point(212, 225);
+        label3.Name = "label3";
+        label3.Size = new Size(68, 25);
+        label3.TabIndex = 2;
+        label3.Text = "Tiện lợi";
+        // 
+        // label2
+        // 
+        label2.AutoSize = true;
+        label2.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
+        label2.Location = new Point(212, 184);
+        label2.Name = "label2";
+        label2.Size = new Size(213, 41);
+        label2.TabIndex = 1;
+        label2.Text = "Task Manager";
+        // 
         // pictureBox1
         // 
         pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
@@ -182,38 +214,6 @@ partial class LoginForm
         label1.Size = new Size(126, 30);
         label1.TabIndex = 7;
         label1.Text = "Đăng nhập";
-        // 
-        // label2
-        // 
-        label2.AutoSize = true;
-        label2.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
-        label2.Location = new Point(212, 184);
-        label2.Name = "label2";
-        label2.Size = new Size(213, 41);
-        label2.TabIndex = 1;
-        label2.Text = "Task Manager";
-        // 
-        // label3
-        // 
-        label3.AutoSize = true;
-        label3.Font = new Font("Segoe UI", 13F);
-        label3.ForeColor = SystemColors.MenuHighlight;
-        label3.Location = new Point(212, 225);
-        label3.Name = "label3";
-        label3.Size = new Size(68, 25);
-        label3.TabIndex = 2;
-        label3.Text = "Tiện lợi";
-        // 
-        // label4
-        // 
-        label4.AutoSize = true;
-        label4.Font = new Font("Segoe UI", 13F);
-        label4.ForeColor = SystemColors.MenuHighlight;
-        label4.Location = new Point(212, 254);
-        label4.Name = "label4";
-        label4.Size = new Size(83, 25);
-        label4.TabIndex = 3;
-        label4.Text = "Hiệu quả";
         // 
         // LoginForm
         // 
