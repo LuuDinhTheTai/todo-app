@@ -19,6 +19,7 @@ public class Controller
     public MainForm MainForm;
     public LoginForm LoginForm;
     public RegisterForm RegisterForm;
+    public CalendarForm CalendarForm;
 
     public LoggedInAccount LoggedInAccount;
     
