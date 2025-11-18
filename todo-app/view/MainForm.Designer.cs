@@ -1,4 +1,4 @@
-﻿namespace todo_app;
+namespace todo_app;
 
 partial class MainForm
 {
@@ -74,6 +74,7 @@ partial class MainForm
         miRegister = new ToolStripMenuItem();
         toolStripSeparator1 = new ToolStripSeparator();
         miLogout = new ToolStripMenuItem();
+        miChangePassword = new ToolStripMenuItem();
         cmsTagMenu = new ContextMenuStrip(components);
         miDrawChart = new ToolStripMenuItem();
         toolStripSeparator2 = new ToolStripSeparator();
@@ -513,7 +514,7 @@ partial class MainForm
         // 
         // cmsUserMenu
         // 
-        cmsUserMenu.Items.AddRange(new ToolStripItem[] { miExportFile, miLogin, miRegister, toolStripSeparator1, miLogout });
+        cmsUserMenu.Items.AddRange(new ToolStripItem[] { miExportFile, miChangePassword, miLogin, miRegister, toolStripSeparator1, miLogout });
         cmsUserMenu.Name = "cmsUserMenu";
         cmsUserMenu.Size = new Size(147, 98);
         // 
@@ -548,6 +549,14 @@ partial class MainForm
         miLogout.Name = "miLogout";
         miLogout.Size = new Size(146, 22);
         miLogout.Text = "Đăng xuất";
+        miLogout.Click += miLogout_Click;
+        // 
+        // miChangePassword
+        // 
+        miChangePassword.Name = "miChangePassword";
+        miChangePassword.Size = new Size(146, 22);
+        miChangePassword.Text = "Đổi mật khẩu";
+        miChangePassword.Click += miChangePassword_Click;
         // 
         // cmsTagMenu
         // 
@@ -658,4 +667,6 @@ partial class MainForm
     private Label lbCurrentTodoTagName;
     private Label label1;
     private ComboBox cbSort;
+    private ToolStripMenuItem miChangePassword;
+
 }
