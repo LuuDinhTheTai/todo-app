@@ -1,4 +1,4 @@
-﻿﻿using todo_app.repository;
+﻿using todo_app.repository;
 using todo_app.service;
 using todo_app.view;
 
@@ -15,6 +15,8 @@ public class Controller
     public TodoService TodoService;
     public FileService FileService;
     public ChartService ChartService;
+    public RememberMeService RememberMeService;
+
 
     public MainForm MainForm;
     public LoginForm LoginForm;
@@ -29,6 +31,9 @@ public class Controller
         AccountRepository = new AccountRepository();
         TagRepository = new TagRepository();
         TodoRepository = new TodoRepository();
+
+        RememberMeService = new RememberMeService();
+
 
         AccountService = new AccountService(this);
         TagService = new TagService(this);
