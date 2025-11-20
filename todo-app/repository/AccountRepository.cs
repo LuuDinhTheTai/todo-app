@@ -4,7 +4,7 @@ using todo_app.exception;
 
 namespace todo_app.repository;
 
-public class AccountRepository : Repository
+public class AccountRepository
 {
     public void Create(Account account)
     {

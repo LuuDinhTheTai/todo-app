@@ -113,7 +113,8 @@ public partial class MainForm : Form
             dgvTodos.Columns["Id"].Visible = false;
             dgvTodos.Columns["Note"].Visible = false;
             dgvTodos.Columns["DueDate"].Visible = false;
-            dgvTodos.Columns["TagId"].Visible = false;
+            dgvTodos.Columns["IsImportant"].Visible = false;
+            dgvTodos.Columns["ParentId"].Visible = false;
 
             dgvTodos.Columns["IsDone"].Width = 50;
         }
