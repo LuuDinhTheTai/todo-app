@@ -1,114 +1,91 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Collections.Generic;
+using Microsoft.Data.SqlClient;
 using todo_app.entity;
 
-namespace todo_app.repository;
-
-public class TagRepository : Repository
+namespace todo_app.repository
 {
-    public void Create(Tag tag)
+    public class TagRepository : Repository
     {
-        using (SqlConnection connection = Database.GetConnection())
+        public void Create(Tag tag)
         {
-            string sql = "INSERT INTO Tags (AccountId, Name) VALUES (@AccountId, @Name)";
-            using (SqlCommand command = new SqlCommand(sql, connection))
+            using (SqlConnection connection = Database.GetConnection())
             {
-                command.Parameters.AddWithValue("@AccountId", tag.AccountId);
-                command.Parameters.AddWithValue("@Name", tag.Name);
-                command.ExecuteNonQuery();
+                connection.Open();
+                string sql = "INSERT INTO Tags (AccountId, Name) VALUES (@AccountId, @Name)";
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@AccountId", tag.AccountId);
+                    command.Parameters.AddWithValue("@Name", tag.Name);
+                    command.ExecuteNonQuery();
+                }
             }
         }
-    }
 
-    public ICollection<Tag> FindByAccountId(int id)
-    {
-        List<Tag> tags = new List<Tag>();
-        using (SqlConnection connection = Database.GetConnection())
+        public ICollection<Tag> FindByAccountId(int id)
         {
-            string sql = "SELECT Id, AccountId, Name FROM Tags WHERE AccountId = @AccountId";
-            using (SqlCommand command = new SqlCommand(sql, connection))
+            List<Tag> tags = new List<Tag>();
+            using (SqlConnection connection = Database.GetConnection())
             {
-                command.Parameters.AddWithValue("@AccountId", id);
-                using (SqlDataReader reader = command.ExecuteReader())
+                connection.Open();
+                string sql = "SELECT Id, AccountId, Name FROM Tags WHERE AccountId = @AccountId";
+                using (SqlCommand command = new SqlCommand(sql, connection))
                 {
-                    while (reader.Read())
+                    command.Parameters.AddWithValue("@AccountId", id);
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        Tag tag = new Tag
+                        while (reader.Read())
                         {
-                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                            AccountId = reader.GetInt32(reader.GetOrdinal("AccountId")),
-                            Name = reader.GetString(reader.GetOrdinal("Name"))
-                        };
-                        tags.Add(tag);
+                            Tag tag = new Tag
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                AccountId = reader.GetInt32(reader.GetOrdinal("AccountId")),
+                                Name = reader.GetString(reader.GetOrdinal("Name"))
+                            };
+                            tags.Add(tag);
+                        }
                     }
                 }
             }
+            return tags;
         }
-        return tags;
-    }
 
-    public Tag FindByTodoId(int id)
-    {
-        using (SqlConnection connection = Database.GetConnection())
+        public Tag? FindByName(string name)
         {
-            string sql = @"SELECT t.Id, t.AccountId, t.Name 
-                           FROM Tags t
-                           INNER JOIN Todos td ON t.Id = td.TagId
-                           WHERE td.Id = @TodoId";
-            using (SqlCommand command = new SqlCommand(sql, connection))
+            using (SqlConnection connection = Database.GetConnection())
             {
-                command.Parameters.AddWithValue("@TodoId", id);
-                using (SqlDataReader reader = command.ExecuteReader())
+                connection.Open();
+                string sql = "SELECT Id, AccountId, Name FROM Tags WHERE Name = @Name";
+                using (SqlCommand command = new SqlCommand(sql, connection))
                 {
-                    if (reader.Read())
+                    command.Parameters.AddWithValue("@Name", name);
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        Tag tag = new Tag
+                        if (reader.Read())
                         {
-                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                            AccountId = reader.GetInt32(reader.GetOrdinal("AccountId")),
-                            Name = reader.GetString(reader.GetOrdinal("Name"))
-                        };
-                        return tag;
+                            return new Tag
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                AccountId = reader.GetInt32(reader.GetOrdinal("AccountId")),
+                                Name = reader.GetString(reader.GetOrdinal("Name"))
+                            };
+                        }
                     }
                 }
             }
+            return null;
         }
-        return null;
-    }
 
-    public Tag? FindByName(string name)
-    {
-        using (SqlConnection connection = Database.GetConnection())
+        public void Delete(int id)
         {
-            string sql = "SELECT Id, AccountId, Name FROM Tags WHERE Name = @Name";
-            using (SqlCommand command = new SqlCommand(sql, connection))
+            using (SqlConnection connection = Database.GetConnection())
             {
-                command.Parameters.AddWithValue("@Name", name);
-                using (SqlDataReader reader = command.ExecuteReader())
+                connection.Open();
+                string sql = "DELETE FROM Tags WHERE Id = @Id";
+                using (SqlCommand command = new SqlCommand(sql, connection))
                 {
-                    if (reader.Read())
-                    {
-                        Tag tag = new Tag                        {
-                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                            AccountId = reader.GetInt32(reader.GetOrdinal("AccountId")),
-                            Name = reader.GetString(reader.GetOrdinal("Name"))
-                        };
-                        return tag;
-                    }
+                    command.Parameters.AddWithValue("@Id", id);
+                    command.ExecuteNonQuery();
                 }
-            }
-        }
-        return null;
-    }
-
-    public void Delete(int id)
-    {
-        using (SqlConnection connection = Database.GetConnection())
-        {
-            string sql = "DELETE FROM Tags WHERE Id = @Id";
-            using (SqlCommand command = new SqlCommand(sql, connection))
-            {
-                command.Parameters.AddWithValue("@Id", id);
-                command.ExecuteNonQuery();
             }
         }
     }
