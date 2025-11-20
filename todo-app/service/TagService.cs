@@ -3,58 +3,62 @@ using todo_app.entity;
 using todo_app.exception;
 using todo_app.repository;
 
-namespace todo_app.service;
-
-public class TagService
+namespace todo_app.service
 {
-    private TagRepository _tagRepository;
-    
-    private LoggedInAccount _loggedInAccount;
-    
-    public TagService(Controller controller)
+    public class TagService
     {
-        _tagRepository = controller.TagRepository;
-        _loggedInAccount = controller.LoggedInAccount;
-    }
-    
-    public void Create(string? tagName)
-    {
-        if (string.IsNullOrEmpty(tagName))
+        private readonly TagRepository _tagRepository;
+        private readonly LoggedInAccount _loggedInAccount;
+        private readonly TagTodoRepository _tagTodoRepository;
+
+        public TagService(Controller controller)
         {
-            throw new AppException("Tên danh sách không hợp lệ.");
+            _tagRepository = controller.TagRepository;
+            _loggedInAccount = controller.LoggedInAccount;
+            _tagTodoRepository = controller.TagTodoRepository;
         }
 
-        bool isExisted = _tagRepository.FindByName(tagName) != null;
-        if (isExisted)
+        public void Create(string? tagName)
         {
-            throw new AppException("Danh sách đã tồn tại.");
+            if (string.IsNullOrEmpty(tagName))
+            {
+                throw new AppException("Tên danh sách không hợp lệ.");
+            }
+
+            bool isExisted = _tagRepository.FindByName(tagName) != null;
+            if (isExisted)
+            {
+                throw new AppException("Danh sách đã tồn tại.");
+            }
+
+            var tag = new Tag
+            {
+                AccountId = _loggedInAccount.GetId(),
+                Name = tagName
+            };
+            _tagRepository.Create(tag);
         }
 
-        Tag tag = new Tag();
-        tag.AccountId = _loggedInAccount.GetId();
-        tag.Name = tagName;
-        _tagRepository.Create(tag);
-    }
-
-    public List<Tag> FindAll()
-    {
-        var tags = _tagRepository.FindByAccountId(_loggedInAccount.GetId());
-        return tags.ToList();
-    }
-
-    public Tag FindByTodoId(int id)
-    {
-        var tag = _tagRepository.FindByTodoId(id);
-        if (tag == null)
+        public List<Tag> FindAll()
         {
-            throw new AppException("Tag không tồn tại.");
+            return _tagRepository.FindByAccountId(_loggedInAccount.GetId()).ToList();
         }
-        
-        return tag;
-    }
 
-    public void Delete(int id)
-    {
-        _tagRepository.Delete(id);
+        public Tag FindByTodoId(int todoId)
+        {
+            var tagTodos = _tagTodoRepository.FindByTodoId(todoId);
+            Tag tag = _tagRepository.FindById(tagTodos[0].TagId);
+            if (tag == null)
+            {
+                throw new AppException("Danh sách không tồn tại.");
+            }
+
+            return tag;
+        }
+
+        public void Delete(int id)
+        {
+            _tagRepository.Delete(id);
+        }
     }
 }

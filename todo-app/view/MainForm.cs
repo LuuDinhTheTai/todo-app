@@ -47,6 +47,21 @@ public partial class MainForm : Form
     {
         if (!_loggedInAccount.IsLoggedIn())
         {
+            if (_controller.RememberMeService.Load(out var username, out var password))
+            {
+                try
+                {
+                    _controller.AccountService.Login(username, password);
+                }
+                catch
+                {
+                    _controller.RememberMeService.Clear();
+                }
+            }
+        }
+
+        if (!_loggedInAccount.IsLoggedIn())
+        {
             var loginForm = new LoginForm(_controller);
             loginForm.ShowDialog();
         }
@@ -99,7 +114,8 @@ public partial class MainForm : Form
             dgvTodos.Columns["Id"].Visible = false;
             dgvTodos.Columns["Note"].Visible = false;
             dgvTodos.Columns["DueDate"].Visible = false;
-            dgvTodos.Columns["TagId"].Visible = false;
+            dgvTodos.Columns["IsImportant"].Visible = false;
+            dgvTodos.Columns["ParentId"].Visible = false;
 
             dgvTodos.Columns["IsDone"].Width = 50;
         }
@@ -258,6 +274,7 @@ public partial class MainForm : Form
         {
             cmsUserMenu.Items["miExportFile"].Visible = false;
             cmsUserMenu.Items["miLogout"].Visible = false;
+            cmsUserMenu.Items["miChangePassword"].Visible = false;
         }
 
         cmsUserMenu.Show(control, menuPosition);
@@ -382,6 +399,8 @@ public partial class MainForm : Form
 
     private void miLogout_Click(object sender, EventArgs e)
     {
+        _controller.RememberMeService.Clear();
+
         _loggedInAccount.Logout();
         Hide();
         LoginForm loginForm = new LoginForm(_controller);
@@ -426,100 +445,15 @@ public partial class MainForm : Form
         var todos = _todoService.SortByContent(_currentTag!.Id, ascending);
         LoadTodos(todos);
     }
-    private void LoadSubTodos(List<SubTodo> subTodos)
+
+    private void miChangePassword_Click(object sender, EventArgs e)
     {
-        if (_currentTodo == null)
+        if (!_loggedInAccount.IsLoggedIn())
         {
-            dgvSubTodos.DataSource = null;
+            MessageBox.Show("Cần đăng nhập để đổi mật khẩu", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }
-        dgvSubTodos.DataSource = null;
-        dgvSubTodos.DataSource = subTodos.OrderBy(st => st.IsDone).ToList();
-
-        try
-        {
-            dgvSubTodos.Columns["TodoId"].Visible = false;
-            dgvSubTodos.Columns["Id"].Visible = false;
-            dgvSubTodos.Columns["IsDone"].Width = 50;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
-
-    }
-    private void button1_Click(object sender, EventArgs e)
-    {
-        string content = textBoxSubInput.Text;
-        _subTodoService.Create(content, _currentTodo);
-        textBoxSubInput.Clear();
-
-        List<SubTodo> subTodos = _subTodoService.FindByTodoId(_currentTodo!.Id);
-        LoadSubTodos(subTodos);
-    }
-
-    private void textBoxSubInput_TextChanged(object sender, EventArgs e)
-    {
-        if (textBoxSubInput.Text.Length > 0)
-        {
-            AddSubTodos.Enabled = true;
-        }
-        else
-        {
-            AddSubTodos.Enabled = false;
-        }
-    }
-
-    private void dgvSubTodos_CellContentClick(object sender, DataGridViewCellEventArgs e)
-    {
-        if (e.RowIndex < 0)
-        {
-            return;
-        }
-
-        if (dgvSubTodos.Columns[e.ColumnIndex].Name != "IsDone")
-        {
-            return;
-        }
-
-        var selectedSubTodo = dgvSubTodos.Rows[e.RowIndex].DataBoundItem as SubTodo;
-        if (selectedSubTodo == null)
-        {
-            return;
-        }
-
-        _currentSubTodo = selectedSubTodo;
-
-        _subTodoService.CheckSubTodo(selectedSubTodo.Id, !selectedSubTodo.IsDone);
-
-        List<SubTodo> subTodos = _subTodoService.FindByTodoId(_currentTodo!.Id);
-        LoadSubTodos(subTodos);
-    }
-
-    private void btnDeleteSub_Click(object sender, EventArgs e)
-    {
-        if(_currentSubTodo == null)
-        {
-            return;
-        }
-        _subTodoService.Delete(_currentSubTodo.Id);
-        List<SubTodo> subTodos = _subTodoService.FindByTodoId(_currentTodo!.Id);
-        LoadSubTodos(subTodos);
-
-    }
-
-    private void dgvSubTodos_CellClick(object sender, DataGridViewCellEventArgs e)
-    {
-        if(e.RowIndex < 0)
-        {
-            return;
-        }
-        var selectedSubTodo = dgvSubTodos.Rows[e.RowIndex].DataBoundItem as SubTodo;
-        if (selectedSubTodo == null)
-        {
-            return;
-        }
-        _currentSubTodo = selectedSubTodo;
+        var form = new todo_app.view.ChangePasswordForm(_controller);
+        form.ShowDialog();
     }
 }

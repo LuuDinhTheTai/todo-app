@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 
 namespace todo_app;
 
@@ -47,6 +47,10 @@ partial class LoginForm
         pictureBox1 = new PictureBox();
         panel2 = new Panel();
         label1 = new Label();
+        label2 = new Label();
+        label3 = new Label();
+        label4 = new Label();
+        cbRememberMe = new CheckBox();
         panel1.SuspendLayout();
         panel3.SuspendLayout();
         ((ISupportInitialize)pictureBox1).BeginInit();
@@ -188,6 +192,17 @@ partial class LoginForm
         pictureBox1.Size = new Size(200, 200);
         pictureBox1.TabIndex = 0;
         pictureBox1.TabStop = false;
+        //
+        // cbRememberMe
+        //
+        cbRememberMe.AutoSize = true;
+        cbRememberMe.Font = new Font("Segoe UI", 10F);
+        cbRememberMe.Location = new Point(12, 360);
+        cbRememberMe.Name = "cbRememberMe";
+        cbRememberMe.Size = new Size(150, 23);
+        cbRememberMe.TabIndex = 7;
+        cbRememberMe.Text = "Ghi nhớ đăng nhập";
+        cbRememberMe.UseVisualStyleBackColor = true;
         // 
         // panel2
         // 
@@ -195,6 +210,7 @@ partial class LoginForm
         panel2.Controls.Add(label1);
         panel2.Controls.Add(lblPassword);
         panel2.Controls.Add(btnRegister);
+        panel2.Controls.Add(cbRememberMe);
         panel2.Controls.Add(tBPassword);
         panel2.Controls.Add(lblOr);
         panel2.Controls.Add(tBUsername);
@@ -243,6 +259,7 @@ partial class LoginForm
     private System.Windows.Forms.Button btnLogin;
     private System.Windows.Forms.Label lblOr;
     private System.Windows.Forms.Button btnRegister;
+    private System.Windows.Forms.CheckBox cbRememberMe;
 
     #endregion
 

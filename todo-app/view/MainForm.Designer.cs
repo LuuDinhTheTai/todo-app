@@ -1,4 +1,4 @@
-﻿namespace todo_app;
+namespace todo_app;
 
 partial class MainForm
 {
@@ -30,11 +30,10 @@ partial class MainForm
     private void InitializeComponent()
     {
         components = new System.ComponentModel.Container();
+        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
         DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
         DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
         DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-        DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
-        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
         sfdExcel = new SaveFileDialog();
         panelHeader = new Panel();
         btnSearch = new Button();
@@ -80,6 +79,7 @@ partial class MainForm
         miRegister = new ToolStripMenuItem();
         toolStripSeparator1 = new ToolStripSeparator();
         miLogout = new ToolStripMenuItem();
+        miChangePassword = new ToolStripMenuItem();
         cmsTagMenu = new ContextMenuStrip(components);
         miDrawChart = new ToolStripMenuItem();
         toolStripSeparator2 = new ToolStripSeparator();
@@ -117,21 +117,25 @@ partial class MainForm
         // 
         // btnSearch
         // 
-        btnSearch.BackColor = SystemColors.Window;
+        btnSearch.BackColor = SystemColors.MenuHighlight;
+        btnSearch.BackgroundImage = (Image)resources.GetObject("btnSearch.BackgroundImage");
+        btnSearch.BackgroundImageLayout = ImageLayout.Stretch;
         btnSearch.FlatAppearance.BorderSize = 0;
         btnSearch.FlatStyle = FlatStyle.Flat;
         btnSearch.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
         btnSearch.Location = new Point(850, 9);
         btnSearch.Name = "btnSearch";
-        btnSearch.Size = new Size(70, 29);
+        btnSearch.Size = new Size(29, 29);
         btnSearch.TabIndex = 4;
-        btnSearch.Text = "Tìm";
         btnSearch.UseVisualStyleBackColor = false;
         btnSearch.Click += btnSearch_Click;
         // 
         // btnUserMenu
         // 
+        btnUserMenu.BackgroundImage = (Image)resources.GetObject("btnUserMenu.BackgroundImage");
+        btnUserMenu.BackgroundImageLayout = ImageLayout.Stretch;
         btnUserMenu.Dock = DockStyle.Right;
+        btnUserMenu.FlatAppearance.BorderSize = 0;
         btnUserMenu.FlatStyle = FlatStyle.Flat;
         btnUserMenu.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
         btnUserMenu.ForeColor = SystemColors.Window;
@@ -139,7 +143,6 @@ partial class MainForm
         btnUserMenu.Name = "btnUserMenu";
         btnUserMenu.Size = new Size(50, 50);
         btnUserMenu.TabIndex = 3;
-        btnUserMenu.Text = "U";
         btnUserMenu.UseVisualStyleBackColor = true;
         btnUserMenu.Click += btnUserMenu_Click;
         // 
@@ -166,6 +169,8 @@ partial class MainForm
         // 
         // btnToggleLeftSideBar
         // 
+        btnToggleLeftSideBar.BackgroundImage = (Image)resources.GetObject("btnToggleLeftSideBar.BackgroundImage");
+        btnToggleLeftSideBar.BackgroundImageLayout = ImageLayout.Center;
         btnToggleLeftSideBar.Dock = DockStyle.Left;
         btnToggleLeftSideBar.FlatAppearance.BorderSize = 0;
         btnToggleLeftSideBar.FlatStyle = FlatStyle.Flat;
@@ -175,7 +180,6 @@ partial class MainForm
         btnToggleLeftSideBar.Name = "btnToggleLeftSideBar";
         btnToggleLeftSideBar.Size = new Size(60, 50);
         btnToggleLeftSideBar.TabIndex = 0;
-        btnToggleLeftSideBar.Text = "| | |";
         btnToggleLeftSideBar.UseVisualStyleBackColor = true;
         btnToggleLeftSideBar.Click += btnToggleLeftSideBar_Click;
         // 
@@ -596,7 +600,7 @@ partial class MainForm
         // 
         // cmsUserMenu
         // 
-        cmsUserMenu.Items.AddRange(new ToolStripItem[] { miExportFile, miLogin, miRegister, toolStripSeparator1, miLogout });
+        cmsUserMenu.Items.AddRange(new ToolStripItem[] { miExportFile, miChangePassword, miLogin, miRegister, toolStripSeparator1, miLogout });
         cmsUserMenu.Name = "cmsUserMenu";
         cmsUserMenu.Size = new Size(148, 98);
         // 
@@ -631,6 +635,14 @@ partial class MainForm
         miLogout.Name = "miLogout";
         miLogout.Size = new Size(147, 22);
         miLogout.Text = "Đăng xuất";
+        miLogout.Click += miLogout_Click;
+        // 
+        // miChangePassword
+        // 
+        miChangePassword.Name = "miChangePassword";
+        miChangePassword.Size = new Size(146, 22);
+        miChangePassword.Text = "Đổi mật khẩu";
+        miChangePassword.Click += miChangePassword_Click;
         // 
         // cmsTagMenu
         // 
@@ -742,9 +754,6 @@ partial class MainForm
     private Label lbCurrentTodoTagName;
     private Label label1;
     private ComboBox cbSort;
-    private Button AddSubTodos;
-    private Label label4;
-    private TextBox textBoxSubInput;
-    private DataGridView dgvSubTodos;
-    private Button btnDeleteSub;
+    private ToolStripMenuItem miChangePassword;
+
 }
