@@ -5,14 +5,14 @@ using todo_app.entity;
 
 namespace todo_app.repository
 {
-    public class TodoRepository : Repository
+    public class TodoRepository
     {
-        public void Create(Todo todo)
+        public int Create(Todo todo)
         {
             using (SqlConnection connection = Database.GetConnection())
             {
-                connection.Open();
                 string sql = "INSERT INTO Todos (Content, Note, DueDate, IsDone, IsImportant, ParentId) " +
+                             "OUTPUT INSERTED.Id " +
                              "VALUES (@Content, @Note, @DueDate, @IsDone, @IsImportant, @ParentId);";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
@@ -23,7 +23,7 @@ namespace todo_app.repository
                     command.Parameters.AddWithValue("@IsImportant", todo.IsImportant);
                     command.Parameters.AddWithValue("@ParentId", (object)todo.ParentId ?? DBNull.Value);
 
-                    command.ExecuteNonQuery();
+                    return (int)command.ExecuteScalar();
                 }
             }
         }
@@ -32,7 +32,6 @@ namespace todo_app.repository
         {
             using (SqlConnection connection = Database.GetConnection())
             {
-                connection.Open();
                 string sql = "SELECT Id, Content, IsDone, Note, DueDate, IsImportant, ParentId FROM Todos WHERE Id = @Id";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
@@ -63,7 +62,6 @@ namespace todo_app.repository
             var todos = new List<Todo>();
             using (SqlConnection connection = Database.GetConnection())
             {
-                connection.Open();
                 string sql = "SELECT t.Id, t.Content, t.IsDone, t.Note, t.DueDate, t.IsImportant, t.ParentId " +
                              "FROM Todos t INNER JOIN TagTodo tt ON t.Id = tt.TodoId " +
                              "WHERE tt.TagId = @TagId";
@@ -95,7 +93,6 @@ namespace todo_app.repository
         {
             using (SqlConnection connection = Database.GetConnection())
             {
-                connection.Open();
                 string sql = "UPDATE Todos SET Content = @Content, IsDone = @IsDone, Note = @Note, " +
                              "DueDate = @DueDate, IsImportant = @IsImportant, ParentId = @ParentId WHERE Id = @Id";
                 using (SqlCommand command = new SqlCommand(sql, connection))
@@ -116,7 +113,6 @@ namespace todo_app.repository
         {
             using (SqlConnection connection = Database.GetConnection())
             {
-                connection.Open();
                 string sql = "DELETE FROM Todos WHERE Id = @Id";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {

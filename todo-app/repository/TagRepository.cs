@@ -4,13 +4,12 @@ using todo_app.entity;
 
 namespace todo_app.repository
 {
-    public class TagRepository : Repository
+    public class TagRepository
     {
         public void Create(Tag tag)
         {
             using (SqlConnection connection = Database.GetConnection())
             {
-                connection.Open();
                 string sql = "INSERT INTO Tags (AccountId, Name) VALUES (@AccountId, @Name)";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
@@ -21,12 +20,36 @@ namespace todo_app.repository
             }
         }
 
+        public Tag FindById(int id)
+        {
+            using (SqlConnection connection = Database.GetConnection())
+            {
+                string sql = "SELECT Id, AccountId, Name FROM Tags WHERE Id = @Id";
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@Id", id);
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new Tag
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                AccountId = reader.GetInt32(reader.GetOrdinal("AccountId")),
+                                Name = reader.GetString(reader.GetOrdinal("Name"))
+                            };
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
         public ICollection<Tag> FindByAccountId(int id)
         {
             List<Tag> tags = new List<Tag>();
             using (SqlConnection connection = Database.GetConnection())
             {
-                connection.Open();
                 string sql = "SELECT Id, AccountId, Name FROM Tags WHERE AccountId = @AccountId";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
@@ -53,7 +76,6 @@ namespace todo_app.repository
         {
             using (SqlConnection connection = Database.GetConnection())
             {
-                connection.Open();
                 string sql = "SELECT Id, AccountId, Name FROM Tags WHERE Name = @Name";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
@@ -79,7 +101,6 @@ namespace todo_app.repository
         {
             using (SqlConnection connection = Database.GetConnection())
             {
-                connection.Open();
                 string sql = "DELETE FROM Tags WHERE Id = @Id";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
