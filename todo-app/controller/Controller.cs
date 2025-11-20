@@ -2,10 +2,13 @@
 using todo_app.service;
 using todo_app.view;
 
-namespace todo_app.controller
+namespace todo_app.controller;
+
+public class Controller
 {
     public AccountRepository AccountRepository;
     public TagRepository TagRepository;
+    public TagTodoRepository TagTodoRepository;
     public TodoRepository TodoRepository;
 
     public AccountService AccountService;
@@ -27,6 +30,7 @@ namespace todo_app.controller
         
         AccountRepository = new AccountRepository();
         TagRepository = new TagRepository();
+        TagTodoRepository = new TagTodoRepository();
         TodoRepository = new TodoRepository();
 
         AccountService = new AccountService(this);
