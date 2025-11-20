@@ -44,20 +44,20 @@ public partial class MainForm : Form
 
     private void MainForm_Load(object sender, EventArgs e)
     {
-        // if (!_loggedInAccount.IsLoggedIn())
-        // {
-        //     if (_controller.RememberMeService.Load(out var username, out var password))
-        //     {
-        //         try
-        //         {
-        //             _controller.AccountService.Login(username, password);
-        //         }
-        //         catch
-        //         {
-        //             _controller.RememberMeService.Clear();
-        //         }
-        //     }
-        // }
+        if (!_loggedInAccount.IsLoggedIn())
+        {
+            if (_controller.RememberMeService.Load(out var username, out var password))
+            {
+                try
+                {
+                    _controller.AccountService.Login(username, password);
+                }
+                catch
+                {
+                    _controller.RememberMeService.Clear();
+                }
+            }
+        }
 
         if (!_loggedInAccount.IsLoggedIn())
         {
