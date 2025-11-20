@@ -30,10 +30,10 @@ partial class MainForm
     private void InitializeComponent()
     {
         components = new System.ComponentModel.Container();
+        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
         DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
         DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
         DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
         sfdExcel = new SaveFileDialog();
         panelHeader = new Panel();
         btnSearch = new Button();
@@ -110,21 +110,25 @@ partial class MainForm
         // 
         // btnSearch
         // 
-        btnSearch.BackColor = SystemColors.Window;
+        btnSearch.BackColor = SystemColors.MenuHighlight;
+        btnSearch.BackgroundImage = (Image)resources.GetObject("btnSearch.BackgroundImage");
+        btnSearch.BackgroundImageLayout = ImageLayout.Stretch;
         btnSearch.FlatAppearance.BorderSize = 0;
         btnSearch.FlatStyle = FlatStyle.Flat;
         btnSearch.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
         btnSearch.Location = new Point(850, 9);
         btnSearch.Name = "btnSearch";
-        btnSearch.Size = new Size(70, 29);
+        btnSearch.Size = new Size(29, 29);
         btnSearch.TabIndex = 4;
-        btnSearch.Text = "Tìm";
         btnSearch.UseVisualStyleBackColor = false;
         btnSearch.Click += btnSearch_Click;
         // 
         // btnUserMenu
         // 
+        btnUserMenu.BackgroundImage = (Image)resources.GetObject("btnUserMenu.BackgroundImage");
+        btnUserMenu.BackgroundImageLayout = ImageLayout.Stretch;
         btnUserMenu.Dock = DockStyle.Right;
+        btnUserMenu.FlatAppearance.BorderSize = 0;
         btnUserMenu.FlatStyle = FlatStyle.Flat;
         btnUserMenu.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
         btnUserMenu.ForeColor = SystemColors.Window;
@@ -132,7 +136,6 @@ partial class MainForm
         btnUserMenu.Name = "btnUserMenu";
         btnUserMenu.Size = new Size(50, 50);
         btnUserMenu.TabIndex = 3;
-        btnUserMenu.Text = "U";
         btnUserMenu.UseVisualStyleBackColor = true;
         btnUserMenu.Click += btnUserMenu_Click;
         // 
@@ -159,6 +162,8 @@ partial class MainForm
         // 
         // btnToggleLeftSideBar
         // 
+        btnToggleLeftSideBar.BackgroundImage = (Image)resources.GetObject("btnToggleLeftSideBar.BackgroundImage");
+        btnToggleLeftSideBar.BackgroundImageLayout = ImageLayout.Center;
         btnToggleLeftSideBar.Dock = DockStyle.Left;
         btnToggleLeftSideBar.FlatAppearance.BorderSize = 0;
         btnToggleLeftSideBar.FlatStyle = FlatStyle.Flat;
@@ -168,7 +173,6 @@ partial class MainForm
         btnToggleLeftSideBar.Name = "btnToggleLeftSideBar";
         btnToggleLeftSideBar.Size = new Size(60, 50);
         btnToggleLeftSideBar.TabIndex = 0;
-        btnToggleLeftSideBar.Text = "| | |";
         btnToggleLeftSideBar.UseVisualStyleBackColor = true;
         btnToggleLeftSideBar.Click += btnToggleLeftSideBar_Click;
         // 
