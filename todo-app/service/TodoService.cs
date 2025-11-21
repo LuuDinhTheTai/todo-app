@@ -29,7 +29,7 @@ namespace todo_app.service
             {
                 throw new AppException("Nội dung công việc không hợp lệ.");
             }
-            if (dueDate == null)
+            if (dueDate == null )
             {
                 throw new AppException("Ngày hết hạn không hợp lệ.");
             }
@@ -59,6 +59,11 @@ namespace todo_app.service
         public List<Todo> FindByTagId(int tagId)
         {
             return _todoRepository.FindByTagId(tagId).ToList();
+        }
+
+        public List<Todo> FindByParentId(int parentId)
+        {
+            return _todoRepository.FindByParentId(parentId).ToList();
         }
 
         public void UpdateDueDate(int id, DateTime? dueDate)
