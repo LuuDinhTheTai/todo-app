@@ -1,4 +1,5 @@
 using todo_app.exception;
+using todo_app.service;
 
 namespace todo_app
 {
@@ -8,7 +9,7 @@ namespace todo_app
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             ApplicationConfiguration.Initialize();
 
@@ -16,7 +17,11 @@ namespace todo_app
 
             var controller = new controller.Controller();
             controller.Init();
-            
+            if (args.Length > 0 && args[0] == "/notify")
+            {
+                controller.ReminderService.ShowNotification();
+                return;
+            }
             Application.Run(controller.MainForm);
         }
     }

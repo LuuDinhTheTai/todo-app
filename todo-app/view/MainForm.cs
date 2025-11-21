@@ -13,6 +13,7 @@ public partial class MainForm : Form
     private TagService _tagService;
     private TodoService _todoService;
     private FileService _fileService;
+    private ReminderService _reminderService;
 
     private LoginForm _loginForm;
 
@@ -32,6 +33,8 @@ public partial class MainForm : Form
         _tagService = controller.TagService;
         _todoService = controller.TodoService;
         _fileService = controller.FileService;
+        _reminderService = controller.ReminderService;
+
         _loggedInAccount = controller.LoggedInAccount;
     }
 
@@ -57,6 +60,9 @@ public partial class MainForm : Form
                 }
             }
         }
+
+        //_reminderService.CreateOrUpdateReminder(1, DateTime.Now.AddMinutes(1));
+        _reminderService.DeleteReminder(1);
 
         if (!_loggedInAccount.IsLoggedIn())
         {
