@@ -12,9 +12,15 @@ namespace todo_app.view
 {
     public partial class ReminderForm : Form
     {
-        public ReminderForm()
+        public ReminderForm(string reminderText)
         {
             InitializeComponent();
+            lblReminderText.Text = reminderText;
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
