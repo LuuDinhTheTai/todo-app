@@ -1,9 +1,10 @@
-﻿using Microsoft.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using todo_app.entity;
+using todo_app.exception;
 
 namespace todo_app.repository;
 
-public class AccountRepository : Repository
+public class AccountRepository
 {
     public void Create(Account account)
     {
@@ -44,5 +45,23 @@ public class AccountRepository : Repository
         }
 
         return null;
+    }
+
+    public void UpdatePassword(int accountId, string newPassword)
+    {
+        using (SqlConnection connection = Database.GetConnection())
+        {
+            string sql = "UPDATE Accounts SET [Password] = @Password WHERE Id = @Id";
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                command.Parameters.AddWithValue("@Password", newPassword);
+                command.Parameters.AddWithValue("@Id", accountId);
+                int affected = command.ExecuteNonQuery();
+                if (affected == 0)
+                {
+                    throw new AppException("Không thể cập nhật mật khẩu.");
+                }
+            }
+        }
     }
 }

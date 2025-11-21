@@ -46,6 +46,21 @@ public partial class MainForm : Form
     {
         if (!_loggedInAccount.IsLoggedIn())
         {
+            if (_controller.RememberMeService.Load(out var username, out var password))
+            {
+                try
+                {
+                    _controller.AccountService.Login(username, password);
+                }
+                catch
+                {
+                    _controller.RememberMeService.Clear();
+                }
+            }
+        }
+
+        if (!_loggedInAccount.IsLoggedIn())
+        {
             var loginForm = new LoginForm(_controller);
             loginForm.ShowDialog();
         }
@@ -98,7 +113,8 @@ public partial class MainForm : Form
             dgvTodos.Columns["Id"].Visible = false;
             dgvTodos.Columns["Note"].Visible = false;
             dgvTodos.Columns["DueDate"].Visible = false;
-            dgvTodos.Columns["TagId"].Visible = false;
+            dgvTodos.Columns["IsImportant"].Visible = false;
+            dgvTodos.Columns["ParentId"].Visible = false;
 
             dgvTodos.Columns["IsDone"].Width = 50;
         }
@@ -262,6 +278,7 @@ public partial class MainForm : Form
         {
             cmsUserMenu.Items["miExportFile"].Visible = false;
             cmsUserMenu.Items["miLogout"].Visible = false;
+            cmsUserMenu.Items["miChangePassword"].Visible = false;
         }
 
         cmsUserMenu.Show(control, menuPosition);
@@ -386,6 +403,8 @@ public partial class MainForm : Form
 
     private void miLogout_Click(object sender, EventArgs e)
     {
+        _controller.RememberMeService.Clear();
+
         _loggedInAccount.Logout();
         Hide();
         LoginForm loginForm = new LoginForm(_controller);
@@ -440,5 +459,16 @@ public partial class MainForm : Form
         }
         var calendarForm = new CalendarForm(_controller, _currentTag!);
         calendarForm.ShowDialog();
+    }
+}
+    private void miChangePassword_Click(object sender, EventArgs e)
+    {
+        if (!_loggedInAccount.IsLoggedIn())
+        {
+            MessageBox.Show("Cần đăng nhập để đổi mật khẩu", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+        var form = new todo_app.view.ChangePasswordForm(_controller);
+        form.ShowDialog();
     }
 }
