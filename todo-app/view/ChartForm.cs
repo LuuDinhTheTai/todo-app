@@ -49,7 +49,7 @@ namespace todo_app.view
             }
 
             cPie.Series[0].IsValueShownAsLabel = true;
-            cPie.Series[0].LabelFormat = "{0} ({1})";
+            cPie.Series[0].LabelFormat = "{0}";
             cPie.Series[0]["PieLabelStyle"] = "Outside";
             cPie.Series[0]["PieLineColor"] = "Black";
             cPie.Series[0]["PieLineWidth"] = "2";

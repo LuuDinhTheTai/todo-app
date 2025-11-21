@@ -269,6 +269,16 @@ public partial class MainForm : Form
     private void CreateTodo()
     {
         string content = tbCreateTodo.Text;
+
+        List<Todo> existingTodos = _todoService.FindByTagId(_currentTag!.Id);
+        bool isDuplicate = existingTodos.Any(todo => todo.Content.Trim().Equals(content.Trim(), StringComparison.OrdinalIgnoreCase));
+
+        if (isDuplicate)
+        {
+            MessageBox.Show("Tác vụ này đã tồn tại trong thẻ hiện tại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
         DateTime dueDate = dtpCreateTodo.Value;
         _todoService.Create(content, dueDate, _currentTag);
 
@@ -480,6 +490,17 @@ public partial class MainForm : Form
         LoadTodos(todos);
     }
 
+    private void miShowCalendar_Click(object sender, EventArgs e)
+    {
+        if (_currentTag == null)
+        {
+            MessageBox.Show("Vui lòng chọn một thẻ!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+        var calendarForm = new CalendarForm(_controller, _currentTag!);
+        calendarForm.ShowDialog();
+    }
+}
     private void miChangePassword_Click(object sender, EventArgs e)
     {
         if (!_loggedInAccount.IsLoggedIn())

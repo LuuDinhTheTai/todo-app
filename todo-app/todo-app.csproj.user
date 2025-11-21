@@ -4,5 +4,11 @@
     <Compile Update="view\ChartForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="view\CalendarForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="view\UserControlDay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
   </ItemGroup>
 </Project>
