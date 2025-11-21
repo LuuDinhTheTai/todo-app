@@ -10,7 +10,6 @@ public class Controller
     public TagRepository TagRepository;
     public TagTodoRepository TagTodoRepository;
     public TodoRepository TodoRepository;
-    public SubTodoRepository SubTodoRepository;
 
     public AccountService AccountService;
     public TagService TagService;
@@ -33,7 +32,6 @@ public class Controller
         TagRepository = new TagRepository();
         TagTodoRepository = new TagTodoRepository();
         TodoRepository = new TodoRepository();
-        SubTodoRepository = new SubTodoRepository();
 
         AccountService = new AccountService(this);
         TagService = new TagService(this);

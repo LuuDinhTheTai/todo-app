@@ -64,10 +64,40 @@ namespace todo_app.repository
             {
                 string sql = "SELECT t.Id, t.Content, t.IsDone, t.Note, t.DueDate, t.IsImportant, t.ParentId " +
                              "FROM Todos t INNER JOIN TagTodo tt ON t.Id = tt.TodoId " +
-                             "WHERE tt.TagId = @TagId";
+                             "WHERE tt.TagId = @TagId AND t.ParentId IS NULL";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@TagId", tagId);
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            todos.Add(new Todo
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                Content = reader.GetString(reader.GetOrdinal("Content")),
+                                IsDone = reader.GetBoolean(reader.GetOrdinal("IsDone")),
+                                Note = reader.IsDBNull(reader.GetOrdinal("Note")) ? null : reader.GetString(reader.GetOrdinal("Note")),
+                                DueDate = reader.IsDBNull(reader.GetOrdinal("DueDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("DueDate")),
+                                IsImportant = reader.GetBoolean(reader.GetOrdinal("IsImportant")),
+                                ParentId = reader.IsDBNull(reader.GetOrdinal("ParentId")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("ParentId"))
+                            });
+                        }
+                    }
+                }
+            }
+            return todos;
+        }
+
+        public List<Todo> FindByParentId(int parentId)
+        {
+            var todos = new List<Todo>();
+            using (SqlConnection connection = Database.GetConnection())
+            {
+                string sql = "SELECT Id, Content, IsDone, Note, DueDate, IsImportant, ParentId FROM Todos WHERE ParentId = @ParentId";
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@ParentId", parentId);
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
                         while (reader.Read())
