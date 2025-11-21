@@ -10,7 +10,6 @@
         "dependencies": {
           "ClosedXML": "0.105.0",
           "Microsoft.Data.SqlClient": "6.1.2",
-          "Microsoft.Office.Interop.Excel": "16.0.18925.20022",
           "WinForms.DataVisualization": "1.10.0"
         },
         "runtime": {
@@ -361,14 +360,6 @@
           }
         }
       },
-      "Microsoft.Office.Interop.Excel/16.0.18925.20022": {
-        "runtime": {
-          "lib/net5.0/Microsoft.Office.Interop.Excel.dll": {
-            "assemblyVersion": "16.0.0.0",
-            "fileVersion": "16.0.18925.20022"
-          }
-        }
-      },
       "Microsoft.SqlServer.Server/1.0.0": {
         "runtime": {
           "lib/netstandard2.0/Microsoft.SqlServer.Server.dll": {
@@ -637,13 +628,6 @@
       "sha512": "sha512-fQ0VVCba75lknUHGldi3iTKAYUQqbzp1Un8+d9cm9nON0Gs8NAkXddNg8iaUB0qi/ybtAmNWizTR4avdkCJ9pQ==",
       "path": "microsoft.identitymodel.tokens/7.7.1",
       "hashPath": "microsoft.identitymodel.tokens.7.7.1.nupkg.sha512"
-    },
-    "Microsoft.Office.Interop.Excel/16.0.18925.20022": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-Wlhtqu3QfLnDRHc77bJewv5k27VASgcINA3eDAljfZQX9iTuM+12Mt7EJYZpxn+2gBw9dlK7q6riUxuXd4cviw==",
-      "path": "microsoft.office.interop.excel/16.0.18925.20022",
-      "hashPath": "microsoft.office.interop.excel.16.0.18925.20022.nupkg.sha512"
     },
     "Microsoft.SqlServer.Server/1.0.0": {
       "type": "package",
