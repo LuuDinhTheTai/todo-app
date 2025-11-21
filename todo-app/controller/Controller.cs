@@ -17,6 +17,7 @@ public class Controller
     public FileService FileService;
     public ChartService ChartService;
     public RememberMeService RememberMeService;
+    public ReminderService ReminderService;
 
     public MainForm MainForm;
     public LoginForm LoginForm;
@@ -39,6 +40,7 @@ public class Controller
         FileService = new FileService(this);
         ChartService = new ChartService(this);
         RememberMeService = new RememberMeService();
+        ReminderService = new ReminderService(this);
 
         MainForm = new MainForm(this);
         LoginForm = new LoginForm(this);

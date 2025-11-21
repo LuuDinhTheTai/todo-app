@@ -124,7 +124,7 @@
   <data name="btnSearch.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        EQAACxEBf2RfkQAAAvFJREFUaEPtmbtrVFEQxmOjER8gImqrorY2goUmGvwLLKMiCiGC/4OiRaJ9eiMI
+        DAAACwwBP0AiyAAAAvFJREFUaEPtmbtrVFEQxmOjER8gImqrorY2goUmGvwLLKMiCiGC/4OiRaJ9eiMI
         YhmDj1YLH9FSo42NnY8q4ht/8sEEDh93d3P2nrvZ4P7gQth858ydu3fmzMwODQ0Y0H8Au4ELwC3gFfAZ
         +BXXJ+AlMAucB3b5+lUHGAXmgT+snN/APeCY79dzgH3AQ7/DLrgP7PX9ewJwFvjqd1SDJeC022kU4Krf
         RcIbYAoYAw4Am+I6GJ9NA4u+KOGK22sE4JpbDp4Dx13fCuAI8MQ3CZp1Jl4n5ycwAaxzfSe0BpiMPZxx
@@ -143,7 +143,7 @@
   <data name="btnUserMenu.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        EQAACxEBf2RfkQAAAqFJREFUaEPt2MtqFEEUxvFgXChG8AretroTNxoFF4k+goj4ErqNBpdRt4YorkXQ
+        DAAACwwBP0AiyAAAAqFJREFUaEPt2MtqFEEUxvFgXChG8AretroTNxoFF4k+goj4ErqNBpdRt4YorkXQ
         hbcQXepDKL6Al4UadWsU4S8HTrv42p45VdXdA9I/aBhm5pyq6amuy5maGgwGxYBNwClgEXgCvAW+A7/8
         stf23mPgKnDSYjRP74BDwE3gI+k+ADeAg5q3c8Bu4C7wU3uVYQO4A+zSdjoBXAS+ai9asA5c0PZaA2z2
         u96129aWtl8E2Ao815Y6tGZtaj+yANPAU22hB3bDyv+JnoZNkxXtTxJ/YCftvPYrxKfK3NlmFZgDtvk1
@@ -160,7 +160,7 @@
   <data name="btnToggleLeftSideBar.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        EQAACxEBf2RfkQAAAJNJREFUaEPt1sEJw0AUA1EX4mO6d20GJw0oBPZgdBGGDdrDvAI+gzGLtg0AliVp
+        DAAACwwBP0AiyAAAAJNJREFUaEPt1sEJw0AUA1EX4mO6d20GJw0oBPZgdBGGDdrDvAI+gzGLtg0AliVp
         l3RI+qjM26IRf/qhFu+LxpdfhvdFK/w2d94X+YGyy/siv1B2eF/kF4p+D8nL+yK/UvAeD8nzeABYA2t0
         Iu+LWKOTeV/kB8pYo02sUQAoYY1O5H0Ra3Qy74v8QBlrtIk1CgD/8wVokkvnPxWIuAAAAABJRU5ErkJg
         gg==

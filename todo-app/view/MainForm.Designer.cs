@@ -45,6 +45,9 @@ partial class MainForm
         dgvTags = new DataGridView();
         tbCreateTag = new TextBox();
         panelRightSideBar = new Panel();
+        btnDeleteRemind = new Button();
+        dtpRemind = new DateTimePicker();
+        label4 = new Label();
         lbCurrentTodoTagName = new Label();
         label1 = new Label();
         cbStatusTodo = new CheckBox();
@@ -70,11 +73,11 @@ partial class MainForm
         btnCreateTodo = new Button();
         cmsUserMenu = new ContextMenuStrip(components);
         miExportFile = new ToolStripMenuItem();
+        miChangePassword = new ToolStripMenuItem();
         miLogin = new ToolStripMenuItem();
         miRegister = new ToolStripMenuItem();
         toolStripSeparator1 = new ToolStripSeparator();
         miLogout = new ToolStripMenuItem();
-        miChangePassword = new ToolStripMenuItem();
         cmsTagMenu = new ContextMenuStrip(components);
         miDrawChart = new ToolStripMenuItem();
         toolStripSeparator2 = new ToolStripSeparator();
@@ -105,8 +108,9 @@ partial class MainForm
         panelHeader.Controls.Add(btnToggleLeftSideBar);
         panelHeader.Dock = DockStyle.Top;
         panelHeader.Location = new Point(0, 0);
+        panelHeader.Margin = new Padding(3, 4, 3, 4);
         panelHeader.Name = "panelHeader";
-        panelHeader.Size = new Size(1264, 50);
+        panelHeader.Size = new Size(1445, 67);
         panelHeader.TabIndex = 0;
         // 
         // btnSearch
@@ -117,9 +121,10 @@ partial class MainForm
         btnSearch.FlatAppearance.BorderSize = 0;
         btnSearch.FlatStyle = FlatStyle.Flat;
         btnSearch.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-        btnSearch.Location = new Point(850, 9);
+        btnSearch.Location = new Point(971, 12);
+        btnSearch.Margin = new Padding(3, 4, 3, 4);
         btnSearch.Name = "btnSearch";
-        btnSearch.Size = new Size(29, 29);
+        btnSearch.Size = new Size(33, 39);
         btnSearch.TabIndex = 4;
         btnSearch.UseVisualStyleBackColor = false;
         btnSearch.Click += btnSearch_Click;
@@ -133,9 +138,10 @@ partial class MainForm
         btnUserMenu.FlatStyle = FlatStyle.Flat;
         btnUserMenu.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
         btnUserMenu.ForeColor = SystemColors.Window;
-        btnUserMenu.Location = new Point(1214, 0);
+        btnUserMenu.Location = new Point(1388, 0);
+        btnUserMenu.Margin = new Padding(3, 4, 3, 4);
         btnUserMenu.Name = "btnUserMenu";
-        btnUserMenu.Size = new Size(50, 50);
+        btnUserMenu.Size = new Size(57, 67);
         btnUserMenu.TabIndex = 3;
         btnUserMenu.UseVisualStyleBackColor = true;
         btnUserMenu.Click += btnUserMenu_Click;
@@ -143,10 +149,11 @@ partial class MainForm
         // tbSearchTodo
         // 
         tbSearchTodo.Font = new Font("Segoe UI", 12F);
-        tbSearchTodo.Location = new Point(364, 9);
+        tbSearchTodo.Location = new Point(416, 12);
+        tbSearchTodo.Margin = new Padding(3, 4, 3, 4);
         tbSearchTodo.Name = "tbSearchTodo";
         tbSearchTodo.PlaceholderText = " Tìm kiếm tác vụ";
-        tbSearchTodo.Size = new Size(480, 29);
+        tbSearchTodo.Size = new Size(548, 34);
         tbSearchTodo.TabIndex = 2;
         // 
         // label3
@@ -155,9 +162,9 @@ partial class MainForm
         label3.BackColor = SystemColors.MenuHighlight;
         label3.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
         label3.ForeColor = SystemColors.Window;
-        label3.Location = new Point(66, 9);
+        label3.Location = new Point(75, 12);
         label3.Name = "label3";
-        label3.Size = new Size(157, 30);
+        label3.Size = new Size(195, 37);
         label3.TabIndex = 1;
         label3.Text = "Task Manager";
         // 
@@ -171,8 +178,9 @@ partial class MainForm
         btnToggleLeftSideBar.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
         btnToggleLeftSideBar.ForeColor = SystemColors.Window;
         btnToggleLeftSideBar.Location = new Point(0, 0);
+        btnToggleLeftSideBar.Margin = new Padding(3, 4, 3, 4);
         btnToggleLeftSideBar.Name = "btnToggleLeftSideBar";
-        btnToggleLeftSideBar.Size = new Size(60, 50);
+        btnToggleLeftSideBar.Size = new Size(69, 67);
         btnToggleLeftSideBar.TabIndex = 0;
         btnToggleLeftSideBar.UseVisualStyleBackColor = true;
         btnToggleLeftSideBar.Click += btnToggleLeftSideBar_Click;
@@ -183,9 +191,10 @@ partial class MainForm
         panelLeftSideBar.Controls.Add(dgvTags);
         panelLeftSideBar.Controls.Add(tbCreateTag);
         panelLeftSideBar.Dock = DockStyle.Left;
-        panelLeftSideBar.Location = new Point(0, 50);
+        panelLeftSideBar.Location = new Point(0, 67);
+        panelLeftSideBar.Margin = new Padding(3, 4, 3, 4);
         panelLeftSideBar.Name = "panelLeftSideBar";
-        panelLeftSideBar.Size = new Size(250, 671);
+        panelLeftSideBar.Size = new Size(286, 894);
         panelLeftSideBar.TabIndex = 1;
         // 
         // dgvTags
@@ -202,13 +211,15 @@ partial class MainForm
         dgvTags.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
         dgvTags.ColumnHeadersVisible = false;
         dgvTags.Dock = DockStyle.Fill;
-        dgvTags.Location = new Point(0, 27);
+        dgvTags.Location = new Point(0, 32);
+        dgvTags.Margin = new Padding(3, 4, 3, 4);
         dgvTags.Name = "dgvTags";
         dgvTags.ReadOnly = true;
         dgvTags.RowHeadersVisible = false;
+        dgvTags.RowHeadersWidth = 51;
         dataGridViewCellStyle1.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
         dgvTags.RowsDefaultCellStyle = dataGridViewCellStyle1;
-        dgvTags.Size = new Size(250, 644);
+        dgvTags.Size = new Size(286, 862);
         dgvTags.TabIndex = 1;
         dgvTags.CellClick += dgvTags_CellClick;
         // 
@@ -217,15 +228,19 @@ partial class MainForm
         tbCreateTag.Dock = DockStyle.Top;
         tbCreateTag.Font = new Font("Segoe UI", 11F);
         tbCreateTag.Location = new Point(0, 0);
+        tbCreateTag.Margin = new Padding(3, 4, 3, 4);
         tbCreateTag.Name = "tbCreateTag";
         tbCreateTag.PlaceholderText = " + Danh sách mới";
-        tbCreateTag.Size = new Size(250, 27);
+        tbCreateTag.Size = new Size(286, 32);
         tbCreateTag.TabIndex = 0;
         tbCreateTag.KeyDown += tbCreateTag_KeyDown;
         // 
         // panelRightSideBar
         // 
         panelRightSideBar.BackColor = SystemColors.Window;
+        panelRightSideBar.Controls.Add(btnDeleteRemind);
+        panelRightSideBar.Controls.Add(dtpRemind);
+        panelRightSideBar.Controls.Add(label4);
         panelRightSideBar.Controls.Add(lbCurrentTodoTagName);
         panelRightSideBar.Controls.Add(label1);
         panelRightSideBar.Controls.Add(cbStatusTodo);
@@ -235,18 +250,48 @@ partial class MainForm
         panelRightSideBar.Controls.Add(dtpCurrentTodoDueDate);
         panelRightSideBar.Controls.Add(lbCurrentTodoName);
         panelRightSideBar.Dock = DockStyle.Right;
-        panelRightSideBar.Location = new Point(964, 50);
+        panelRightSideBar.Location = new Point(1102, 67);
+        panelRightSideBar.Margin = new Padding(3, 4, 3, 4);
         panelRightSideBar.Name = "panelRightSideBar";
-        panelRightSideBar.Size = new Size(300, 671);
+        panelRightSideBar.Size = new Size(343, 894);
         panelRightSideBar.TabIndex = 2;
+        // 
+        // btnDeleteRemind
+        // 
+        btnDeleteRemind.Location = new Point(295, 133);
+        btnDeleteRemind.Name = "btnDeleteRemind";
+        btnDeleteRemind.Size = new Size(33, 27);
+        btnDeleteRemind.TabIndex = 13;
+        btnDeleteRemind.Text = "X";
+        btnDeleteRemind.UseVisualStyleBackColor = true;
+        // 
+        // dtpRemind
+        // 
+        dtpRemind.Format = DateTimePickerFormat.Short;
+        dtpRemind.Location = new Point(122, 133);
+        dtpRemind.Margin = new Padding(3, 4, 3, 4);
+        dtpRemind.Name = "dtpRemind";
+        dtpRemind.Size = new Size(167, 27);
+        dtpRemind.TabIndex = 12;
+        dtpRemind.Visible = false;
+        // 
+        // label4
+        // 
+        label4.AutoSize = true;
+        label4.Font = new Font("Segoe UI", 10F);
+        label4.Location = new Point(7, 133);
+        label4.Name = "label4";
+        label4.Size = new Size(85, 23);
+        label4.TabIndex = 11;
+        label4.Text = "Nhắc nhở";
         // 
         // lbCurrentTodoTagName
         // 
         lbCurrentTodoTagName.AutoSize = true;
         lbCurrentTodoTagName.Font = new Font("Segoe UI", 10F);
-        lbCurrentTodoTagName.Location = new Point(107, 39);
+        lbCurrentTodoTagName.Location = new Point(122, 52);
         lbCurrentTodoTagName.Name = "lbCurrentTodoTagName";
-        lbCurrentTodoTagName.Size = new Size(18, 19);
+        lbCurrentTodoTagName.Size = new Size(22, 23);
         lbCurrentTodoTagName.TabIndex = 10;
         lbCurrentTodoTagName.Text = "...";
         // 
@@ -254,18 +299,19 @@ partial class MainForm
         // 
         label1.AutoSize = true;
         label1.Font = new Font("Segoe UI", 10F);
-        label1.Location = new Point(6, 39);
+        label1.Location = new Point(7, 52);
         label1.Name = "label1";
-        label1.Size = new Size(73, 19);
+        label1.Size = new Size(90, 23);
         label1.TabIndex = 9;
         label1.Text = "Danh sách";
         // 
         // cbStatusTodo
         // 
         cbStatusTodo.AutoSize = true;
-        cbStatusTodo.Location = new Point(6, 8);
+        cbStatusTodo.Location = new Point(7, 11);
+        cbStatusTodo.Margin = new Padding(3, 4, 3, 4);
         cbStatusTodo.Name = "cbStatusTodo";
-        cbStatusTodo.Size = new Size(15, 14);
+        cbStatusTodo.Size = new Size(18, 17);
         cbStatusTodo.TabIndex = 8;
         cbStatusTodo.UseVisualStyleBackColor = true;
         cbStatusTodo.CheckedChanged += cbStatusTodo_CheckedChanged;
@@ -275,9 +321,10 @@ partial class MainForm
         panel1.Controls.Add(btnHideRightSideBar);
         panel1.Controls.Add(btnDeleteTodo);
         panel1.Dock = DockStyle.Bottom;
-        panel1.Location = new Point(0, 641);
+        panel1.Location = new Point(0, 854);
+        panel1.Margin = new Padding(3, 4, 3, 4);
         panel1.Name = "panel1";
-        panel1.Size = new Size(300, 30);
+        panel1.Size = new Size(343, 40);
         panel1.TabIndex = 7;
         // 
         // btnHideRightSideBar
@@ -288,8 +335,9 @@ partial class MainForm
         btnHideRightSideBar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
         btnHideRightSideBar.ForeColor = SystemColors.Window;
         btnHideRightSideBar.Location = new Point(0, 0);
+        btnHideRightSideBar.Margin = new Padding(3, 4, 3, 4);
         btnHideRightSideBar.Name = "btnHideRightSideBar";
-        btnHideRightSideBar.Size = new Size(75, 30);
+        btnHideRightSideBar.Size = new Size(86, 40);
         btnHideRightSideBar.TabIndex = 1;
         btnHideRightSideBar.Text = "<-";
         btnHideRightSideBar.UseVisualStyleBackColor = false;
@@ -300,9 +348,10 @@ partial class MainForm
         btnDeleteTodo.BackColor = Color.FromArgb(255, 192, 192);
         btnDeleteTodo.Dock = DockStyle.Right;
         btnDeleteTodo.FlatStyle = FlatStyle.Flat;
-        btnDeleteTodo.Location = new Point(225, 0);
+        btnDeleteTodo.Location = new Point(257, 0);
+        btnDeleteTodo.Margin = new Padding(3, 4, 3, 4);
         btnDeleteTodo.Name = "btnDeleteTodo";
-        btnDeleteTodo.Size = new Size(75, 30);
+        btnDeleteTodo.Size = new Size(86, 40);
         btnDeleteTodo.TabIndex = 0;
         btnDeleteTodo.Text = "Xóa";
         btnDeleteTodo.UseVisualStyleBackColor = false;
@@ -310,11 +359,12 @@ partial class MainForm
         // 
         // tbCurrentTodoNote
         // 
-        tbCurrentTodoNote.Location = new Point(6, 100);
+        tbCurrentTodoNote.Location = new Point(9, 173);
+        tbCurrentTodoNote.Margin = new Padding(3, 4, 3, 4);
         tbCurrentTodoNote.Multiline = true;
         tbCurrentTodoNote.Name = "tbCurrentTodoNote";
         tbCurrentTodoNote.PlaceholderText = "Thêm ghi chú";
-        tbCurrentTodoNote.Size = new Size(282, 99);
+        tbCurrentTodoNote.Size = new Size(322, 131);
         tbCurrentTodoNote.TabIndex = 6;
         tbCurrentTodoNote.Leave += tbCurrentTodoNote_Leave;
         // 
@@ -322,18 +372,19 @@ partial class MainForm
         // 
         label2.AutoSize = true;
         label2.Font = new Font("Segoe UI", 10F);
-        label2.Location = new Point(6, 71);
+        label2.Location = new Point(7, 95);
         label2.Name = "label2";
-        label2.Size = new Size(95, 19);
+        label2.Size = new Size(118, 23);
         label2.TabIndex = 5;
         label2.Text = "Ngày đến hạn";
         // 
         // dtpCurrentTodoDueDate
         // 
         dtpCurrentTodoDueDate.Format = DateTimePickerFormat.Short;
-        dtpCurrentTodoDueDate.Location = new Point(107, 71);
+        dtpCurrentTodoDueDate.Location = new Point(122, 95);
+        dtpCurrentTodoDueDate.Margin = new Padding(3, 4, 3, 4);
         dtpCurrentTodoDueDate.Name = "dtpCurrentTodoDueDate";
-        dtpCurrentTodoDueDate.Size = new Size(181, 23);
+        dtpCurrentTodoDueDate.Size = new Size(206, 27);
         dtpCurrentTodoDueDate.TabIndex = 4;
         dtpCurrentTodoDueDate.ValueChanged += dtpCurrentTodoDueDate_ValueChanged;
         // 
@@ -341,9 +392,9 @@ partial class MainForm
         // 
         lbCurrentTodoName.AutoSize = true;
         lbCurrentTodoName.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
-        lbCurrentTodoName.Location = new Point(26, 1);
+        lbCurrentTodoName.Location = new Point(30, 1);
         lbCurrentTodoName.Name = "lbCurrentTodoName";
-        lbCurrentTodoName.Size = new Size(27, 25);
+        lbCurrentTodoName.Size = new Size(31, 30);
         lbCurrentTodoName.TabIndex = 2;
         lbCurrentTodoName.Text = "...";
         // 
@@ -353,18 +404,20 @@ partial class MainForm
         panelMainContent.Controls.Add(panel6);
         panelMainContent.Controls.Add(panel2);
         panelMainContent.Dock = DockStyle.Fill;
-        panelMainContent.Location = new Point(250, 50);
+        panelMainContent.Location = new Point(286, 67);
+        panelMainContent.Margin = new Padding(3, 4, 3, 4);
         panelMainContent.Name = "panelMainContent";
-        panelMainContent.Size = new Size(714, 671);
+        panelMainContent.Size = new Size(816, 894);
         panelMainContent.TabIndex = 3;
         // 
         // panel6
         // 
         panel6.Controls.Add(dgvTodos);
         panel6.Dock = DockStyle.Fill;
-        panel6.Location = new Point(0, 100);
+        panel6.Location = new Point(0, 133);
+        panel6.Margin = new Padding(3, 4, 3, 4);
         panel6.Name = "panel6";
-        panel6.Size = new Size(714, 571);
+        panel6.Size = new Size(816, 761);
         panel6.TabIndex = 7;
         // 
         // dgvTodos
@@ -389,12 +442,14 @@ partial class MainForm
         dgvTodos.ColumnHeadersVisible = false;
         dgvTodos.Dock = DockStyle.Fill;
         dgvTodos.Location = new Point(0, 0);
+        dgvTodos.Margin = new Padding(3, 4, 3, 4);
         dgvTodos.Name = "dgvTodos";
         dgvTodos.ReadOnly = true;
         dgvTodos.RowHeadersVisible = false;
+        dgvTodos.RowHeadersWidth = 51;
         dataGridViewCellStyle3.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
         dgvTodos.RowsDefaultCellStyle = dataGridViewCellStyle3;
-        dgvTodos.Size = new Size(714, 571);
+        dgvTodos.Size = new Size(816, 761);
         dgvTodos.TabIndex = 3;
         dgvTodos.CellClick += dgvTodos_CellClick;
         dgvTodos.CellContentClick += dgvTodos_CellContentClick;
@@ -406,8 +461,9 @@ partial class MainForm
         panel2.Controls.Add(panel3);
         panel2.Dock = DockStyle.Top;
         panel2.Location = new Point(0, 0);
+        panel2.Margin = new Padding(3, 4, 3, 4);
         panel2.Name = "panel2";
-        panel2.Size = new Size(714, 100);
+        panel2.Size = new Size(816, 133);
         panel2.TabIndex = 6;
         // 
         // panel5
@@ -417,8 +473,9 @@ partial class MainForm
         panel5.Controls.Add(btnTagMenu);
         panel5.Dock = DockStyle.Fill;
         panel5.Location = new Point(0, 0);
+        panel5.Margin = new Padding(3, 4, 3, 4);
         panel5.Name = "panel5";
-        panel5.Size = new Size(714, 39);
+        panel5.Size = new Size(816, 52);
         panel5.TabIndex = 8;
         // 
         // cbSort
@@ -426,9 +483,10 @@ partial class MainForm
         cbSort.Anchor = AnchorStyles.Top | AnchorStyles.Right;
         cbSort.FormattingEnabled = true;
         cbSort.Items.AddRange(new object[] { "Theo hạn", "Theo bảng chữ cái" });
-        cbSort.Location = new Point(557, 10);
+        cbSort.Location = new Point(637, 13);
+        cbSort.Margin = new Padding(3, 4, 3, 4);
         cbSort.Name = "cbSort";
-        cbSort.Size = new Size(151, 23);
+        cbSort.Size = new Size(172, 28);
         cbSort.TabIndex = 7;
         cbSort.Text = "- Sắp xếp -";
         cbSort.SelectedIndexChanged += cbSort_SelectedIndexChanged;
@@ -438,9 +496,9 @@ partial class MainForm
         lbTagName.AutoSize = true;
         lbTagName.Dock = DockStyle.Fill;
         lbTagName.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
-        lbTagName.Location = new Point(39, 0);
+        lbTagName.Location = new Point(45, 0);
         lbTagName.Name = "lbTagName";
-        lbTagName.Size = new Size(27, 25);
+        lbTagName.Size = new Size(31, 30);
         lbTagName.TabIndex = 0;
         lbTagName.Text = "...";
         // 
@@ -453,8 +511,9 @@ partial class MainForm
         btnTagMenu.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
         btnTagMenu.ForeColor = SystemColors.Window;
         btnTagMenu.Location = new Point(0, 0);
+        btnTagMenu.Margin = new Padding(3, 4, 3, 4);
         btnTagMenu.Name = "btnTagMenu";
-        btnTagMenu.Size = new Size(39, 39);
+        btnTagMenu.Size = new Size(45, 52);
         btnTagMenu.TabIndex = 5;
         btnTagMenu.Text = "V";
         btnTagMenu.UseVisualStyleBackColor = false;
@@ -464,9 +523,10 @@ partial class MainForm
         // 
         panel4.Controls.Add(tbCreateTodo);
         panel4.Dock = DockStyle.Bottom;
-        panel4.Location = new Point(0, 39);
+        panel4.Location = new Point(0, 52);
+        panel4.Margin = new Padding(3, 4, 3, 4);
         panel4.Name = "panel4";
-        panel4.Size = new Size(714, 33);
+        panel4.Size = new Size(816, 44);
         panel4.TabIndex = 7;
         // 
         // tbCreateTodo
@@ -474,9 +534,10 @@ partial class MainForm
         tbCreateTodo.Dock = DockStyle.Fill;
         tbCreateTodo.Font = new Font("Segoe UI", 11F);
         tbCreateTodo.Location = new Point(0, 0);
+        tbCreateTodo.Margin = new Padding(3, 4, 3, 4);
         tbCreateTodo.Name = "tbCreateTodo";
         tbCreateTodo.PlaceholderText = " + Thêm tác vụ";
-        tbCreateTodo.Size = new Size(714, 27);
+        tbCreateTodo.Size = new Size(816, 32);
         tbCreateTodo.TabIndex = 1;
         tbCreateTodo.TextChanged += tbCreateTodo_TextChanged;
         tbCreateTodo.KeyDown += tbCreateTodo_KeyDown;
@@ -486,9 +547,10 @@ partial class MainForm
         panel3.Controls.Add(dtpCreateTodo);
         panel3.Controls.Add(btnCreateTodo);
         panel3.Dock = DockStyle.Bottom;
-        panel3.Location = new Point(0, 72);
+        panel3.Location = new Point(0, 96);
+        panel3.Margin = new Padding(3, 4, 3, 4);
         panel3.Name = "panel3";
-        panel3.Size = new Size(714, 28);
+        panel3.Size = new Size(816, 37);
         panel3.TabIndex = 6;
         // 
         // dtpCreateTodo
@@ -496,8 +558,9 @@ partial class MainForm
         dtpCreateTodo.Dock = DockStyle.Left;
         dtpCreateTodo.Format = DateTimePickerFormat.Short;
         dtpCreateTodo.Location = new Point(0, 0);
+        dtpCreateTodo.Margin = new Padding(3, 4, 3, 4);
         dtpCreateTodo.Name = "dtpCreateTodo";
-        dtpCreateTodo.Size = new Size(102, 23);
+        dtpCreateTodo.Size = new Size(116, 27);
         dtpCreateTodo.TabIndex = 2;
         // 
         // btnCreateTodo
@@ -508,9 +571,10 @@ partial class MainForm
         btnCreateTodo.FlatStyle = FlatStyle.Flat;
         btnCreateTodo.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
         btnCreateTodo.ForeColor = SystemColors.Window;
-        btnCreateTodo.Location = new Point(639, 0);
+        btnCreateTodo.Location = new Point(730, 0);
+        btnCreateTodo.Margin = new Padding(3, 4, 3, 4);
         btnCreateTodo.Name = "btnCreateTodo";
-        btnCreateTodo.Size = new Size(75, 28);
+        btnCreateTodo.Size = new Size(86, 37);
         btnCreateTodo.TabIndex = 4;
         btnCreateTodo.Text = "Thêm";
         btnCreateTodo.UseVisualStyleBackColor = false;
@@ -518,86 +582,88 @@ partial class MainForm
         // 
         // cmsUserMenu
         // 
+        cmsUserMenu.ImageScalingSize = new Size(20, 20);
         cmsUserMenu.Items.AddRange(new ToolStripItem[] { miExportFile, miChangePassword, miLogin, miRegister, toolStripSeparator1, miLogout });
         cmsUserMenu.Name = "cmsUserMenu";
-        cmsUserMenu.Size = new Size(147, 98);
+        cmsUserMenu.Size = new Size(172, 130);
         // 
         // miExportFile
         // 
         miExportFile.Name = "miExportFile";
-        miExportFile.Size = new Size(146, 22);
+        miExportFile.Size = new Size(171, 24);
         miExportFile.Text = "Xuất file Excel";
         miExportFile.Click += miExportFile_Click;
+        // 
+        // miChangePassword
+        // 
+        miChangePassword.Name = "miChangePassword";
+        miChangePassword.Size = new Size(171, 24);
+        miChangePassword.Text = "Đổi mật khẩu";
+        miChangePassword.Click += miChangePassword_Click;
         // 
         // miLogin
         // 
         miLogin.Name = "miLogin";
-        miLogin.Size = new Size(146, 22);
+        miLogin.Size = new Size(171, 24);
         miLogin.Text = "Đăng nhập";
         miLogin.Click += miLogin_Click;
         // 
         // miRegister
         // 
         miRegister.Name = "miRegister";
-        miRegister.Size = new Size(146, 22);
+        miRegister.Size = new Size(171, 24);
         miRegister.Text = "Đăng ký";
         miRegister.Click += miRegister_Click;
         // 
         // toolStripSeparator1
         // 
         toolStripSeparator1.Name = "toolStripSeparator1";
-        toolStripSeparator1.Size = new Size(143, 6);
+        toolStripSeparator1.Size = new Size(168, 6);
         // 
         // miLogout
         // 
         miLogout.Name = "miLogout";
-        miLogout.Size = new Size(146, 22);
+        miLogout.Size = new Size(171, 24);
         miLogout.Text = "Đăng xuất";
         miLogout.Click += miLogout_Click;
         // 
-        // miChangePassword
-        // 
-        miChangePassword.Name = "miChangePassword";
-        miChangePassword.Size = new Size(146, 22);
-        miChangePassword.Text = "Đổi mật khẩu";
-        miChangePassword.Click += miChangePassword_Click;
-        // 
         // cmsTagMenu
         // 
+        cmsTagMenu.ImageScalingSize = new Size(20, 20);
         cmsTagMenu.Items.AddRange(new ToolStripItem[] { miDrawChart, toolStripSeparator2, miDeleteTag });
         cmsTagMenu.Name = "contextMenuStrip1";
-        cmsTagMenu.Size = new Size(152, 54);
+        cmsTagMenu.Size = new Size(175, 58);
         // 
         // miDrawChart
         // 
         miDrawChart.Name = "miDrawChart";
-        miDrawChart.Size = new Size(151, 22);
+        miDrawChart.Size = new Size(174, 24);
         miDrawChart.Text = "Vẽ biểu đồ";
         miDrawChart.Click += miDrawChart_Click;
         // 
         // toolStripSeparator2
         // 
         toolStripSeparator2.Name = "toolStripSeparator2";
-        toolStripSeparator2.Size = new Size(148, 6);
+        toolStripSeparator2.Size = new Size(171, 6);
         // 
         // miDeleteTag
         // 
         miDeleteTag.Name = "miDeleteTag";
-        miDeleteTag.Size = new Size(151, 22);
+        miDeleteTag.Size = new Size(174, 24);
         miDeleteTag.Text = "Xóa danh sách";
         miDeleteTag.Click += miDeleteTag_Click;
         // 
         // MainForm
         // 
-        AutoScaleDimensions = new SizeF(7F, 15F);
+        AutoScaleDimensions = new SizeF(8F, 20F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(1264, 721);
+        ClientSize = new Size(1445, 961);
         Controls.Add(panelMainContent);
         Controls.Add(panelRightSideBar);
         Controls.Add(panelLeftSideBar);
         Controls.Add(panelHeader);
         Icon = (Icon)resources.GetObject("$this.Icon");
-        Margin = new Padding(3, 4, 3, 4);
+        Margin = new Padding(3, 5, 3, 5);
         Name = "MainForm";
         StartPosition = FormStartPosition.CenterScreen;
         Text = "Task Manager";
@@ -672,5 +738,7 @@ partial class MainForm
     private Label label1;
     private ComboBox cbSort;
     private ToolStripMenuItem miChangePassword;
-
+    private Button btnDeleteRemind;
+    private DateTimePicker dtpRemind;
+    private Label label4;
 }
