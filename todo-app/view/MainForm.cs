@@ -1,3 +1,4 @@
+using System.Windows.Forms;
 using todo_app.controller;
 using todo_app.entity;
 using todo_app.exception;
@@ -20,7 +21,6 @@ public partial class MainForm : Form
 
     private Tag? _currentTag = null;
     private Todo? _currentTodo = null;
-
     public MainForm()
     {
         InitializeComponent();
@@ -46,20 +46,20 @@ public partial class MainForm : Form
 
     private void MainForm_Load(object sender, EventArgs e)
     {
-        // if (!_loggedInAccount.IsLoggedIn())
-        // {
-        //     if (_controller.RememberMeService.Load(out var username, out var password))
-        //     {
-        //         try
-        //         {
-        //             _controller.AccountService.Login(username, password);
-        //         }
-        //         catch
-        //         {
-        //             _controller.RememberMeService.Clear();
-        //         }
-        //     }
-        // }
+        if (!_loggedInAccount.IsLoggedIn())
+        {
+            if (_controller.RememberMeService.Load(out var username, out var password))
+            {
+                try
+                {
+                    _controller.AccountService.Login(username, password);
+                }
+                catch
+                {
+                    _controller.RememberMeService.Clear();
+                }
+            }
+        }
 
         //_reminderService.CreateOrUpdateReminder(1, DateTime.Now.AddMinutes(1));
         _reminderService.DeleteReminder(1);
@@ -130,6 +130,40 @@ public partial class MainForm : Form
         }
     }
 
+    private void LoadSubTodos(List<Todo> datasource)
+    {
+        if (_currentTodo == null)
+        {
+            dgvSubTodo.DataSource = null;
+            return;
+        }
+
+        dgvSubTodo.DataSource = null;
+        dgvSubTodo.DataSource = datasource.OrderBy(t => t.IsDone).ToList();
+
+        try
+        {
+            if (dgvSubTodo.Columns.Contains("Content")) dgvSubTodo.Columns["Content"].FillWeight = 80;
+            dgvSubTodo.Columns["colDelete"].DisplayIndex = dgvSubTodo.Columns.Count - 1;
+            if (dgvSubTodo.Columns.Contains("Id")) dgvSubTodo.Columns["Id"].Visible = false;
+            if (dgvSubTodo.Columns.Contains("ParentId")) dgvSubTodo.Columns["ParentId"].Visible = false;
+            if (dgvSubTodo.Columns.Contains("Note")) dgvSubTodo.Columns["Note"].Visible = false;
+            if (dgvSubTodo.Columns.Contains("DueDate")) dgvSubTodo.Columns["DueDate"].Visible = false;
+            if (dgvSubTodo.Columns.Contains("IsImportant")) dgvSubTodo.Columns["IsImportant"].Visible = false;
+            if (dgvSubTodo.Columns.Contains("IsDone"))
+            {
+                dgvSubTodo.Columns["IsDone"].Width = 30;
+                dgvSubTodo.Columns["IsDone"].FillWeight = 20;
+
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
     private void tbCreateTag_KeyDown(object sender, KeyEventArgs e)
     {
         if (e.KeyCode == Keys.Enter)
@@ -177,6 +211,7 @@ public partial class MainForm : Form
 
     private void ShowRightSideBar(Todo todo)
     {
+
         if (todo == null)
         {
             return;
@@ -189,6 +224,8 @@ public partial class MainForm : Form
         lbCurrentTodoTagName.Text = _tagService.FindByTodoId(todo.Id).Name;
 
         panelRightSideBar.Width = 300;
+
+
     }
 
     private void HideRightSideBar()
@@ -211,6 +248,10 @@ public partial class MainForm : Form
         }
 
         _currentTodo = selectedTodo;
+
+        List<Todo> subTodos = _todoService.FindByParentId(_currentTodo.Id);
+        LoadSubTodos(subTodos);
+
         ShowRightSideBar(selectedTodo);
     }
 
@@ -455,4 +496,86 @@ public partial class MainForm : Form
         var form = new todo_app.view.ChangePasswordForm(_controller);
         form.ShowDialog();
     }
+
+
+    private void btnAddSubTodo_Click(object sender, EventArgs e)
+    {
+        if (_currentTodo == null)
+        {
+            return;
+        }
+
+        string content = tbAddSubTodo.Text;
+        if (string.IsNullOrWhiteSpace(content))
+        {
+            return;
+        }
+        DateTime dueDate = dtpCreateTodo.Value;
+
+        _todoService.Create(content, dueDate, _currentTag, false, _currentTodo.Id); ;
+
+        tbAddSubTodo.Clear();
+        try
+        {
+            List<Todo> subTodos = _todoService.FindByParentId(_currentTodo.Id);
+            LoadSubTodos(subTodos);
+        }
+        catch { }
+    }
+
+    private void dgvSubTodo_CellClick(object sender, DataGridViewCellEventArgs e)
+    {
+        if (e.RowIndex < 0) return;
+
+        var selected = dgvSubTodo.Rows[e.RowIndex].DataBoundItem as Todo;
+        if (selected == null) return;
+    }
+
+    private void dgvSubTodo_CellContentClick(object sender, DataGridViewCellEventArgs e)
+    {
+        if (e.RowIndex < 0)
+        {
+            return;
+        }
+
+        if (dgvSubTodo.Columns[e.ColumnIndex].Name == "IsDone")
+        {
+            var selectedSubTodo = dgvSubTodo.Rows[e.RowIndex].DataBoundItem as Todo;
+            if (selectedSubTodo == null)
+            {
+                return;
+            }
+
+            _todoService.CheckTodo(selectedSubTodo.Id, !selectedSubTodo.IsDone);
+        }
+        else if (dgvSubTodo.Columns[e.ColumnIndex].Name == "colDelete")
+        {
+            var selectedSubTodo = dgvSubTodo.Rows[e.RowIndex].DataBoundItem as Todo;
+            if (selectedSubTodo == null)
+            {
+                return;
+            }
+            _todoService.Delete(selectedSubTodo.Id);
+        }
+        else
+        {
+            return;
+        }
+
+        List<Todo> subtodos = _todoService.FindByParentId(_currentTodo!.Id);
+        LoadSubTodos(subtodos);
+    }
+
+    private void tbAddSubTodo_TextChanged(object sender, EventArgs e)
+    {
+        if (tbSearchTodo.Text.Length == 0)
+        {
+            btnSearch.Enabled = false;
+        }
+        else
+        {
+            btnSearch.Enabled = true;
+        }
+    }
+
 }

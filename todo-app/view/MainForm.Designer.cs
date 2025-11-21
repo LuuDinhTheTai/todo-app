@@ -32,8 +32,9 @@ partial class MainForm
         components = new System.ComponentModel.Container();
         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
         DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-        DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
         DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+        DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+        DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
         sfdExcel = new SaveFileDialog();
         panelHeader = new Panel();
         btnSearch = new Button();
@@ -45,8 +46,10 @@ partial class MainForm
         dgvTags = new DataGridView();
         tbCreateTag = new TextBox();
         panelRightSideBar = new Panel();
-        btnDeleteRemind = new Button();
-        dtpRemind = new DateTimePicker();
+        btnAddSubTodo = new Button();
+        tbAddSubTodo = new TextBox();
+        dgvSubTodo = new DataGridView();
+        colDelete = new DataGridViewButtonColumn();
         label4 = new Label();
         lbCurrentTodoTagName = new Label();
         label1 = new Label();
@@ -86,6 +89,7 @@ partial class MainForm
         panelLeftSideBar.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)dgvTags).BeginInit();
         panelRightSideBar.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)dgvSubTodo).BeginInit();
         panel1.SuspendLayout();
         panelMainContent.SuspendLayout();
         panel6.SuspendLayout();
@@ -238,8 +242,9 @@ partial class MainForm
         // panelRightSideBar
         // 
         panelRightSideBar.BackColor = SystemColors.Window;
-        panelRightSideBar.Controls.Add(btnDeleteRemind);
-        panelRightSideBar.Controls.Add(dtpRemind);
+        panelRightSideBar.Controls.Add(btnAddSubTodo);
+        panelRightSideBar.Controls.Add(tbAddSubTodo);
+        panelRightSideBar.Controls.Add(dgvSubTodo);
         panelRightSideBar.Controls.Add(label4);
         panelRightSideBar.Controls.Add(lbCurrentTodoTagName);
         panelRightSideBar.Controls.Add(label1);
@@ -256,34 +261,80 @@ partial class MainForm
         panelRightSideBar.Size = new Size(343, 894);
         panelRightSideBar.TabIndex = 2;
         // 
-        // btnDeleteRemind
+        // btnAddSubTodo
         // 
-        btnDeleteRemind.Location = new Point(295, 133);
-        btnDeleteRemind.Name = "btnDeleteRemind";
-        btnDeleteRemind.Size = new Size(33, 27);
-        btnDeleteRemind.TabIndex = 13;
-        btnDeleteRemind.Text = "X";
-        btnDeleteRemind.UseVisualStyleBackColor = true;
+        btnAddSubTodo.Location = new Point(213, 245);
+        btnAddSubTodo.Name = "btnAddSubTodo";
+        btnAddSubTodo.Size = new Size(75, 23);
+        btnAddSubTodo.TabIndex = 14;
+        btnAddSubTodo.Text = "Thêm";
+        btnAddSubTodo.UseVisualStyleBackColor = true;
+        btnAddSubTodo.Click += btnAddSubTodo_Click;
         // 
-        // dtpRemind
+        // tbAddSubTodo
         // 
-        dtpRemind.Format = DateTimePickerFormat.Short;
-        dtpRemind.Location = new Point(122, 133);
-        dtpRemind.Margin = new Padding(3, 4, 3, 4);
-        dtpRemind.Name = "dtpRemind";
-        dtpRemind.Size = new Size(167, 27);
-        dtpRemind.TabIndex = 12;
-        dtpRemind.Visible = false;
+        tbAddSubTodo.Location = new Point(6, 245);
+        tbAddSubTodo.Name = "tbAddSubTodo";
+        tbAddSubTodo.PlaceholderText = "Thêm việc cần làm...";
+        tbAddSubTodo.Size = new Size(201, 23);
+        tbAddSubTodo.TabIndex = 13;
+        tbAddSubTodo.TextChanged += tbAddSubTodo_TextChanged;
+        // 
+        // dgvSubTodo
+        // 
+        dgvSubTodo.AllowUserToDeleteRows = false;
+        dgvSubTodo.AllowUserToResizeColumns = false;
+        dgvSubTodo.AllowUserToResizeRows = false;
+        dgvSubTodo.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        dgvSubTodo.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+        dgvSubTodo.BackgroundColor = Color.White;
+        dgvSubTodo.BorderStyle = BorderStyle.None;
+        dgvSubTodo.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+        dgvSubTodo.ColumnHeadersVisible = false;
+        dgvSubTodo.Columns.AddRange(new DataGridViewColumn[] { colDelete });
+        dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+        dataGridViewCellStyle3.BackColor = SystemColors.Window;
+        dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
+        dataGridViewCellStyle3.ForeColor = SystemColors.ControlText;
+        dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+        dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+        dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+        dgvSubTodo.DefaultCellStyle = dataGridViewCellStyle3;
+        dgvSubTodo.GridColor = SystemColors.ControlDarkDark;
+        dgvSubTodo.Location = new Point(6, 274);
+        dgvSubTodo.MultiSelect = false;
+        dgvSubTodo.Name = "dgvSubTodo";
+        dgvSubTodo.RowHeadersVisible = false;
+        dgvSubTodo.Size = new Size(282, 361);
+        dgvSubTodo.TabIndex = 12;
+        dgvSubTodo.CellContentClick += dgvSubTodo_CellContentClick;
+        // 
+        // colDelete
+        // 
+        colDelete.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        dataGridViewCellStyle2.BackColor = Color.White;
+        dataGridViewCellStyle2.ForeColor = Color.Black;
+        dataGridViewCellStyle2.NullValue = "X";
+        dataGridViewCellStyle2.SelectionBackColor = Color.White;
+        dataGridViewCellStyle2.SelectionForeColor = Color.Black;
+        colDelete.DefaultCellStyle = dataGridViewCellStyle2;
+        colDelete.FillWeight = 10F;
+        colDelete.FlatStyle = FlatStyle.Flat;
+        colDelete.HeaderText = "Column1";
+        colDelete.Name = "colDelete";
+        colDelete.Resizable = DataGridViewTriState.True;
+        colDelete.SortMode = DataGridViewColumnSortMode.Automatic;
+        colDelete.Width = 30;
         // 
         // label4
         // 
         label4.AutoSize = true;
-        label4.Font = new Font("Segoe UI", 10F);
-        label4.Location = new Point(7, 133);
+        label4.Location = new Point(6, 216);
         label4.Name = "label4";
-        label4.Size = new Size(85, 23);
+        label4.Size = new Size(74, 15);
         label4.TabIndex = 11;
-        label4.Text = "Nhắc nhở";
+        label4.Text = "Việc cần làm";
         // 
         // lbCurrentTodoTagName
         // 
@@ -430,14 +481,14 @@ partial class MainForm
         dgvTodos.BackgroundColor = SystemColors.Control;
         dgvTodos.BorderStyle = BorderStyle.None;
         dgvTodos.CellBorderStyle = DataGridViewCellBorderStyle.None;
-        dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-        dataGridViewCellStyle2.BackColor = SystemColors.Control;
-        dataGridViewCellStyle2.Font = new Font("Segoe UI", 11F);
-        dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
-        dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-        dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-        dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-        dgvTodos.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+        dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+        dataGridViewCellStyle4.BackColor = SystemColors.Control;
+        dataGridViewCellStyle4.Font = new Font("Segoe UI", 11F);
+        dataGridViewCellStyle4.ForeColor = SystemColors.WindowText;
+        dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
+        dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+        dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+        dgvTodos.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
         dgvTodos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
         dgvTodos.ColumnHeadersVisible = false;
         dgvTodos.Dock = DockStyle.Fill;
@@ -446,10 +497,7 @@ partial class MainForm
         dgvTodos.Name = "dgvTodos";
         dgvTodos.ReadOnly = true;
         dgvTodos.RowHeadersVisible = false;
-        dgvTodos.RowHeadersWidth = 51;
-        dataGridViewCellStyle3.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        dgvTodos.RowsDefaultCellStyle = dataGridViewCellStyle3;
-        dgvTodos.Size = new Size(816, 761);
+        dgvTodos.Size = new Size(714, 571);
         dgvTodos.TabIndex = 3;
         dgvTodos.CellClick += dgvTodos_CellClick;
         dgvTodos.CellContentClick += dgvTodos_CellContentClick;
@@ -585,45 +633,45 @@ partial class MainForm
         cmsUserMenu.ImageScalingSize = new Size(20, 20);
         cmsUserMenu.Items.AddRange(new ToolStripItem[] { miExportFile, miChangePassword, miLogin, miRegister, toolStripSeparator1, miLogout });
         cmsUserMenu.Name = "cmsUserMenu";
-        cmsUserMenu.Size = new Size(172, 130);
+        cmsUserMenu.Size = new Size(148, 120);
         // 
         // miExportFile
         // 
         miExportFile.Name = "miExportFile";
-        miExportFile.Size = new Size(171, 24);
+        miExportFile.Size = new Size(147, 22);
         miExportFile.Text = "Xuất file Excel";
         miExportFile.Click += miExportFile_Click;
         // 
         // miChangePassword
         // 
         miChangePassword.Name = "miChangePassword";
-        miChangePassword.Size = new Size(171, 24);
+        miChangePassword.Size = new Size(147, 22);
         miChangePassword.Text = "Đổi mật khẩu";
         miChangePassword.Click += miChangePassword_Click;
         // 
         // miLogin
         // 
         miLogin.Name = "miLogin";
-        miLogin.Size = new Size(171, 24);
+        miLogin.Size = new Size(147, 22);
         miLogin.Text = "Đăng nhập";
         miLogin.Click += miLogin_Click;
         // 
         // miRegister
         // 
         miRegister.Name = "miRegister";
-        miRegister.Size = new Size(171, 24);
+        miRegister.Size = new Size(147, 22);
         miRegister.Text = "Đăng ký";
         miRegister.Click += miRegister_Click;
         // 
         // toolStripSeparator1
         // 
         toolStripSeparator1.Name = "toolStripSeparator1";
-        toolStripSeparator1.Size = new Size(168, 6);
+        toolStripSeparator1.Size = new Size(144, 6);
         // 
         // miLogout
         // 
         miLogout.Name = "miLogout";
-        miLogout.Size = new Size(171, 24);
+        miLogout.Size = new Size(147, 22);
         miLogout.Text = "Đăng xuất";
         miLogout.Click += miLogout_Click;
         // 
@@ -675,6 +723,7 @@ partial class MainForm
         ((System.ComponentModel.ISupportInitialize)dgvTags).EndInit();
         panelRightSideBar.ResumeLayout(false);
         panelRightSideBar.PerformLayout();
+        ((System.ComponentModel.ISupportInitialize)dgvSubTodo).EndInit();
         panel1.ResumeLayout(false);
         panelMainContent.ResumeLayout(false);
         panel6.ResumeLayout(false);
@@ -738,7 +787,9 @@ partial class MainForm
     private Label label1;
     private ComboBox cbSort;
     private ToolStripMenuItem miChangePassword;
-    private Button btnDeleteRemind;
-    private DateTimePicker dtpRemind;
+    private Button btnAddSubTodo;
+    private TextBox tbAddSubTodo;
+    private DataGridView dgvSubTodo;
     private Label label4;
+    private DataGridViewButtonColumn colDelete;
 }
