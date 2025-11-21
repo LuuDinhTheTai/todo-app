@@ -10,8 +10,5 @@
     <Compile Update="view\ReminderForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="view\RPTForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
   </ItemGroup>
 </Project>
