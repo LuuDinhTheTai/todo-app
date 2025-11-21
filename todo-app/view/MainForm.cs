@@ -20,7 +20,6 @@ public partial class MainForm : Form
 
     private Tag? _currentTag = null;
     private Todo? _currentTodo = null;
-    private Todo? _currentSubTodo = null;
     public MainForm()
     {
         InitializeComponent();
@@ -524,8 +523,6 @@ public partial class MainForm : Form
 
         var selected = dgvSubTodo.Rows[e.RowIndex].DataBoundItem as Todo;
         if (selected == null) return;
-
-        _currentSubTodo = selected;
     }
 
     private void dgvSubTodo_CellContentClick(object sender, DataGridViewCellEventArgs e)
