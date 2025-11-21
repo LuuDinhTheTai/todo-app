@@ -12,7 +12,7 @@ public partial class MainForm : Form
     private TagService _tagService;
     private TodoService _todoService;
     private FileService _fileService;
-    
+
     private LoginForm _loginForm;
 
     private LoggedInAccount _loggedInAccount;
@@ -39,6 +39,7 @@ public partial class MainForm : Form
     public void Reload()
     {
         LoadTags();
+        LoadAvatar();
         HideRightSideBar();
     }
 
@@ -289,6 +290,72 @@ public partial class MainForm : Form
         }
     }
 
+    private void LoadAvatar()
+    {
+        try
+        {
+            string projectRoot = Path.GetFullPath(
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..")
+            );
+
+            string imageFolder = Path.Combine(projectRoot, "image");
+
+            string defaultAvatarPath = Path.Combine(imageFolder, "icons8-account-48.png");
+
+            if (File.Exists(defaultAvatarPath))
+            {
+                btnUserMenu.Image = Image.FromFile(defaultAvatarPath);
+                btnUserMenu.ImageAlign = ContentAlignment.MiddleCenter;
+            }
+        }
+        catch
+        {
+            btnUserMenu.Image = null;
+        }
+    }
+
+    private void miAddAvatar_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            using var ofd = new OpenFileDialog
+            {
+                Title = "Chọn ảnh đại diện",
+                Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif"
+            };
+
+            if (ofd.ShowDialog() != DialogResult.OK)
+                return;
+
+            // Lấy thư mục project
+            string projectRoot = Path.GetFullPath(
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..")
+            );
+
+            // Thư mục avatar: todo-app\image\avatar
+            string avatarFolder = Path.Combine(projectRoot, "image", "avatar");
+            if (!Directory.Exists(avatarFolder))
+                Directory.CreateDirectory(avatarFolder);
+
+            // Lưu file theo username
+            string username = _loggedInAccount.GetUsername();
+            string savePath = Path.Combine(avatarFolder, $"{username}.png");
+
+            File.Copy(ofd.FileName, savePath, true);
+
+            // Load lên nút luôn
+            btnUserMenu.Image = Image.FromFile(savePath);
+            btnUserMenu.ImageAlign = ContentAlignment.MiddleCenter;
+
+            MessageBox.Show("Cập nhật ảnh đại diện thành công!");
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Không thể cập nhật ảnh đại diện.\n" + ex.Message,
+                "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
     private void btnTagMenu_Click(object sender, EventArgs e)
     {
         Control control = sender as Control;
@@ -449,5 +516,10 @@ public partial class MainForm : Form
         }
         var form = new todo_app.view.ChangePasswordForm(_controller);
         form.ShowDialog();
+    }
+
+    private void panelHeader_Paint(object sender, PaintEventArgs e)
+    {
+
     }
 }

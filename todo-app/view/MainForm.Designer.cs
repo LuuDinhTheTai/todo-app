@@ -70,11 +70,12 @@ partial class MainForm
         btnCreateTodo = new Button();
         cmsUserMenu = new ContextMenuStrip(components);
         miExportFile = new ToolStripMenuItem();
+        miChangePassword = new ToolStripMenuItem();
         miLogin = new ToolStripMenuItem();
         miRegister = new ToolStripMenuItem();
         toolStripSeparator1 = new ToolStripSeparator();
+        miAddAvatar = new ToolStripMenuItem();
         miLogout = new ToolStripMenuItem();
-        miChangePassword = new ToolStripMenuItem();
         cmsTagMenu = new ContextMenuStrip(components);
         miDrawChart = new ToolStripMenuItem();
         toolStripSeparator2 = new ToolStripSeparator();
@@ -98,6 +99,7 @@ partial class MainForm
         // panelHeader
         // 
         panelHeader.BackColor = SystemColors.MenuHighlight;
+        panelHeader.BackgroundImageLayout = ImageLayout.Stretch;
         panelHeader.Controls.Add(btnSearch);
         panelHeader.Controls.Add(btnUserMenu);
         panelHeader.Controls.Add(tbSearchTodo);
@@ -108,6 +110,7 @@ partial class MainForm
         panelHeader.Name = "panelHeader";
         panelHeader.Size = new Size(1264, 50);
         panelHeader.TabIndex = 0;
+        panelHeader.Paint += panelHeader_Paint;
         // 
         // btnSearch
         // 
@@ -126,7 +129,6 @@ partial class MainForm
         // 
         // btnUserMenu
         // 
-        btnUserMenu.BackgroundImage = (Image)resources.GetObject("btnUserMenu.BackgroundImage");
         btnUserMenu.BackgroundImageLayout = ImageLayout.Stretch;
         btnUserMenu.Dock = DockStyle.Right;
         btnUserMenu.FlatAppearance.BorderSize = 0;
@@ -518,49 +520,56 @@ partial class MainForm
         // 
         // cmsUserMenu
         // 
-        cmsUserMenu.Items.AddRange(new ToolStripItem[] { miExportFile, miChangePassword, miLogin, miRegister, toolStripSeparator1, miLogout });
+        cmsUserMenu.Items.AddRange(new ToolStripItem[] { miExportFile, miChangePassword, miLogin, miRegister, toolStripSeparator1, miAddAvatar });
         cmsUserMenu.Name = "cmsUserMenu";
-        cmsUserMenu.Size = new Size(147, 98);
+        cmsUserMenu.Size = new Size(173, 120);
         // 
         // miExportFile
         // 
         miExportFile.Name = "miExportFile";
-        miExportFile.Size = new Size(146, 22);
+        miExportFile.Size = new Size(172, 22);
         miExportFile.Text = "Xuất file Excel";
         miExportFile.Click += miExportFile_Click;
+        // 
+        // miChangePassword
+        // 
+        miChangePassword.Name = "miChangePassword";
+        miChangePassword.Size = new Size(172, 22);
+        miChangePassword.Text = "Đổi mật khẩu";
+        miChangePassword.Click += miChangePassword_Click;
         // 
         // miLogin
         // 
         miLogin.Name = "miLogin";
-        miLogin.Size = new Size(146, 22);
+        miLogin.Size = new Size(172, 22);
         miLogin.Text = "Đăng nhập";
         miLogin.Click += miLogin_Click;
         // 
         // miRegister
         // 
         miRegister.Name = "miRegister";
-        miRegister.Size = new Size(146, 22);
+        miRegister.Size = new Size(172, 22);
         miRegister.Text = "Đăng ký";
         miRegister.Click += miRegister_Click;
         // 
         // toolStripSeparator1
         // 
         toolStripSeparator1.Name = "toolStripSeparator1";
-        toolStripSeparator1.Size = new Size(143, 6);
+        toolStripSeparator1.Size = new Size(169, 6);
+        // 
+        // miAddAvatar
+        // 
+        miAddAvatar.Name = "miAddAvatar";
+        miAddAvatar.Size = new Size(172, 22);
+        miAddAvatar.Text = "Thêm ảnh đại diện";
+        miAddAvatar.Click += miAddAvatar_Click;
         // 
         // miLogout
         // 
         miLogout.Name = "miLogout";
-        miLogout.Size = new Size(146, 22);
+        miLogout.Size = new Size(147, 22);
         miLogout.Text = "Đăng xuất";
         miLogout.Click += miLogout_Click;
-        // 
-        // miChangePassword
-        // 
-        miChangePassword.Name = "miChangePassword";
-        miChangePassword.Size = new Size(146, 22);
-        miChangePassword.Text = "Đổi mật khẩu";
-        miChangePassword.Click += miChangePassword_Click;
         // 
         // cmsTagMenu
         // 
@@ -672,5 +681,6 @@ partial class MainForm
     private Label label1;
     private ComboBox cbSort;
     private ToolStripMenuItem miChangePassword;
+    private ToolStripMenuItem miAddAvatar;
 
 }
