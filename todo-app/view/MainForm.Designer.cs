@@ -268,7 +268,7 @@ partial class MainForm
         tbAddSubTodo.PlaceholderText = "Thêm việc cần làm...";
         tbAddSubTodo.Size = new Size(201, 23);
         tbAddSubTodo.TabIndex = 13;
-        tbAddSubTodo.TextChanged += textBox1_TextChanged;
+        tbAddSubTodo.TextChanged += tbAddSubTodo_TextChanged;
         // 
         // dgvSubTodo
         // 

@@ -492,19 +492,7 @@ public partial class MainForm : Form
         form.ShowDialog();
     }
 
-    private void textBox1_TextChanged(object sender, EventArgs e)
-    {
-        if (tbSearchTodo.Text.Length == 0)
-        {
-            btnSearch.Enabled = false;
-        }
-        else
-        {
-            btnSearch.Enabled = true;
-        }
-    }
 
-    // New: add sub-todo button handler
     private void btnAddSubTodo_Click(object sender, EventArgs e)
     {
         if (_currentTodo == null)
@@ -555,7 +543,7 @@ public partial class MainForm : Form
                 return;
             }
 
-            _todoService.CheckTodo(selectedSubTodo.Id, !selectedSubTodo.IsDone);            
+            _todoService.CheckTodo(selectedSubTodo.Id, !selectedSubTodo.IsDone);
         }
         else if (dgvSubTodo.Columns[e.ColumnIndex].Name == "colDelete")
         {
@@ -574,4 +562,17 @@ public partial class MainForm : Form
         List<Todo> subtodos = _todoService.FindByParentId(_currentTodo!.Id);
         LoadSubTodos(subtodos);
     }
+
+    private void tbAddSubTodo_TextChanged(object sender, EventArgs e)
+    {
+        if (tbSearchTodo.Text.Length == 0)
+        {
+            btnSearch.Enabled = false;
+        }
+        else
+        {
+            btnSearch.Enabled = true;
+        }
+    }
+
 }
