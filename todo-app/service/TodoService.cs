@@ -134,7 +134,16 @@ namespace todo_app.service
 
             return todos;
         }
-
+        public void CheckImportant(int id, bool isImportant)
+        {
+            var todo = _todoRepository.FindById(id);
+            if (todo == null)
+            {
+                throw new AppException("Tác vụ không tồn tại.");
+            }
+            todo.IsImportant = isImportant;
+            _todoRepository.Update(todo);
+        }
         public List<Todo> SortByDueDate(int tagId, bool ascending = true)
         {
             var todos = _todoRepository.FindByTagId(tagId).ToList();

@@ -79,6 +79,24 @@ namespace todo_app.service
                 return ts.GetTask(taskName) != null;
             }
         }
+        public DateTime? GetReminderTime(int todoId)
+        {
+            using (TaskService ts = new TaskService())
+            {
+                string taskName = $"TodoReminder_{todoId}";
+                var task = ts.GetTask(taskName);
+
+                if (task != null && task.Definition.Triggers.Count > 0)
+                {
+                    var timeTrigger = task.Definition.Triggers[0] as TimeTrigger;
+                    if (timeTrigger != null)
+                    {
+                        return timeTrigger.StartBoundary;
+                    }
+                }
+                return null;
+            }
+        }
         public void UpdateReminder(int todoId, DateTime newTime)
         {
             DeleteReminder(todoId);
