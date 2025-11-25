@@ -157,6 +157,7 @@ partial class MainForm
         tbSearchTodo.PlaceholderText = " Tìm kiếm tác vụ";
         tbSearchTodo.Size = new Size(480, 29);
         tbSearchTodo.TabIndex = 2;
+        tbSearchTodo.KeyDown += tbSearchTodo_KeyDown;
         // 
         // label3
         // 
@@ -278,22 +279,25 @@ partial class MainForm
         // 
         // btnAddSubTodo
         // 
-        btnAddSubTodo.Location = new Point(186, 184);
+        btnAddSubTodo.BackColor = SystemColors.MenuHighlight;
+        btnAddSubTodo.FlatStyle = FlatStyle.Flat;
+        btnAddSubTodo.ForeColor = SystemColors.Window;
+        btnAddSubTodo.Location = new Point(223, 249);
         btnAddSubTodo.Margin = new Padding(3, 2, 3, 2);
         btnAddSubTodo.Name = "btnAddSubTodo";
-        btnAddSubTodo.Size = new Size(66, 17);
+        btnAddSubTodo.Size = new Size(65, 23);
         btnAddSubTodo.TabIndex = 14;
         btnAddSubTodo.Text = "Thêm";
-        btnAddSubTodo.UseVisualStyleBackColor = true;
+        btnAddSubTodo.UseVisualStyleBackColor = false;
         btnAddSubTodo.Click += btnAddSubTodo_Click;
         // 
         // tbAddSubTodo
         // 
-        tbAddSubTodo.Location = new Point(5, 184);
+        tbAddSubTodo.Location = new Point(8, 250);
         tbAddSubTodo.Margin = new Padding(3, 2, 3, 2);
         tbAddSubTodo.Name = "tbAddSubTodo";
         tbAddSubTodo.PlaceholderText = "Thêm việc cần làm...";
-        tbAddSubTodo.Size = new Size(176, 23);
+        tbAddSubTodo.Size = new Size(209, 23);
         tbAddSubTodo.TabIndex = 13;
         tbAddSubTodo.TextChanged += tbAddSubTodo_TextChanged;
         // 
@@ -318,12 +322,12 @@ partial class MainForm
         dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
         dgvSubTodo.DefaultCellStyle = dataGridViewCellStyle3;
         dgvSubTodo.GridColor = SystemColors.ControlDarkDark;
-        dgvSubTodo.Location = new Point(5, 206);
+        dgvSubTodo.Location = new Point(8, 277);
         dgvSubTodo.Margin = new Padding(3, 2, 3, 2);
         dgvSubTodo.MultiSelect = false;
         dgvSubTodo.Name = "dgvSubTodo";
         dgvSubTodo.RowHeadersVisible = false;
-        dgvSubTodo.Size = new Size(247, 271);
+        dgvSubTodo.Size = new Size(280, 359);
         dgvSubTodo.TabIndex = 12;
         dgvSubTodo.CellContentClick += dgvSubTodo_CellContentClick;
         // 
@@ -348,7 +352,7 @@ partial class MainForm
         // label4
         // 
         label4.AutoSize = true;
-        label4.Location = new Point(5, 162);
+        label4.Location = new Point(8, 232);
         label4.Name = "label4";
         label4.Size = new Size(74, 15);
         label4.TabIndex = 11;

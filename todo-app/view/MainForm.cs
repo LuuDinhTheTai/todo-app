@@ -592,10 +592,25 @@ public partial class MainForm : Form
             MessageBox.Show("Chưa có nhắc nhở nào cho công việc này.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             return;
         }
-        if(MessageBox.Show("Bạn có chắc chắn muốn xóa nhắc nhở cho công việc này không?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+        if (MessageBox.Show("Bạn có chắc chắn muốn xóa nhắc nhở cho công việc này không?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
         {
             _reminderService.DeleteReminder(_currentTodo!.Id);
         }
-            
+
+    }
+
+    private void tbSearchTodo_KeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.KeyCode == Keys.Enter)
+        {
+            string keyword = tbSearchTodo.Text;
+            if (string.IsNullOrWhiteSpace(keyword))
+            {
+                return;
+            }
+
+            List<Todo> todos = _todoService.SearchTodos(keyword);
+            LoadTodos(todos);
+        }
     }
 }
