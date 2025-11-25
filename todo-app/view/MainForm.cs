@@ -578,4 +578,24 @@ public partial class MainForm : Form
         }
     }
 
+    private void btnReminder_Click(object sender, EventArgs e)
+    {
+        var reminderForm = new ReminderSettingForm(_controller, _currentTodo!);
+        reminderForm.StartPosition = FormStartPosition.CenterParent;
+        reminderForm.ShowDialog();
+    }
+
+    private void btnDeleteReminder_Click(object sender, EventArgs e)
+    {
+        if (!_reminderService.ReminderExists(_currentTodo!.Id))
+        {
+            MessageBox.Show("Chưa có nhắc nhở nào cho công việc này.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
+        }
+        if(MessageBox.Show("Bạn có chắc chắn muốn xóa nhắc nhở cho công việc này không?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+        {
+            _reminderService.DeleteReminder(_currentTodo!.Id);
+        }
+            
+    }
 }

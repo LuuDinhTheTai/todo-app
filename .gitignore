@@ -36,7 +36,7 @@ mono_crash.*
 # Auto-generated files
 *.generated.*
 *.g.*
-*.Designer.cs
+
 *.AssemblyInfo.cs
 
 # NuGet
